@@ -49,8 +49,8 @@ public class Goal implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Goal flashcard = (Goal) o;
-        return sortOrder == flashcard.sortOrder && Objects.equals(id, flashcard.id) && Objects.equals(text, flashcard.text);
+        Goal goal = (Goal) o;
+        return sortOrder == goal.sortOrder && Objects.equals(id, goal.id) && Objects.equals(text, goal.text);
     }
 
     @Override
