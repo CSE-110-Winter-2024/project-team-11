@@ -6,50 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/buttonToAdd"
+        android:layout_width="73dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="ADD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/ongoing_goals_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DateView_Contatiner" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonToAdd" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/completed_goals_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ongoing_goals_fragment_container" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/DateView_Contatiner"
-        android:name="edu.ucsd.cse110.successorator.ui.goals.Ongoing_Goals_Fragment"
-        android:layout_width="380dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="10dp"
-        android:background="#D1CECE"
-        android:clipToOutline="false"
-        android:outlineAmbientShadowColor="#151212"
-        android:outlineSpotShadowColor="#C35656"
-
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/buttonToAdd"
-        android:layout_width="73dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="6dp"
-        android:text="ADD"
-        app:layout_constraintBottom_toBottomOf="@+id/DateView_Contatiner"
-        app:layout_constraintEnd_toEndOf="@+id/DateView_Contatiner"
-        app:layout_constraintTop_toTopOf="@+id/DateView_Contatiner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

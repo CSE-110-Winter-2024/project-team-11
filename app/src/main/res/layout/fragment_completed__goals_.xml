@@ -6,6 +6,7 @@
     tools:context=".ui.goals.Completed_Goals_Fragment">
 
     <ListView
+        android:id="@+id/completed_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

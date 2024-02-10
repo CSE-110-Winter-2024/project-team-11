@@ -25,17 +25,20 @@ import edu.ucsd.cse110.successorator.R;
  */
 public class Ongoing_Goals_Fragment extends Fragment {
 
-    private GoalList onGoingGoals;
+    public GoalList ongoingGoals = new GoalList(Arrays.asList(
+            new Goal(1, "Go to Target", 1),
+            new Goal(2, "Do Yoga", 2),
+            new Goal(3, "Read my book", 3)
+        ));
 
-    public Ongoing_Goals_Fragment() {
-        // Required empty public constructor
+    public Ongoing_Goals_Fragment()
+    {
+
     }
 
-    public static Ongoing_Goals_Fragment newInstance(GoalList goalList) {
+    public static Ongoing_Goals_Fragment newInstance(GoalList goalList)
+    {
         Ongoing_Goals_Fragment fragment = new Ongoing_Goals_Fragment();
-        Bundle args = new Bundle();
-        args.putSerializable("goalList", (Serializable) goalList);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -43,7 +46,7 @@ public class Ongoing_Goals_Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            onGoingGoals = (GoalList) getArguments().getSerializable("goalList");
+            this.ongoingGoals = (GoalList) getArguments().getSerializable("goalList");
         }
     }
 
@@ -54,9 +57,9 @@ public class Ongoing_Goals_Fragment extends Fragment {
         ListView listView = view.findViewById(R.id.ongoing_list);
         Log.d("Ongoing_Goals_Fragment", "List view: " + listView);
 
-        if (onGoingGoals != null) {
-            Log.d("Ongoing_Goals_Fragment", "Number of goals: " + onGoingGoals.getGoals().size());
-            OngoingGoalsAdapter adapter = new OngoingGoalsAdapter(requireContext(), onGoingGoals.getGoals());
+        if (ongoingGoals != null) {
+            Log.d("Ongoing_Goals_Fragment", "Number of goals: " + ongoingGoals.getGoals().size());
+            OngoingGoalsAdapter adapter = new OngoingGoalsAdapter(requireContext(), ongoingGoals.getGoals());
             listView.setAdapter(adapter);
         } else {
             Log.e("Ongoing_Goals_Fragment", "onGoingGoals is null");
