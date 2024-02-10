@@ -7,19 +7,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.successorator.ui.goals.Completed_Goals_Fragment;
+import edu.ucsd.cse110.successorator.ui.goals.Ongoing_Goals_Fragment;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        var view = ActivityMainBinding.inflate(getLayoutInflater(), null, false);
-<<<<<<< HEAD
+        // Load first fragment into first FragmentContainerView
+        getSupportFragmentManager().beginTransaction()
+                .replace(binding.ongoingGoalsFragmentContainer.getId(), new Ongoing_Goals_Fragment())
+                .commit();
 
-=======
-        //view.placeholderText.setText(R.string.hello_world);
->>>>>>> 21db700d5887abb102c8c36e4e3a3c3458d0a7fb
-
-        setContentView(view.getRoot());
+        // Load second fragment into second FragmentContainerView
+        getSupportFragmentManager().beginTransaction()
+                .replace(binding.completedGoalsFragmentContainer.getId(), new Completed_Goals_Fragment())
+                .commit();
     }
 }

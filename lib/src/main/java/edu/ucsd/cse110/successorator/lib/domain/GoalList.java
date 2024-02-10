@@ -38,5 +38,14 @@ public class GoalList
         });
     }
 
+    /*
+    Getter method for the goals
+    @param none
+    @return List<Goal>
+     */
+    public List<Goal> getGoals()
+    {
 
+        return this.goals;
+    }
 }
