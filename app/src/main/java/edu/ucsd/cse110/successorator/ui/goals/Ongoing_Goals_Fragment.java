@@ -4,14 +4,18 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import edu.ucsd.cse110.successorator.lib.domain.GoalList;
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
-import edu.ucsd.cse110.successorator.util.OngoingGoalsAdapter;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
+import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.GoalList;
+import edu.ucsd.cse110.successorator.util.OngoingGoalsAdapter;
 import edu.ucsd.cse110.successorator.R;
 
 /**
@@ -21,36 +25,44 @@ import edu.ucsd.cse110.successorator.R;
  */
 public class Ongoing_Goals_Fragment extends Fragment {
 
-    private GoalList goalList;
+    private GoalList onGoingGoals;
 
-    public Ongoing_Goals_Fragment(GoalList goalList) {
-        this.goalList = goalList;
+    public Ongoing_Goals_Fragment() {
+        // Required empty public constructor
     }
 
-    public static Ongoing_Goals_Fragment newInstance(String param1, String param2)
-    {
+    public static Ongoing_Goals_Fragment newInstance(GoalList goalList) {
         Ongoing_Goals_Fragment fragment = new Ongoing_Goals_Fragment();
         Bundle args = new Bundle();
+        args.putSerializable("goalList", (Serializable) goalList);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            onGoingGoals = (GoalList) getArguments().getSerializable("goalList");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ongoing_goals, container, false);
+        View view = inflater.inflate(R.layout.fragment_ongoing__goals_, container, false);
 
-        ListView listView = view.findViewById(R.id.ongoing_goal_list);
+        ListView listView = view.findViewById(R.id.ongoing_list);
+        Log.d("Ongoing_Goals_Fragment", "List view: " + listView);
 
-        // Create adapter and set it to the ListView
-        OngoingGoalsAdapter adapter = new OngoingGoalsAdapter(requireContext(), goalList.getGoals());
-        listView.setAdapter(adapter);
+        if (onGoingGoals != null) {
+            Log.d("Ongoing_Goals_Fragment", "Number of goals: " + onGoingGoals.getGoals().size());
+            OngoingGoalsAdapter adapter = new OngoingGoalsAdapter(requireContext(), onGoingGoals.getGoals());
+            listView.setAdapter(adapter);
+        } else {
+            Log.e("Ongoing_Goals_Fragment", "onGoingGoals is null");
+        }
 
         return view;
     }
 }
+
