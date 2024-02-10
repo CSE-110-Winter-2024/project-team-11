@@ -27,7 +27,6 @@ public class GoalList
 
         // Sort the goals
         Collections.sort(goals, new Comparator<Goal>() {
-            @Override
             public int compare(Goal goal1, Goal goal2) {
                 return Integer.compare(goal1.sortOrder(), goal2.sortOrder());
             }
