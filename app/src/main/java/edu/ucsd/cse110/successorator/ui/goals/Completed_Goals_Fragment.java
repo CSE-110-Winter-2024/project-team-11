@@ -15,7 +15,7 @@ import java.util.Arrays;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalList;
-import edu.ucsd.cse110.successorator.util.OngoingGoalsAdapter;
+import edu.ucsd.cse110.successorator.util.CompletedGoalsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +59,7 @@ public class Completed_Goals_Fragment extends Fragment {
 
         if (completedGoals != null) {
             Log.d("Completed_Goals_Fragment", "Number of goals: " + completedGoals.getGoals().size());
-            OngoingGoalsAdapter adapter = new OngoingGoalsAdapter(requireContext(), completedGoals.getGoals());
+            CompletedGoalsAdapter adapter = new CompletedGoalsAdapter(requireContext(), completedGoals.getGoals());
             listView.setAdapter(adapter);
         } else {
             Log.e("Completed_Goals_Fragment", "completedGoals is null");
