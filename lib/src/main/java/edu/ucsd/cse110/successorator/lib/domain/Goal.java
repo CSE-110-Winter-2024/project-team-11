@@ -62,5 +62,15 @@ public class Goal implements Serializable {
     public int hashCode() {
         return Objects.hash(id, text, sortOrder, isCompleted);
     }
+
+    @Override
+    public String toString() {
+        return "Goal{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", isCompleted=" + isCompleted +
+                ", sortOrder=" + sortOrder +
+                '}';
+    }
 }
 
