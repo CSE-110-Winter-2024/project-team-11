@@ -2,11 +2,14 @@ package edu.ucsd.cse110.successorator.lib.data;
 
 import static org.junit.Assert.*;
 
+import static edu.ucsd.cse110.successorator.lib.testUtils.Assertions.assertGoalListEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 
@@ -34,7 +37,7 @@ public class InMemoryDataSourceTest {
         var expected = goalList;
         var actual = src.getGoals();
         assertNotSame(expected, actual);
-        assertEquals(expected, actual);
+        assertGoalListEquals(expected, actual);
     }
 
     @Test
@@ -61,7 +64,8 @@ public class InMemoryDataSourceTest {
     public void getAllGoalsSubject() {
         var expected = goalList;
         var actual = src.getAllGoalsSubject().getValue();
-        assertEquals(expected, actual);
+        assert actual != null;
+        assertGoalListEquals(expected, actual);
     }
 
     @Test
@@ -85,7 +89,7 @@ public class InMemoryDataSourceTest {
 
         var expected = goalList;
         var actual = src.getGoals();
-        assertEquals(expected, actual);
+        assertGoalListEquals(expected, actual);
         assertEquals(5, src.getMaxSortOrder());
     }
 
@@ -100,7 +104,7 @@ public class InMemoryDataSourceTest {
 
         var expected = goalList;
         var actual = src.getGoals();
-        assertEquals(expected, actual);
+        assertGoalListEquals(expected, actual);
         assertEquals(6, src.getMaxSortOrder());
     }
 
@@ -114,7 +118,7 @@ public class InMemoryDataSourceTest {
         ));
         src.removeGoal(1);
         var actual = src.getGoals();
-        assertEquals(expected, actual);
+        assertGoalListEquals(expected, actual);
 
         expected = new ArrayList<>(List.of(
                 new Goal(2, "study", 0, false),
@@ -123,7 +127,7 @@ public class InMemoryDataSourceTest {
         ));
         src.removeGoal(0);
         actual = src.getGoals();
-        assertEquals(expected, actual);
+        assertGoalListEquals(expected, actual);
 
         expected = new ArrayList<>(List.of(
                 new Goal(2, "study", 0, false),
@@ -131,7 +135,7 @@ public class InMemoryDataSourceTest {
         ));
         src.removeGoal(4);
         actual = src.getGoals();
-        assertEquals(expected, actual);
+        assertGoalListEquals(expected, actual);
     }
 
     @Test
@@ -144,7 +148,7 @@ public class InMemoryDataSourceTest {
                 new Goal(3, "laundry", 3, false),
                 new Goal(4, "haircut", 4, false)
         ));
-        assertEquals(expected, src.getGoals());
+        assertGoalListEquals(expected, src.getGoals());
         assertEquals(6, src.getMaxSortOrder());
 
         src.shiftSortOrders(1, 5, -2);
@@ -155,7 +159,7 @@ public class InMemoryDataSourceTest {
                 new Goal(3, "laundry", 1, false),
                 new Goal(4, "haircut", 2, false)
         ));
-        assertEquals(expected, src.getGoals());
+        assertGoalListEquals(expected, src.getGoals());
         assertEquals(0, src.getMinSortOrder());
     }
 }
