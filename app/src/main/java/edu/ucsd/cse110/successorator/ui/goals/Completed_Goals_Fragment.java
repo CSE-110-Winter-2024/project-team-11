@@ -17,17 +17,14 @@ import edu.ucsd.cse110.successorator.R;
  */
 public class Completed_Goals_Fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private MainViewModel activityModel;
+    private FragmentCardListBinding view;
+    private CardListAdapter adapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public Completed_Goals_Fragment() {
-        // Required empty public constructor
+    public Completed_Goals_Fragment()
+    {
+
     }
 
     /**
@@ -38,12 +35,9 @@ public class Completed_Goals_Fragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment Completed_Goals_Fragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static Completed_Goals_Fragment newInstance(String param1, String param2) {
         Completed_Goals_Fragment fragment = new Completed_Goals_Fragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,8 +53,8 @@ public class Completed_Goals_Fragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_completed__goals_, container, false);
+                             Bundle savedInstanceState)
+    {
+
     }
 }
