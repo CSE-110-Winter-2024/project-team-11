@@ -1,5 +1,9 @@
 package edu.ucsd.cse110.successorator.lib.domain;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Comparator;
+
 public class GoalList
 {
 
@@ -14,13 +18,14 @@ public class GoalList
     public GoalList(List<Goal> goals)
     {
 
+        // Set the goals for the goal list
         this.goals = goals;
     }
 
     /*
     Helper method to sort the goals
     @param none
-    @return none
+    @return void
     */
     public void sortGoals()
     {
@@ -32,4 +37,6 @@ public class GoalList
             }
         });
     }
+
+
 }
