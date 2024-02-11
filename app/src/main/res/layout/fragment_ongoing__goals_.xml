@@ -10,6 +10,7 @@
         android:id="@+id/ongoing_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#D0FFF5B3"
         tools:listitem="@layout/ongoing_goal_card"></ListView>
 
 </FrameLayout>

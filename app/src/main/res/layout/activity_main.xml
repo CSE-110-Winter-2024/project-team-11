@@ -4,24 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#BE54B7AE">
 
     <Button
         android:id="@+id/buttonToAdd"
-        android:layout_width="73dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="ADD"
+        android:layout_width="118dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="300dp"
+
+
+
+        android:backgroundTint="#EA9B9B"
+
+        android:text="ADD GOAL"
+        android:textColor="#3E3D3D"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/date_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/date_view" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/ongoing_goals_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="52dp"
+        android:background="#FFFFFF"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonToAdd" />
 
@@ -29,9 +40,21 @@
         android:id="@+id/completed_goals_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ongoing_goals_fragment_container" />
+
+    <androidx.fragment.app.FragmentContainerView
+
+        android:id="@+id/date_view"
+        android:layout_width="416dp"
+        android:layout_height="47dp"
+        android:background="#D0FFFCFC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
