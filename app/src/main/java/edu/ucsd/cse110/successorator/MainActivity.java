@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         var view = ActivityMainBinding.inflate(getLayoutInflater(), null, false);
-        view.placeholderText.setText(R.string.hello_world);
 
         setContentView(view.getRoot());
     }
