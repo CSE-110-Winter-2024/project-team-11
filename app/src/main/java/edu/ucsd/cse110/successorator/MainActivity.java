@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setTitle("Happy Goal List");
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         // Load first fragment into first FragmentContainerView
