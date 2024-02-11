@@ -2,12 +2,13 @@ package edu.ucsd.cse110.successorator.lib.data;
 
 import static org.junit.Assert.*;
 
+import static edu.ucsd.cse110.successorator.lib.testUtils.Assertions.assertGoalListEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
@@ -29,10 +30,6 @@ public class InMemoryDataSourceTest {
         ));
 
         src.putGoals(List.copyOf(goalList));
-    }
-
-    public static void assertGoalListEquals(List<Goal> expected, List<Goal> actual) {
-        assertEquals(Set.copyOf(expected), Set.copyOf(actual));
     }
 
     @Test
