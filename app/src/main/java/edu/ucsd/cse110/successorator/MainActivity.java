@@ -1,18 +1,12 @@
 package edu.ucsd.cse110.successorator;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Arrays;
-
-import edu.ucsd.cse110.successorator.lib.domain.GoalList;
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
-import edu.ucsd.cse110.successorator.ui.goals.Completed_Goals_Fragment;
-import edu.ucsd.cse110.successorator.ui.goals.Ongoing_Goals_Fragment;
+import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -25,12 +19,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(binding.getRoot());
         // Load first fragment into first FragmentContainerView
         getSupportFragmentManager().beginTransaction()
-                .replace(binding.ongoingGoalsFragmentContainer.getId(), new Ongoing_Goals_Fragment())
+                .replace(binding.goalsFragmentContainer.getId(), new GoalsFragment())
                 .commit();
 
-        // Load second fragment into second FragmentContainerView
-        getSupportFragmentManager().beginTransaction()
-                .replace(binding.completedGoalsFragmentContainer.getId(), new Completed_Goals_Fragment())
-                .commit();
     }
 }

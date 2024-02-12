@@ -17,21 +17,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/ongoing_goals_fragment_container"
+        android:id="@+id/goals_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonToAdd" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/completed_goals_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ongoing_goals_fragment_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.successorator.util;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,17 @@ import java.util.List;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 
-public class CompletedGoalsAdapter extends ArrayAdapter<Goal>
+public class GoalsAdapter extends ArrayAdapter<Goal>
 {
 
-    public CompletedGoalsAdapter(Context context, List<Goal> goals)
+    // Hold if the adapter is for the ongoing goals
+    private boolean isOngoing;
+
+    // Constructor for the goals adapter
+    public GoalsAdapter(Context context, List<Goal> goals, boolean isOngoing)
     {
         super(context, 0, goals);
+        this.isOngoing = isOngoing;
     }
 
     @Override
@@ -30,14 +36,17 @@ public class CompletedGoalsAdapter extends ArrayAdapter<Goal>
         // Inflate the list item view
         if (convertView == null)
         {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.completed_goal_card, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_goal_card, parent, false);
         }
 
         // Get the data item for this position
         Goal goal = getItem(position);
 
         // Get reference to views in the list item layout
-        TextView textViewGoalText = convertView.findViewById(R.id.completed_goal_text); // Use the appropriate ID here
+        TextView textViewGoalText = convertView.findViewById(R.id.goal_text);
+
+        // Check if the text is for the completed goals
+        if(!isOngoing)  textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         // Set data to views
         if (goal != null)
