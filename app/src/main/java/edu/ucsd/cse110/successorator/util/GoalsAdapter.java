@@ -2,6 +2,7 @@ package edu.ucsd.cse110.successorator.util;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
 
     // Hold if the adapter is for the ongoing goals
     private boolean isOngoing;
+
 
     // Constructor for the goals adapter
     public GoalsAdapter(Context context, List<Goal> goals, boolean isOngoing)
@@ -47,7 +49,6 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
 
         // Check if the text is for the completed goals
         if(!isOngoing)  textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
         // Set data to views
         if (goal != null)
         {
