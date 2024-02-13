@@ -29,15 +29,15 @@ public class GoalsFragment extends Fragment {
     // Hold mock ongoing goals
     //public GoalList ongoingGoals = new GoalList(Collections.emptyList());
     public GoalList ongoingGoals = new GoalList(Arrays.asList(
-            new Goal(1, "Go To Target", 1),
-            new Goal(2, "Do Yoga", 2),
-            new Goal(3, "Do laundry", 3)
+            new Goal(1, "Go To Target", 1, false),
+            new Goal(2, "Do Yoga", 2, false),
+            new Goal(3, "Do laundry", 3, false)
     ));
     // Hold mock completed goals
     public GoalList completedGoals = new GoalList(Arrays.asList(
-            new Goal(4, "Get haircut", 1),
-            new Goal(5, "Do taxes", 2),
-            new Goal(6, "Pay bills", 3)
+            new Goal(4, "Get haircut", 1, true),
+            new Goal(5, "Do taxes", 2, true),
+            new Goal(6, "Pay bills", 3, true)
     ));
 
     // No arg constructor for the goalsFragment
