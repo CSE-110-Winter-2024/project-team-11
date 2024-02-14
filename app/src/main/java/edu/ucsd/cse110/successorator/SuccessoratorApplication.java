@@ -6,31 +6,41 @@ import androidx.room.Room;
 
 import edu.ucsd.cse110.successorator.data.db.RoomGoalRepository;
 import edu.ucsd.cse110.successorator.data.db.SuccessoratorDatabase;
-import edu.ucsd.cse110.successorator.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.GoalRepository;
-import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalRepository;
 
 public class SuccessoratorApplication extends Application {
-    private InMemoryDataSource inMemoryDataSource;
-    private GoalRepository goalRepository;
+    private GoalRepository ongoingGoalRepository;
+    private GoalRepository completedGoalRepository;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        var database = Room.databaseBuilder(
+        var ongoingDatabase = Room.databaseBuilder(
                         getApplicationContext(),
                         SuccessoratorDatabase.class,
-                        "successorator-database"
+                        "successorator-ongoing-database"
                 )
                 .allowMainThreadQueries()
                 .build();
 
-        this.goalRepository = new RoomGoalRepository(database.goalDao());
+        var completedDatabase = Room.databaseBuilder(
+                        getApplicationContext(),
+                        SuccessoratorDatabase.class,
+                        "successorator-completed-database"
+                )
+                .allowMainThreadQueries()
+                .build();
 
+        this.ongoingGoalRepository = new RoomGoalRepository(ongoingDatabase.goalDao());
+        this.completedGoalRepository = new RoomGoalRepository(completedDatabase.goalDao());
     }
 
-    public GoalRepository getGoalRepository() {
-        return goalRepository;
+    public GoalRepository getOngoingGoalRepository() {
+        return ongoingGoalRepository;
+    }
+
+    public GoalRepository getCompletedGoalRepository() {
+        return completedGoalRepository;
     }
 }

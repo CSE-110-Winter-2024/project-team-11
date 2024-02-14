@@ -63,7 +63,7 @@ public class GoalsFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
 
-        activityModel.getListByCompleteness(false).observe(goals -> {
+        activityModel.getOngoingList().observe(goals -> {
             ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) goals.stream()
                     .sorted(Comparator.comparingInt(Goal::sortOrder))
                     .collect(Collectors.toList());
@@ -71,7 +71,7 @@ public class GoalsFragment extends Fragment {
                 ongoingGoalsAdapter.updateData(newOngoingGoals);
             }
         });
-        activityModel.getListByCompleteness(true).observe(goals -> {
+        activityModel.getCompletedList().observe(goals -> {
             ArrayList<Goal> newCompletedGoals = (ArrayList<Goal>) goals.stream()
                     .sorted(Comparator.comparingInt(Goal::sortOrder))
                     .collect(Collectors.toList());

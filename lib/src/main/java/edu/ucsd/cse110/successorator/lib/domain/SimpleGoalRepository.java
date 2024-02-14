@@ -37,8 +37,6 @@ public class SimpleGoalRepository implements GoalRepository {
         dataSource.removeGoal(id);
     }
 
-    public Subject<List<Goal>> findByCompleteness(boolean isCompleted) {return dataSource.getGoalsByCompleteness(isCompleted); };
-
     @Override
     public void append(Goal goal) {
         dataSource.putGoal(
