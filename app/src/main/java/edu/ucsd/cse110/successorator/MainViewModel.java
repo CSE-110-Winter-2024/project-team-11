@@ -1,19 +1,16 @@
 package edu.ucsd.cse110.successorator;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
-import android.util.Log;
-
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.viewmodel.MutableCreationExtras;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalRepository;
-import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalRepository;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
@@ -38,7 +35,10 @@ public class MainViewModel extends ViewModel {
         this.completedGoalRepository = completedGoalRepository;
 
         this.completedGoals = new SimpleSubject<>();
+        this.completedGoals.setValue(new ArrayList<>());
+
         this.ongoingGoals = new SimpleSubject<>();
+        this.ongoingGoals.setValue(new ArrayList<>());
 
         // not sure if this is repetitive code.....might be
 
@@ -64,12 +64,12 @@ public class MainViewModel extends ViewModel {
         });
     }
 
-    public Subject<List<Goal>> getOngoingList() {
-        return ongoingGoalRepository.findAll();
+    public Subject<List<Goal>> getOngoingGoals() {
+        return ongoingGoals;
     }
 
-    public Subject<List<Goal>> getCompletedList() {
-        return completedGoalRepository.findAll();
+    public Subject<List<Goal>> getCompletedGoals() {
+        return completedGoals;
     }
 
 

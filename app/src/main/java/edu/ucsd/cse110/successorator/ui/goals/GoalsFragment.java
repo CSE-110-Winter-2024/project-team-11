@@ -13,8 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -63,7 +61,7 @@ public class GoalsFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
 
-        activityModel.getOngoingList().observe(goals -> {
+        activityModel.getOngoingGoals().observe(goals -> {
             ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) goals.stream()
                     .sorted(Comparator.comparingInt(Goal::sortOrder))
                     .collect(Collectors.toList());
@@ -71,7 +69,7 @@ public class GoalsFragment extends Fragment {
                 ongoingGoalsAdapter.updateData(newOngoingGoals);
             }
         });
-        activityModel.getCompletedList().observe(goals -> {
+        activityModel.getCompletedGoals().observe(goals -> {
             ArrayList<Goal> newCompletedGoals = (ArrayList<Goal>) goals.stream()
                     .sorted(Comparator.comparingInt(Goal::sortOrder))
                     .collect(Collectors.toList());
