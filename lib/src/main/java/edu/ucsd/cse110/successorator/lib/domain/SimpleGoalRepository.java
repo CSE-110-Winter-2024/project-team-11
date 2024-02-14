@@ -37,6 +37,8 @@ public class SimpleGoalRepository implements GoalRepository {
         dataSource.removeGoal(id);
     }
 
+    public Subject<List<Goal>> findByCompleteness(boolean isCompleted) {return dataSource.getGoalsByCompleteness(isCompleted); };
+
     @Override
     public void append(Goal goal) {
         dataSource.putGoal(
@@ -46,10 +48,6 @@ public class SimpleGoalRepository implements GoalRepository {
 
     @Override
     public void prepend(Goal goal) {
-        dataSource.shiftSortOrders(0, dataSource.getMaxSortOrder(), 1);
-
-        dataSource.putGoal(
-                goal.withSortOrder(dataSource.getMinSortOrder() - 1)
-        );
+        // to be implemented
     }
 }

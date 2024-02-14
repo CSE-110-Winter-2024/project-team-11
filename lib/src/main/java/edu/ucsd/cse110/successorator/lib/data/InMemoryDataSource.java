@@ -28,6 +28,8 @@ public class InMemoryDataSource {
     private final MutableSubject<List<Goal>> allGoalsSubject
             = new SimpleSubject<>();
 
+    private final MutableSubject<List<Goal>> filteredGoalsSubject
+            = new SimpleSubject<>();
     public InMemoryDataSource() {
     }
 
@@ -51,6 +53,8 @@ public class InMemoryDataSource {
     public Subject<List<Goal>> getAllGoalsSubject() {
         return allGoalsSubject;
     }
+
+    public Subject<List<Goal>> getGoalsByCompleteness(boolean isCompleted) {return filteredGoalsSubject; }
 
     public int getMinSortOrder() {
         return minSortOrder;
