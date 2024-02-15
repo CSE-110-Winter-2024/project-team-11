@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
             dialogFragment.show(getSupportFragmentManager(), "CreateGoalDialogFragment");
         });
 
+        // current date and day of the week
         Calendar calendar = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
         TextView textViewDate = findViewById(R.id.text_view_date);
