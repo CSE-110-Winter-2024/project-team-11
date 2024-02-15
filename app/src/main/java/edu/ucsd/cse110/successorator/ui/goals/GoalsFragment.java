@@ -94,6 +94,11 @@ public class GoalsFragment extends Fragment {
         ongoingGoalsAdapter = new GoalsAdapter(requireContext(), new ArrayList<>(), false);
         completedGoalsAdapter = new GoalsAdapter(requireContext(), new ArrayList<>(), true);
 
+        ongoingGoalsAdapter.setOnGoalCompleteListener(goal -> {
+            // Set complete goal listener
+            activityModel.completeGoal(goal);
+        });
+
         ongoingListView.setAdapter(ongoingGoalsAdapter);
         completedListView.setAdapter(completedGoalsAdapter);
 

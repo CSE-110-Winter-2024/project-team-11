@@ -83,4 +83,26 @@ public class MainViewModel extends ViewModel {
     }
 
     // prepend method for uncompleting a goal
+
+    public void completeGoal(Goal goal) {
+        // Set the goal as completed
+        Goal completedGoal = goal.withIsCompleted(true);
+
+        // Remove old goal, add new Completed Goal
+        if (goal.id() != null) {
+            ongoingGoalRepository.remove(goal.id());
+            completedGoalRepository.append(completedGoal);
+        }
+
+        // Update the Lists
+        List<Goal> updatedOngoingGoals = new ArrayList<>(ongoingGoals.getValue());
+        updatedOngoingGoals.remove(goal);
+        ongoingGoals.setValue(updatedOngoingGoals);
+
+        List<Goal> updatedCompletedGoals = new ArrayList<>(completedGoals.getValue());
+        updatedCompletedGoals.add(completedGoal);
+        completedGoals.setValue(updatedCompletedGoals);
+
+    }
+
 }
