@@ -14,10 +14,11 @@ public class Goal implements Serializable {
 
     private int sortOrder;
 
-    public Goal(@Nullable Integer id, @NonNull String text, int sortOrder) {
+    public Goal(@Nullable Integer id, @NonNull String text, int sortOrder, boolean isCompleted) {
         this.id = id;
         this.text = text;
         this.sortOrder = sortOrder;
+        this.isCompleted = isCompleted;
     }
 
     public @Nullable Integer id() {
@@ -37,11 +38,15 @@ public class Goal implements Serializable {
     }
 
     public Goal withId(int id) {
-        return new Goal(id, this.text, this.sortOrder);
+        return new Goal(id, this.text, this.sortOrder, this.isCompleted);
     }
 
     public Goal withSortOrder(int sortOrder) {
-        return new Goal(this.id, this.text, sortOrder);
+        return new Goal(this.id, this.text, sortOrder, this.isCompleted);
+    }
+
+    public Goal withIsCompleted(boolean isCompleted) {
+        return new Goal(this.id, this.text, this.sortOrder, isCompleted);
     }
 
 
@@ -50,12 +55,22 @@ public class Goal implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Goal goal = (Goal) o;
-        return sortOrder == goal.sortOrder && Objects.equals(id, goal.id) && Objects.equals(text, goal.text);
+        return isCompleted == goal.isCompleted && sortOrder == goal.sortOrder && Objects.equals(id, goal.id) && Objects.equals(text, goal.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, text, sortOrder);
+        return Objects.hash(id, text, sortOrder, isCompleted);
+    }
+
+    @Override
+    public String toString() {
+        return "Goal{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", isCompleted=" + isCompleted +
+                ", sortOrder=" + sortOrder +
+                '}';
     }
 }
 

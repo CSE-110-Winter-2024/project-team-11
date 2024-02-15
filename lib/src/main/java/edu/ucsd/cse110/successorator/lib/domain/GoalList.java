@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.successorator.lib.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Comparator;
@@ -45,7 +46,6 @@ public class GoalList
      */
     public List<Goal> getGoals()
     {
-
         return this.goals;
     }
 }

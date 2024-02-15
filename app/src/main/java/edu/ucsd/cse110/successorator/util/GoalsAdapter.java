@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.R;
@@ -21,14 +22,14 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
 {
 
     // Hold if the adapter is for the ongoing goals
-    private boolean isOngoing;
+    private boolean isCompleted;
 
 
     // Constructor for the goals adapter
-    public GoalsAdapter(Context context, List<Goal> goals, boolean isOngoing)
+    public GoalsAdapter(Context context, List<Goal> goals, boolean isCompleted)
     {
-        super(context, 0, goals);
-        this.isOngoing = isOngoing;
+        super(context, 0, new ArrayList<>(goals));
+        this.isCompleted = isCompleted;
     }
 
     @Override
@@ -41,6 +42,7 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_goal_card, parent, false);
         }
 
+
         // Get the data item for this position
         Goal goal = getItem(position);
 
@@ -48,7 +50,7 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         TextView textViewGoalText = convertView.findViewById(R.id.goal_text);
 
         // Check if the text is for the completed goals
-        if(!isOngoing)  textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        if(isCompleted)  textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         // Set data to views
         if (goal != null)
         {
@@ -56,5 +58,10 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         }
 
         return convertView;
+    }
+    public void updateData(List<Goal> newGoals) {
+        clear(); // Clear the existing data
+        addAll(newGoals); // Add the new data
+        notifyDataSetChanged(); // Notify the adapter to refresh the views
     }
 }
