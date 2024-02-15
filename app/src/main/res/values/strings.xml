@@ -9,4 +9,5 @@
     <string name="x">X</string>
     <string name="goal_text">Goal text</string>
     <string name="add">+</string>
+    <string name="date">Date</string>
 </resources>
