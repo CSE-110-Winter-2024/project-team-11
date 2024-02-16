@@ -37,9 +37,10 @@ import edu.ucsd.cse110.successorator.util.GoalsAdapter;
  */
 public class DateFragment extends Fragment {
     private MainViewModel activityModel;
-    LiveData<Calendar> calendarLiveData;
 
     FragmentDateBinding view;
+
+    public static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.FULL);
 
     // No arg constructor for the goalsFragment
     public DateFragment()
@@ -89,6 +90,7 @@ public class DateFragment extends Fragment {
     private void updateDateText(Calendar calendar) {
         if (this.view == null) {return;}
         TextView dateTextView = this.view.dateTextView;
-        dateTextView.setText(DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime()));
+        String dateText = DATE_FORMAT.format(calendar.getTime());
+        dateTextView.setText(dateText);
     }
 }

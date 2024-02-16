@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator;
+package edu.ucsd.cse110.successorator.ui.date;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
