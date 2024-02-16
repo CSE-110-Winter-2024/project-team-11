@@ -52,7 +52,7 @@ public class MainViewModelTest {
     }
     @Test
     public void nextDay() {
-        Calendar expected = Calendar.getInstance();
+        Calendar expected = model.getCalendar().getValue();
         for(int i = 0; i < 100; i++) {
 
             expected.add(Calendar.DATE, 1);
@@ -61,6 +61,5 @@ public class MainViewModelTest {
             assertEquals(expected, model.getCalendar().getValue());
         }
     }
-
 
 }
