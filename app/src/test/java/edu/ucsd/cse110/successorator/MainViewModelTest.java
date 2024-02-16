@@ -48,4 +48,17 @@ public class MainViewModelTest {
             assertEquals(completedList, model.getCompletedGoals().getValue());
         }
     }
+
+    @Test
+    public void listMove() {
+        List<Goal> ongoingList = new ArrayList<>();
+        List<Goal> completedList = new ArrayList<>();
+        Goal simple = new Goal(1, "Hello", ongoingList.size(), false);
+        completedList.add(simple.withIsCompleted(true));
+        model.append(simple);
+        model.completeGoal(simple);
+        assertEquals(ongoingList, model.getOngoingGoals().getValue());
+        assertEquals(completedList, model.getCompletedGoals().getValue());
+
+    }
 }
