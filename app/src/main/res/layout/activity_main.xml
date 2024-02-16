@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#8AAFCA">
+    android:layout_height="match_parent">
 
     <Button
         android:id="@+id/createGoalButton"
@@ -13,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="5dp"
-        android:backgroundTint="#234EA5"
+        android:backgroundTint="@color/purple_500"
         android:text="@string/add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
