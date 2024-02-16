@@ -55,7 +55,7 @@ public class Goal implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Goal goal = (Goal) o;
-        return isCompleted == goal.isCompleted && sortOrder == goal.sortOrder && Objects.equals(id, goal.id) && Objects.equals(text, goal.text);
+        return isCompleted == goal.isCompleted && Objects.equals(id, goal.id) && Objects.equals(text, goal.text);
     }
 
     @Override

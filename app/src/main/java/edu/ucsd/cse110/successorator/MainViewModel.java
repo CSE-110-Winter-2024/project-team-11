@@ -87,20 +87,21 @@ public class MainViewModel extends ViewModel {
     public void completeGoal(Goal goal) {
         // Set the goal as completed
         Goal completedGoal = goal.withIsCompleted(true);
+//        Goal completedGoal = temp.withSortOrder(0);
 
         // Remove old goal, add new Completed Goal
         if (goal.id() != null) {
             ongoingGoalRepository.remove(goal.id());
-            completedGoalRepository.append(completedGoal);
+            completedGoalRepository.prepend(completedGoal);
         }
 
-//         //Update the Lists
+//      Update the Lists
 //        List<Goal> updatedOngoingGoals = new ArrayList<>(ongoingGoals.getValue());
 //        updatedOngoingGoals.remove(goal);
 //        ongoingGoals.setValue(updatedOngoingGoals);
 //
 //        List<Goal> updatedCompletedGoals = new ArrayList<>(completedGoals.getValue());
-//        updatedCompletedGoals.add(completedGoal);
+//        updatedCompletedGoals.add(0, completedGoal);
 //        completedGoals.setValue(updatedCompletedGoals);
 
     }

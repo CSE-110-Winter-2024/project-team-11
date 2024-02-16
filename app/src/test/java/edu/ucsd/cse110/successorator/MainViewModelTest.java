@@ -87,7 +87,7 @@ public class MainViewModelTest {
         Goal complete1 = new Goal(2, "Wow", completedList.size(), true);
         completedList.add(complete1);
         Goal incomplete2 = new Goal(3, "My", ongoingList.size(), false);
-        completedList.add(incomplete2.withIsCompleted(true));
+        completedList.add(0, incomplete2.withIsCompleted(true));
         Goal complete2 = new Goal(4, "Name", completedList.size(), true);
         completedList.add(complete2);
         Goal incomplete3 = new Goal(5, "Is", ongoingList.size(), false);
