@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.util.Calendar;
 
 import edu.ucsd.cse110.successorator.ui.date.CalendarManager;
-import edu.ucsd.cse110.successorator.ui.date.MockCalendarManager;
 
 public class CalendarManagerTest {
     CalendarManager calendarManager;
@@ -20,7 +19,7 @@ public class CalendarManagerTest {
         Calendar actual = Calendar.getInstance();
         actual.set(Calendar.HOUR_OF_DAY, 6);
 
-        calendarManager = MockCalendarManager.newInstance(actual);
+        calendarManager = CalendarManager.newInstance(actual);
         for(int i = 0; i < 100; i++) {
             expected.add(Calendar.DATE, 1);
             calendarManager.nextDay();
@@ -47,7 +46,7 @@ public class CalendarManagerTest {
         input.set(Calendar.MINUTE, 59);
         input.set(Calendar.SECOND, 57);
 
-        calendarManager = MockCalendarManager.newInstance((Calendar)input.clone());
+        calendarManager = CalendarManager.newInstance((Calendar)input.clone());
         Calendar actual = Calendar.getInstance();
 
         // Check that the date is still from yesterday before 2:00AM

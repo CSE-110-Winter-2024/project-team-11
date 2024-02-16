@@ -1,40 +1,26 @@
 package edu.ucsd.cse110.successorator.ui.date;
 
-import android.os.Bundle;
-
-import androidx.lifecycle.MutableLiveData;
-
 import java.util.Calendar;
-import java.util.Locale;
 
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
+import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
-import edu.ucsd.cse110.successorator.util.MutableLiveDataSubjectAdapter;
 
-// https://stackoverflow.com/questions/65532918/changing-value-of-a-livedata-calendar-do-not-trigger-observer
 public class CalendarManager {
+
     public static final int DAY_START_HOUR = 2;
 
     public int daysOffset;
 
     public MutableSubject<Calendar> calendar;
 
-//    public CalendarManager(Calendar calendar) {
-//        MutableLiveData<Calendar> calendarLiveData = new MutableLiveData<>();
-//        calendar.add(Calendar.HOUR, -DAY_START_HOUR);
-//        calendarLiveData.setValue(calendar);
-//        this.calendar = new MutableLiveDataSubjectAdapter<>(calendarLiveData);
-//    }
-
     public CalendarManager() { daysOffset = 0; }
 
-    public static CalendarManager newInstance() {
+    public static CalendarManager newInstance(Calendar calendar) {
         CalendarManager calendarManager = new CalendarManager();
-        MutableLiveData<Calendar> calendarLiveData = new MutableLiveData<>();
-        Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR, -DAY_START_HOUR);
-        calendarLiveData.setValue(calendar);
-        calendarManager.calendar = new MutableLiveDataSubjectAdapter<>(calendarLiveData);
+        calendarManager.calendar = new SimpleSubject<>();
+        calendarManager.calendar.setValue(calendar);
         return calendarManager;
     }
 

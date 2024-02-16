@@ -10,13 +10,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import edu.ucsd.cse110.successorator.ui.date.CalendarManager;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalRepository;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
-import edu.ucsd.cse110.successorator.ui.date.MockCalendarManager;
+import edu.ucsd.cse110.successorator.ui.date.CalendarManager;
 
 public class MainViewModel extends ViewModel {
     private final GoalRepository ongoingGoalRepository;
@@ -25,7 +24,7 @@ public class MainViewModel extends ViewModel {
     private final MutableSubject<List<Goal>> completedGoals;
     private final MutableSubject<List<Goal>> ongoingGoals;
 
-    private final MockCalendarManager calendarManager;
+    private final CalendarManager calendarManager;
     private final MutableSubject<Calendar> calendar;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
@@ -37,12 +36,12 @@ public class MainViewModel extends ViewModel {
                         return new MainViewModel(
                                 app.getOngoingGoalRepository(),
                                 app.getCompletedGoalRepository(),
-                                MockCalendarManager.newInstance(Calendar.getInstance()));
+                                CalendarManager.newInstance(Calendar.getInstance()));
                     });
     public MainViewModel(
             GoalRepository ongoingGoalRepository,
             GoalRepository completedGoalRepository,
-            MockCalendarManager calendarManager) {
+            CalendarManager calendarManager) {
         this.ongoingGoalRepository = ongoingGoalRepository;
         this.completedGoalRepository = completedGoalRepository;
 

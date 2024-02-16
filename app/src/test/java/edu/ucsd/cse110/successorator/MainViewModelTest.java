@@ -13,7 +13,6 @@ import edu.ucsd.cse110.successorator.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalRepository;
 import edu.ucsd.cse110.successorator.ui.date.CalendarManager;
-import edu.ucsd.cse110.successorator.ui.date.MockCalendarManager;
 
 public class MainViewModelTest {
     MainViewModel model;
@@ -22,7 +21,7 @@ public class MainViewModelTest {
     public void setUp() throws Exception {
         SimpleGoalRepository ongoingRepo = new SimpleGoalRepository(new InMemoryDataSource());
         SimpleGoalRepository completedRepo = new SimpleGoalRepository(new InMemoryDataSource());
-        MockCalendarManager calendarManager = MockCalendarManager.newInstance(Calendar.getInstance());
+        CalendarManager calendarManager = CalendarManager.newInstance(Calendar.getInstance());
         model = new MainViewModel(ongoingRepo, completedRepo, calendarManager);
     }
 
