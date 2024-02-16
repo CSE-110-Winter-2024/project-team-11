@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import edu.ucsd.cse110.successorator.ui.date.CalendarManager;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalRepository;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
@@ -21,6 +23,9 @@ public class MainViewModel extends ViewModel {
 
     private final MutableSubject<List<Goal>> completedGoals;
     private final MutableSubject<List<Goal>> ongoingGoals;
+
+    private final CalendarManager calendarManager;
+    private final MutableSubject<Calendar> calendar;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
@@ -39,6 +44,10 @@ public class MainViewModel extends ViewModel {
 
         this.ongoingGoals = new SimpleSubject<>();
         this.ongoingGoals.setValue(new ArrayList<>());
+
+        this.calendarManager = new CalendarManager(Calendar.getInstance());
+        this.calendar = new SimpleSubject<>();
+        this.calendar.setValue(null);
 
         // not sure if this is repetitive code.....might be
 
@@ -62,6 +71,12 @@ public class MainViewModel extends ViewModel {
 
             completedGoals.setValue(newCompletedGoals);
         });
+
+        calendarManager.getCalendar().observe(calendar -> {
+            if (calendar == null) return;
+
+            this.calendar.setValue(calendar);
+        });
     }
 
     public Subject<List<Goal>> getOngoingGoals() {
@@ -70,6 +85,10 @@ public class MainViewModel extends ViewModel {
 
     public Subject<List<Goal>> getCompletedGoals() {
         return completedGoals;
+    }
+
+    public Subject<Calendar> getCalendar() {
+        return calendar;
     }
 
 
@@ -83,4 +102,8 @@ public class MainViewModel extends ViewModel {
     }
 
     // prepend method for uncompleting a goal
+
+    public void nextDay() {
+        calendarManager.nextDay();
+    }
 }
