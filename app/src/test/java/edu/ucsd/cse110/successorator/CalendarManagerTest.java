@@ -36,4 +36,20 @@ public class CalendarManagerTest {
             assertNotEquals(expected, calendarManager.getCalendar().getValue());
         }
     }
+
+//    @Test
+//    public void dateChange() {
+//        Calendar expected = Calendar.getInstance();
+//        expected.set(Calendar.HOUR_OF_DAY, 1);
+//        expected.set(Calendar.MINUTE, 59);
+//        expected.set(Calendar.SECOND, 57);
+//
+//        calendarManager = new CalendarManager(expected);
+//        assertEquals(expected, calendarManager.getCalendar().getValue());
+//        for(int i = 0; i < 100; i++) {
+//            expected.add(Calendar.DATE, 1);
+//            calendarManager.nextDay();
+//            assertNotEquals(expected, calendarManager.getCalendar().getValue());
+//        }
+//    }
 }
