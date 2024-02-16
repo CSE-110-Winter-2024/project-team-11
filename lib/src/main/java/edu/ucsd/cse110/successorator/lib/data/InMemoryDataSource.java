@@ -171,17 +171,6 @@ public class InMemoryDataSource {
                 .map(Goal::sortOrder)
                 .collect(Collectors.toList());
 
-        for (Integer sortOrder : sortOrders) {
-            if (sortOrder < 0) {
-                // Log the negative value or throw an exception
-                // Use your preferred logging method. For simplicity, we're using System.out here
-                System.out.println("Negative sort order found: " + sortOrder);
-                // Alternatively, you could throw an exception to fail the test and show the value
-                throw new AssertionError("Negative sort order found: " + sortOrder);
-            }
-        }
-
-
         // Non-negative...
         assert sortOrders.stream().allMatch(i -> i >= 0);
 
