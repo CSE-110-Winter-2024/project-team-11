@@ -16,6 +16,7 @@ import edu.ucsd.cse110.successorator.lib.domain.GoalRepository;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
+import edu.ucsd.cse110.successorator.ui.date.MockCalendarManager;
 
 public class MainViewModel extends ViewModel {
     private final GoalRepository ongoingGoalRepository;
@@ -24,7 +25,7 @@ public class MainViewModel extends ViewModel {
     private final MutableSubject<List<Goal>> completedGoals;
     private final MutableSubject<List<Goal>> ongoingGoals;
 
-    private final CalendarManager calendarManager;
+    private final MockCalendarManager calendarManager;
     private final MutableSubject<Calendar> calendar;
 
     public static final ViewModelInitializer<MainViewModel> initializer =
@@ -33,9 +34,15 @@ public class MainViewModel extends ViewModel {
                     creationExtras -> {
                         var app = (SuccessoratorApplication) creationExtras.get(APPLICATION_KEY);
                         assert app != null;
-                        return new MainViewModel(app.getOngoingGoalRepository(), app.getCompletedGoalRepository());
+                        return new MainViewModel(
+                                app.getOngoingGoalRepository(),
+                                app.getCompletedGoalRepository(),
+                                MockCalendarManager.newInstance(Calendar.getInstance()));
                     });
-    public MainViewModel(GoalRepository ongoingGoalRepository, GoalRepository completedGoalRepository) {
+    public MainViewModel(
+            GoalRepository ongoingGoalRepository,
+            GoalRepository completedGoalRepository,
+            MockCalendarManager calendarManager) {
         this.ongoingGoalRepository = ongoingGoalRepository;
         this.completedGoalRepository = completedGoalRepository;
 
@@ -45,7 +52,7 @@ public class MainViewModel extends ViewModel {
         this.ongoingGoals = new SimpleSubject<>();
         this.ongoingGoals.setValue(new ArrayList<>());
 
-        this.calendarManager = CalendarManager.newInstance(Calendar.getInstance());
+        this.calendarManager = calendarManager;
         this.calendar = new SimpleSubject<>();
         this.calendar.setValue(null);
 

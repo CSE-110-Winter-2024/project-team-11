@@ -15,7 +15,7 @@ import edu.ucsd.cse110.successorator.util.MutableLiveDataSubjectAdapter;
 public class CalendarManager {
     public static final int DAY_START_HOUR = 2;
 
-    int daysOffset;
+    public int daysOffset;
 
     public MutableSubject<Calendar> calendar;
 
@@ -28,9 +28,10 @@ public class CalendarManager {
 
     public CalendarManager() { daysOffset = 0; }
 
-    public static CalendarManager newInstance(Calendar calendar) {
+    public static CalendarManager newInstance() {
         CalendarManager calendarManager = new CalendarManager();
         MutableLiveData<Calendar> calendarLiveData = new MutableLiveData<>();
+        Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR, -DAY_START_HOUR);
         calendarLiveData.setValue(calendar);
         calendarManager.calendar = new MutableLiveDataSubjectAdapter<>(calendarLiveData);
@@ -39,7 +40,12 @@ public class CalendarManager {
 
     public Subject<Calendar> getCalendar() {
         Calendar calendar = Calendar.getInstance();
+        return getCalendar(calendar);
+    }
+
+    public Subject<Calendar> getCalendar(Calendar calendar) {
         calendar.add(Calendar.HOUR, -DAY_START_HOUR);
+        calendar.add(Calendar.DATE, daysOffset);
         this.calendar.setValue(calendar);
         return this.calendar;
     }
@@ -47,7 +53,7 @@ public class CalendarManager {
     public void nextDay() {
         daysOffset++;
         Calendar calendar = getCalendar().getValue();
-        calendar.add(Calendar.DATE, daysOffset);
         this.calendar.setValue(calendar);
+        getCalendar();
     }
 }
