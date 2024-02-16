@@ -45,7 +45,7 @@ public class MainViewModel extends ViewModel {
         this.ongoingGoals = new SimpleSubject<>();
         this.ongoingGoals.setValue(new ArrayList<>());
 
-        this.calendarManager = new CalendarManager(Calendar.getInstance());
+        this.calendarManager = CalendarManager.newInstance(Calendar.getInstance());
         this.calendar = new SimpleSubject<>();
         this.calendar.setValue(null);
 
