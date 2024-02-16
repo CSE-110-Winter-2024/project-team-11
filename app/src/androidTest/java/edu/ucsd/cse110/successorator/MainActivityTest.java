@@ -49,7 +49,6 @@ public class MainActivityTest {
 
     @Test
     public void dateText() {
-        ActivityScenario.launch(MainActivity.class, new Bundle());
         try (var scenario = ActivityScenario.launch(MainActivity.class)) {
 
             // Observe the scenario's lifecycle to wait until the activity is created.

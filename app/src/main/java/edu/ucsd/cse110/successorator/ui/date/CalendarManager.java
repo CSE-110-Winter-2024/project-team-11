@@ -10,11 +10,11 @@ public class CalendarManager {
 
     public static final int DAY_START_HOUR = 2;
 
-    public int daysOffset;
+    private int daysOffset;
 
-    public MutableSubject<Calendar> calendar;
+    private MutableSubject<Calendar> calendar;
 
-    public CalendarManager() { daysOffset = 0; }
+    private CalendarManager() { daysOffset = 0; }
 
     public static CalendarManager newInstance(Calendar calendar) {
         CalendarManager calendarManager = new CalendarManager();
