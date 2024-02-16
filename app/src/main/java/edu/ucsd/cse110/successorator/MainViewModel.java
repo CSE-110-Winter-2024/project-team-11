@@ -94,14 +94,14 @@ public class MainViewModel extends ViewModel {
             completedGoalRepository.append(completedGoal);
         }
 
-        // Update the Lists
-        List<Goal> updatedOngoingGoals = new ArrayList<>(ongoingGoals.getValue());
-        updatedOngoingGoals.remove(goal);
-        ongoingGoals.setValue(updatedOngoingGoals);
-
-        List<Goal> updatedCompletedGoals = new ArrayList<>(completedGoals.getValue());
-        updatedCompletedGoals.add(completedGoal);
-        completedGoals.setValue(updatedCompletedGoals);
+//         //Update the Lists
+//        List<Goal> updatedOngoingGoals = new ArrayList<>(ongoingGoals.getValue());
+//        updatedOngoingGoals.remove(goal);
+//        ongoingGoals.setValue(updatedOngoingGoals);
+//
+//        List<Goal> updatedCompletedGoals = new ArrayList<>(completedGoals.getValue());
+//        updatedCompletedGoals.add(completedGoal);
+//        completedGoals.setValue(updatedCompletedGoals);
 
     }
 
