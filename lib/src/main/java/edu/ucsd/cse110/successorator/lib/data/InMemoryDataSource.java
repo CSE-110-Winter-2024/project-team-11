@@ -112,6 +112,13 @@ public class InMemoryDataSource {
         putGoals(goals);
     }
 
+    public void clear() {
+        List<Goal> list = getGoals();
+        for (Goal goal : list) {
+            removeGoal(goal.id());
+        }
+    }
+
     /**
      * Private utility method to maintain state of the fake DB: ensures that new
      * goals inserted have an id, and updates the nextId if necessary.
