@@ -6,11 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalRepository;
+import edu.ucsd.cse110.successorator.ui.date.CalendarManager;
 
 public class MainViewModelTest {
     MainViewModel model;
@@ -19,7 +21,8 @@ public class MainViewModelTest {
     public void setUp() throws Exception {
         SimpleGoalRepository ongoingRepo = new SimpleGoalRepository(new InMemoryDataSource());
         SimpleGoalRepository completedRepo = new SimpleGoalRepository(new InMemoryDataSource());
-        model = new MainViewModel(ongoingRepo, completedRepo);
+        CalendarManager calendarManager = CalendarManager.newInstance(Calendar.getInstance());
+        model = new MainViewModel(ongoingRepo, completedRepo, calendarManager);
     }
 
     public String randomString(int maxLen) {
@@ -48,4 +51,19 @@ public class MainViewModelTest {
             assertEquals(completedList, model.getCompletedGoals().getValue());
         }
     }
+    @Test
+    public void nextDay() {
+        Calendar expected = (Calendar)model.getCalendar().getValue().clone();
+        for(int i = 0; i < 100; i++) {
+
+            expected.add(Calendar.DATE, 1);
+            model.nextDay();
+
+            Calendar actual = model.getCalendar().getValue();
+            assertEquals(expected.get(Calendar.DATE), actual.get(Calendar.DATE));
+            assertEquals(expected.get(Calendar.DAY_OF_WEEK), actual.get(Calendar.DAY_OF_WEEK));
+            assertEquals(expected.get(Calendar.MONTH), actual.get(Calendar.MONTH));
+        }
+    }
+
 }
