@@ -30,14 +30,8 @@ import edu.ucsd.cse110.successorator.util.GoalsAdapter;
 public class GoalsFragment extends Fragment {
     private MainViewModel activityModel;
     private GoalList ongoingGoals = new GoalList(new ArrayList<>());
-    private GoalList completedGoals = new GoalList(new ArrayList<>());
-
     private GoalsAdapter ongoingGoalsAdapter;
     private GoalsAdapter completedGoalsAdapter;
-
-
-    private GoalsAdapter adapter;
-
     // No arg constructor for the goalsFragment
     public GoalsFragment()
     {
@@ -62,17 +56,19 @@ public class GoalsFragment extends Fragment {
 
 
         activityModel.getOngoingGoals().observe(goals -> {
-            ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) goals.stream()
+            ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
                     .sorted(Comparator.comparingInt(Goal::sortOrder))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()) : null);
             if (ongoingGoalsAdapter != null) {
                 ongoingGoalsAdapter.updateData(newOngoingGoals);
+                ongoingGoals = new GoalList(newOngoingGoals);
+                updateOngoingGoalsText(newOngoingGoals.size() == 0);
             }
         });
         activityModel.getCompletedGoals().observe(goals -> {
-            ArrayList<Goal> newCompletedGoals = (ArrayList<Goal>) goals.stream()
+            ArrayList<Goal> newCompletedGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
                     .sorted(Comparator.comparingInt(Goal::sortOrder))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()) : null);
             if (completedGoalsAdapter != null) {
                 completedGoalsAdapter.updateData(newCompletedGoals);
             }
@@ -116,5 +112,16 @@ public class GoalsFragment extends Fragment {
         completedListView.setLayoutParams(params);
 
         return view;
+    }
+
+    private void updateOngoingGoalsText(boolean isEmpty) {
+        if(getView() == null) {return;}
+        TextView noOngoingGoalText = getView().findViewById(R.id.no_ongoing_goals_text);
+        if(isEmpty) {
+            noOngoingGoalText.setText("No goals for the Day.  Click the + at the upper right to enter your Most Important Thing.");
+        }
+        else {
+            noOngoingGoalText.setText("");
+        }
     }
 }
