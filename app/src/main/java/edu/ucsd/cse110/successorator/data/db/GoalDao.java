@@ -60,8 +60,25 @@ public interface GoalDao {
     // unimplemented as of right now
     @Transaction
     default int prepend(GoalEntity goal) {
-        return goal.id;
+        // Increment sort orders of all completed goals
+        List<GoalEntity> allGoals = getAllGoals(goal.isCompleted);
+        allGoals.forEach(existingGoal -> {
+            updateSortOrder(existingGoal.id, existingGoal.sortOrder + 1);
+        });
+
+        // Insert new goal with new min sort order
+        var newGoal = new GoalEntity(goal.text, getMinSortOrder(goal.isCompleted) - 1, goal.isCompleted);
+        return Math.toIntExact(insert(newGoal));
     }
+
+    // Helper method to update the sort order of an existing goal
+    @Query("UPDATE goals SET sort_order = :sortOrder WHERE id = :id")
+    void updateSortOrder(int id, int sortOrder);
+
+    // Helper method to get all goals with the same completion status
+    @Query("SELECT * FROM goals WHERE is_completed = :isCompleted ORDER BY sort_order ASC")
+    List<GoalEntity> getAllGoals(boolean isCompleted);
+
     @Query("DELETE FROM goals WHERE id = :id")
     void delete(int id);
 }

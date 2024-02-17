@@ -21,6 +21,14 @@ import edu.ucsd.cse110.successorator.lib.domain.Goal;
 public class GoalsAdapter extends ArrayAdapter<Goal>
 {
 
+    // Maybe need to move this to a new file?
+    public interface OnGoalCompleteListener {
+        void onGoalComplete(Goal goal);
+    }
+
+    // Listener for Goal completion
+    private OnGoalCompleteListener onGoalCompleteListener;
+
     // Hold if the adapter is for the ongoing goals
     private boolean isCompleted;
 
@@ -32,6 +40,11 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         this.isCompleted = isCompleted;
     }
 
+    // Set listener for goal completion
+    public void setOnGoalCompleteListener(OnGoalCompleteListener listener) {
+        this.onGoalCompleteListener = listener;
+    }
+
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     {
@@ -41,6 +54,16 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_goal_card, parent, false);
         }
+
+        convertView.setOnClickListener(v -> {
+            Goal goal = getItem(position);
+            if (goal != null) {
+                goal = goal.withIsCompleted(true); // Mark the goal as completed
+                if (onGoalCompleteListener != null) {
+                    onGoalCompleteListener.onGoalComplete(goal);
+                }
+            }
+        });
 
 
         // Get the data item for this position
