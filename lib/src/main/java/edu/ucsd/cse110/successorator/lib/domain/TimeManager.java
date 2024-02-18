@@ -41,11 +41,11 @@ public class TimeManager {
     }
 
     public Subject<LocalDateTime> getLastCleared() {
-        return lastCleared;
+        return this.lastCleared;
     }
 
     public void updateLastCleared(LocalDateTime time) {
-        lastCleared.setValue(time);
+        this.lastCleared.setValue(time);
     }
 
     public void nextDay() {

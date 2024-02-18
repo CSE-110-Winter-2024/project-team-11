@@ -16,13 +16,20 @@ import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
 public class MainViewModelTest {
     MainViewModel model;
+    MainViewModel appResetModel;
 
     @Before
     public void setUp() throws Exception {
         SimpleGoalRepository ongoingRepo = new SimpleGoalRepository(new InMemoryDataSource());
         SimpleGoalRepository completedRepo = new SimpleGoalRepository(new InMemoryDataSource());
         TimeManager timeManager = new TimeManager(LocalDateTime.now());
+        LocalDateTime beforeReset = LocalDateTime.now()
+                .withHour(1)
+                .withMinute(59)
+                .withSecond(57);
+        TimeManager resetTimeManager = new TimeManager(beforeReset);
         model = new MainViewModel(ongoingRepo, completedRepo, timeManager);
+        appResetModel = new MainViewModel(ongoingRepo, completedRepo, resetTimeManager);
     }
 
     public String randomString(int maxLen) {
@@ -122,5 +129,45 @@ public class MainViewModelTest {
             assertEquals(expected.getDayOfWeek(), actual.getDayOfWeek());
             assertEquals(expected.getMonth(), actual.getMonth());
         }
+    }
+    // 0 ongoing, 2 completed, next day -> 0 completed
+    @Test
+    public void clearList() {
+        ArrayList<Goal> listExpected = new ArrayList<>();
+        Goal test1 = new Goal(1, "", 1, true);
+        Goal test2 = new Goal(2, "", 2, true);
+        for(int i = 0; i < 100; i++) {
+            model.append(test1);
+            model.append(test2);
+
+            model.nextDay();
+
+            assertEquals(listExpected, model.getCompletedGoals().getValue());
+        }
+    }
+    // time is 1:59am, 2 completed goals & 1 ongoing -> 2:00am, 0 completed 1 ongoing
+    // Note: cannot directly test going from 1:59am to 2:00am since our code
+    // only has the feature for advancing 24 hours later
+    @Test
+    public void beforeAppReset() {
+        ArrayList<Goal> ongoingList = new ArrayList<>();
+        ArrayList<Goal> completedList = new ArrayList<>();
+        Goal test1 = new Goal(1, "", 1, true);
+        Goal test2 = new Goal(2, "", 2, true);
+        Goal test3 = new Goal(1, "", 1, false);
+        ongoingList.add(test3);
+
+        for(int i = 0; i < 100; i++) {
+            appResetModel.append(test1);
+            appResetModel.append(test2);
+            appResetModel.append(test3);
+
+            appResetModel.nextDay();
+
+            assertEquals(ongoingList, appResetModel.getOngoingGoals().getValue());
+            assertEquals(completedList, appResetModel.getCompletedGoals().getValue());
+        }
+
+
     }
 }
