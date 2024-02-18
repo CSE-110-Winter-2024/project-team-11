@@ -132,6 +132,18 @@ public class MainViewModel extends ViewModel {
 
     }
 
+    public void unCompleteGoal(Goal goal) {
+        // Set the goal as completed
+        Goal completedGoal = goal.withIsCompleted(false);
+//        Goal completedGoal = temp.withSortOrder(0);
+
+        // Remove old goal, add new Completed Goal
+        if (goal.id() != null) {
+            completedGoalRepository.remove(goal.id());
+            ongoingGoalRepository.prepend(completedGoal);
+        }
+    }
+
     public void nextDay() {
         calendarManager.nextDay();
     }
