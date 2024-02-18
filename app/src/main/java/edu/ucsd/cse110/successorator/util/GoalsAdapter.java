@@ -70,19 +70,16 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         convertView.setOnClickListener(v -> {
             Goal goal = getItem(position);
             if (goal != null) {
-                goal = goal.withIsCompleted(true); // Mark the goal as completed
-                if (onGoalCompleteListener != null) {
-                    onGoalCompleteListener.onGoalComplete(goal);
-                }
-            }
-        });
-
-        convertView.setOnClickListener(v -> {
-            Goal goal = getItem(position);
-            if (goal != null) {
-                goal = goal.withIsCompleted(false); // Mark the goal as uncompleted
-                if (onGoalUnCompleteListener != null) {
-                    onGoalUnCompleteListener.onGoalUnComplete(goal);
+                if (goal.isCompleted()) {
+                    goal = goal.withIsCompleted(true); // Mark the goal as uncompleted
+                    if (onGoalUnCompleteListener != null) {
+                        onGoalUnCompleteListener.onGoalUnComplete(goal);
+                    }
+                } else {
+                    goal = goal.withIsCompleted(true); // Mark the goal as completed
+                    if (onGoalCompleteListener != null) {
+                        onGoalCompleteListener.onGoalComplete(goal);
+                    }
                 }
             }
         });
