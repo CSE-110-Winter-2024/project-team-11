@@ -49,4 +49,8 @@ public class SimpleGoalRepository implements GoalRepository {
         dataSource.prepend(goal);
     }
 
+    @Override
+    public void clear() {
+        dataSource.clear();
+    }
 }
