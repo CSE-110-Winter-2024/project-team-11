@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -91,6 +90,15 @@ public class MainViewModel extends ViewModel {
 
             this.lastCleared.setValue(time);
         });
+        timeManager.getLocalDateTime().observe(time -> {
+            if(time == null) return;
+            LocalDateTime lastClearedTime = timeManager.getLastCleared().getValue();
+//             if time >= 12am && lastClearedTime is the day before time
+            if(time.getHour() >= 0 && time.isAfter(lastClearedTime)) {
+                timeManager.updateLastCleared(time);
+                clear();
+            }
+        });
     }
 
     public Subject<List<Goal>> getOngoingGoals() {
@@ -103,10 +111,6 @@ public class MainViewModel extends ViewModel {
 
     public Subject<LocalDateTime> getTime() {
         return time;
-    }
-
-    public Subject<LocalDateTime> getLastCleared() {
-        return lastCleared;
     }
 
     public void append(Goal goal) {
@@ -137,9 +141,5 @@ public class MainViewModel extends ViewModel {
 
     public void clear() {
         completedGoalRepository.clear();
-    }
-
-    public void updateLastCleared(LocalDateTime time) {
-        timeManager.updateLastCleared(time);
     }
 }

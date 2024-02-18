@@ -12,14 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
-import edu.ucsd.cse110.successorator.databinding.FragmentGoalsBinding;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.util.GoalsAdapter;
 
@@ -31,7 +29,6 @@ public class GoalsFragment extends Fragment {
     private GoalsAdapter ongoingGoalsAdapter;
     private GoalsAdapter completedGoalsAdapter;
 
-    FragmentGoalsBinding view;
     // No arg constructor for the goalsFragment
     public GoalsFragment()
     {
@@ -54,7 +51,8 @@ public class GoalsFragment extends Fragment {
                     .collect(Collectors.toList()) : null);
             if (ongoingGoalsAdapter != null) {
                 ongoingGoalsAdapter.updateData(newOngoingGoals);
-                updateOngoingGoalsText(newOngoingGoals.size() == 0);
+                updateOngoingGoalsText(newOngoingGoals.isEmpty());
+                updateCompletedGoalsParams(newOngoingGoals.isEmpty());
             }
         });
         activityModel.getCompletedGoals().observe(goals -> {
@@ -63,21 +61,6 @@ public class GoalsFragment extends Fragment {
                     .collect(Collectors.toList()) : null);
             if (completedGoalsAdapter != null) {
                 completedGoalsAdapter.updateData(newCompletedGoals);
-            }
-
-        });
-
-        activityModel.getTime().observe(time -> {
-            LocalDateTime lastClearedTime = activityModel.getLastCleared().getValue();
-            /**
-            if time >= 12am && lastClearedTime is the day before time
-            Note: this won't update the app if the user timeskips & goes back in time
-            which goes beyond the app's intentions anyway
-            **/
-            if(completedGoalsAdapter != null && time.getHour() >= 0 && time.isAfter(lastClearedTime)) {
-                activityModel.updateLastCleared(time);
-                activityModel.clear();
-                completedGoalsAdapter.updateData(new ArrayList<>());
             }
         });
     }
@@ -115,7 +98,6 @@ public class GoalsFragment extends Fragment {
         else {
             noOngoingGoalText.setText("");
         }
-        updateCompletedGoalsParams(isEmpty);
     }
 
     private void updateCompletedGoalsParams(boolean ongoingIsEmpty) {
