@@ -83,8 +83,10 @@ public class MainViewModel extends ViewModel {
             this.time.setValue(time);
 
             LocalDateTime lastClearedTime = timeManager.getLastCleared();
-//             if time >= 2am && lastClearedTime is the day before time
-            if(time.getHour() >= 0 && time.isAfter(lastClearedTime)) {
+//             if the date changed and the new date is after the old date
+            if(time.isAfter(lastClearedTime)
+                    && (time.getDayOfYear() != lastClearedTime.getDayOfYear()
+                    || time.getYear() != lastClearedTime.getYear())) {
                 clearCompleted();
             }
 
