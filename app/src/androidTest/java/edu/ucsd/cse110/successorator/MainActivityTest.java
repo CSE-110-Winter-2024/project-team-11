@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.text.DateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
@@ -57,8 +58,8 @@ public class MainActivityTest {
                 var binding = ActivityMainBinding.bind(rootView);
                 TextView dateTextView = activity.findViewById(R.id.dateTextView);
 
-                Calendar calendar = Calendar.getInstance();
-                var expected = DateFragment.DATE_FORMAT.format(calendar.getTime());
+                LocalDateTime localDateTime = LocalDateTime.now();
+                var expected = DateFragment.DATE_TIME_FORMATTER.format(localDateTime);
                 var actual = dateTextView.getText();
 
                 assertEquals(expected, actual);
