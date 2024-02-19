@@ -12,6 +12,7 @@ import java.util.List;
 import edu.ucsd.cse110.successorator.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalRepository;
+import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
 public class MainViewModelTest {
@@ -22,12 +23,12 @@ public class MainViewModelTest {
     public void setUp() throws Exception {
         SimpleGoalRepository ongoingRepo = new SimpleGoalRepository(new InMemoryDataSource());
         SimpleGoalRepository completedRepo = new SimpleGoalRepository(new InMemoryDataSource());
-        TimeManager timeManager = new TimeManager(LocalDateTime.now());
+        TimeManager timeManager = new SimpleTimeManager();
         LocalDateTime beforeReset = LocalDateTime.now()
                 .withHour(1)
                 .withMinute(59)
                 .withSecond(57);
-        TimeManager resetTimeManager = new TimeManager(beforeReset);
+        TimeManager resetTimeManager = new SimpleTimeManager(beforeReset);
         model = new MainViewModel(ongoingRepo, completedRepo, timeManager);
         appResetModel = new MainViewModel(ongoingRepo, completedRepo, resetTimeManager);
     }

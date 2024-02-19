@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalRepository;
+import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
@@ -26,7 +27,6 @@ public class MainViewModel extends ViewModel {
 
     private final TimeManager timeManager;
     private final MutableSubject<LocalDateTime> time;
-    private final MutableSubject<LocalDateTime> lastCleared;
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
                     MainViewModel.class,
@@ -36,7 +36,7 @@ public class MainViewModel extends ViewModel {
                         return new MainViewModel(
                                 app.getOngoingGoalRepository(),
                                 app.getCompletedGoalRepository(),
-                                new TimeManager(LocalDateTime.now()));
+                                app.getTimeManager());
                     });
 
 
@@ -56,9 +56,6 @@ public class MainViewModel extends ViewModel {
         this.timeManager = timeManager;
         this.time = new SimpleSubject<>();
         this.time.setValue(null);
-
-        this.lastCleared = new SimpleSubject<>();
-        this.lastCleared.setValue(null);
 
         // When the list of ongoing goals changes, reset the ordering
         ongoingGoalRepository.findAll().observe(goals -> {
@@ -84,21 +81,18 @@ public class MainViewModel extends ViewModel {
             if (time == null) return;
 
             this.time.setValue(time);
-        });
-        timeManager.getLastCleared().observe(time -> {
-            if (time == null) return;
 
-            this.lastCleared.setValue(time);
-        });
-        timeManager.getLocalDateTime().observe(time -> {
-            if(time == null) return;
-            LocalDateTime lastClearedTime = timeManager.getLastCleared().getValue();
-//             if time >= 12am && lastClearedTime is the day before time
+            LocalDateTime lastClearedTime = timeManager.getLastCleared();
+//             if time >= 2am && lastClearedTime is the day before time
             if(time.getHour() >= 0 && time.isAfter(lastClearedTime)) {
-                timeManager.updateLastCleared(time);
-                clear();
+                clearCompleted();
             }
+
+            System.out.println(time + " " + lastClearedTime);
+
+            timeManager.updateLastCleared(time);
         });
+
     }
 
     public Subject<List<Goal>> getOngoingGoals() {
@@ -110,7 +104,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<LocalDateTime> getTime() {
-        return time;
+        return timeManager.getLocalDateTime();
     }
 
     public void append(Goal goal) {
@@ -139,7 +133,7 @@ public class MainViewModel extends ViewModel {
 
     }
 
-    public void clear() {
+    public void clearCompleted() {
         completedGoalRepository.clear();
     }
 }

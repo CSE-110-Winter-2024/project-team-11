@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.data.db;
+package edu.ucsd.cse110.successorator.data.db.goals;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 

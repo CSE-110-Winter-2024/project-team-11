@@ -1,11 +1,9 @@
-package edu.ucsd.cse110.successorator.ui.date;
+package edu.ucsd.cse110.successorator.lib.domain;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-
-import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
 public class TimeManagerTest {
     TimeManager timeManager;
@@ -19,7 +17,7 @@ public class TimeManagerTest {
         LocalDateTime actual = LocalDateTime.now();
         actual = actual.withHour(6);
 
-        timeManager = new TimeManager(actual);
+        timeManager = new SimpleTimeManager(actual);
         for(int i = 0; i < 100; i++) {
             expected = expected.plusDays(1);
             timeManager.nextDay();
@@ -46,7 +44,7 @@ public class TimeManagerTest {
                 .withMinute(59)
                 .withSecond(57);
 
-        timeManager = new TimeManager(LocalDateTime.from(input));
+        timeManager = new SimpleTimeManager(LocalDateTime.from(input));
         LocalDateTime actual = LocalDateTime.now();
 
         // Check that the date is still from yesterday before 2:00AM

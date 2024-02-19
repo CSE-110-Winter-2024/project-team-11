@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.ui.date.DateFragment;
@@ -32,6 +33,13 @@ public class MainActivity extends AppCompatActivity
         binding.createGoalButton.setOnClickListener(v -> {
             CreateGoalDialogFragment dialogFragment = CreateGoalDialogFragment.newInstance();
             dialogFragment.show(getSupportFragmentManager(), "CreateGoalDialogFragment");
+        });
+
+        binding.getRoot().setOnClickListener(v -> {
+            var modelOwner = this;
+            var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
+            var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
+            modelProvider.get(MainViewModel.class).getTime();
         });
     }
 }

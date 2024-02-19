@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.data.db;
+package edu.ucsd.cse110.successorator.data.db.goals;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,8 +8,6 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import java.util.List;
-
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
 
 @Dao
 public interface GoalDao {
