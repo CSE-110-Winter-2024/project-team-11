@@ -26,7 +26,7 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         void onGoalComplete(Goal goal);
     }
 
-    // Listener for Goal completion
+    // Listener for Goal uncompletion
     private OnGoalCompleteListener onGoalCompleteListener;
 
     public interface OnGoalUnCompleteListener {
