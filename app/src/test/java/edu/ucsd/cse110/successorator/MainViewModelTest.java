@@ -5,24 +5,32 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalRepository;
-import edu.ucsd.cse110.successorator.ui.date.CalendarManager;
+import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
 public class MainViewModelTest {
     MainViewModel model;
+    MainViewModel appResetModel;
 
     @Before
     public void setUp() throws Exception {
         SimpleGoalRepository ongoingRepo = new SimpleGoalRepository(new InMemoryDataSource());
         SimpleGoalRepository completedRepo = new SimpleGoalRepository(new InMemoryDataSource());
-        CalendarManager calendarManager = CalendarManager.newInstance(Calendar.getInstance());
-        model = new MainViewModel(ongoingRepo, completedRepo, calendarManager);
+        TimeManager timeManager = new SimpleTimeManager();
+        LocalDateTime beforeReset = LocalDateTime.now()
+                .withHour(1)
+                .withMinute(59)
+                .withSecond(57);
+        TimeManager resetTimeManager = new SimpleTimeManager(beforeReset);
+        model = new MainViewModel(ongoingRepo, completedRepo, timeManager);
+        appResetModel = new MainViewModel(ongoingRepo, completedRepo, resetTimeManager);
     }
 
     public String randomString(int maxLen) {
@@ -111,18 +119,56 @@ public class MainViewModelTest {
   
     @Test
     public void nextDay() {
-        Calendar expected = (Calendar)model.getCalendar().getValue().clone();
+        LocalDateTime expected = model.getTime().getValue();
         for(int i = 0; i < 100; i++) {
 
-            expected.add(Calendar.DATE, 1);
+            expected = expected.plusDays(1);
             model.nextDay();
 
-            Calendar actual = model.getCalendar().getValue();
-            assertEquals(expected.get(Calendar.DATE), actual.get(Calendar.DATE));
-            assertEquals(expected.get(Calendar.DAY_OF_WEEK), actual.get(Calendar.DAY_OF_WEEK));
-            assertEquals(expected.get(Calendar.MONTH), actual.get(Calendar.MONTH));
+            LocalDateTime actual = model.getTime().getValue();
+            assertEquals(expected.getDayOfMonth(), actual.getDayOfMonth());
+            assertEquals(expected.getDayOfWeek(), actual.getDayOfWeek());
+            assertEquals(expected.getMonth(), actual.getMonth());
         }
     }
+    // 0 ongoing, 2 completed, next day -> 0 completed
+    @Test
+    public void clearList() {
+        ArrayList<Goal> listExpected = new ArrayList<>();
+        Goal test1 = new Goal(1, "", 1, true);
+        Goal test2 = new Goal(2, "", 2, true);
+        for(int i = 0; i < 100; i++) {
+            model.append(test1);
+            model.append(test2);
+
+            model.nextDay();
+
+            assertEquals(listExpected, model.getCompletedGoals().getValue());
+        }
+    }
+    // time is 1:59am, 2 completed goals & 1 ongoing -> 2:00am, 0 completed 1 ongoing
+    // Note: cannot directly test going from 1:59am to 2:00am since our code
+    // only has the feature for advancing 24 hours later
+    @Test
+    public void beforeAppReset() {
+        ArrayList<Goal> ongoingList = new ArrayList<>();
+        ArrayList<Goal> completedList = new ArrayList<>();
+        Goal test1 = new Goal(1, "", 1, true);
+        Goal test2 = new Goal(2, "", 2, true);
+        Goal test3 = new Goal(1, "", 1, false);
+        ongoingList.add(test3);
+
+        for(int i = 0; i < 100; i++) {
+            appResetModel.append(test1);
+            appResetModel.append(test2);
+            appResetModel.append(test3);
+
+            appResetModel.nextDay();
+
+            assertEquals(ongoingList, appResetModel.getOngoingGoals().getValue());
+            assertEquals(completedList, appResetModel.getCompletedGoals().getValue());
+        }
 
 
+    }
 }

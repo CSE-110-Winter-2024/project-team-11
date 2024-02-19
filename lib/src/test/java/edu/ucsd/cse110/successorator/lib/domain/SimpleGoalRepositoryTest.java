@@ -56,4 +56,11 @@ public class SimpleGoalRepositoryTest {
 //        repo.prepend(new Goal(5, "sleep", 10, false));
 //        assertGoalListEquals(goalList, Objects.requireNonNull(repo.findAll().getValue()));
 //    }
+
+    @Test
+    public void clear() {
+        goalList = new ArrayList<>();
+        repo.clear();
+        assertGoalListEquals(goalList, Objects.requireNonNull(repo.findAll().getValue()));
+    }
 }

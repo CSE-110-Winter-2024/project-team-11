@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -40,7 +42,9 @@ public class DateFragment extends Fragment {
 
     FragmentDateBinding view;
 
-    public static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.FULL);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER
+            = DateTimeFormatter.ofPattern(
+                    "E M/d");
 
     // No arg constructor for the goalsFragment
     public DateFragment()
@@ -66,8 +70,8 @@ public class DateFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-        activityModel.getCalendar().observe(calendar -> {
-            updateDateText(calendar);
+        activityModel.getTime().observe(time -> {
+            updateDateText(time);
         });
     }
 
@@ -83,14 +87,14 @@ public class DateFragment extends Fragment {
             activityModel.nextDay();
         });
 
-        updateDateText(activityModel.getCalendar().getValue());
+        updateDateText(activityModel.getTime().getValue());
         return view.getRoot();
     }
 
-    private void updateDateText(Calendar calendar) {
+    private void updateDateText(LocalDateTime time) {
         if (this.view == null) {return;}
         TextView dateTextView = this.view.dateTextView;
-        String dateText = DATE_FORMAT.format(calendar.getTime());
+        String dateText = DATE_TIME_FORMATTER.format(time);
         dateTextView.setText(dateText);
     }
 }

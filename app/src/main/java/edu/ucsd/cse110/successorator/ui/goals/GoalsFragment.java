@@ -19,30 +19,20 @@ import java.util.stream.Collectors;
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
-import edu.ucsd.cse110.successorator.lib.domain.GoalList;
 import edu.ucsd.cse110.successorator.util.GoalsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link GoalsFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class GoalsFragment extends Fragment {
     private MainViewModel activityModel;
-    private GoalList ongoingGoals = new GoalList(new ArrayList<>());
     private GoalsAdapter ongoingGoalsAdapter;
     private GoalsAdapter completedGoalsAdapter;
+
     // No arg constructor for the goalsFragment
     public GoalsFragment()
     {
 
-    }
-
-
-    public static GoalsFragment newInstance(GoalList ongoingGoals, GoalList completedGoals)
-    {
-        GoalsFragment fragment = new GoalsFragment();
-        return fragment;
     }
 
     @Override
@@ -61,8 +51,8 @@ public class GoalsFragment extends Fragment {
                     .collect(Collectors.toList()) : null);
             if (ongoingGoalsAdapter != null) {
                 ongoingGoalsAdapter.updateData(newOngoingGoals);
-                ongoingGoals = new GoalList(newOngoingGoals);
-                updateOngoingGoalsText(newOngoingGoals.size() == 0);
+                updateOngoingGoalsText(newOngoingGoals.isEmpty());
+                updateCompletedGoalsParams(newOngoingGoals.isEmpty());
             }
         });
         activityModel.getCompletedGoals().observe(goals -> {
@@ -84,8 +74,6 @@ public class GoalsFragment extends Fragment {
 
         ListView ongoingListView = view.findViewById(R.id.ongoing_goals_list);
         ListView completedListView = view.findViewById(R.id.completed_goals_list);
-        TextView noOngoingGoalText = view.findViewById(R.id.no_ongoing_goals_text);
-
         // Initialize adapters with empty lists
         ongoingGoalsAdapter = new GoalsAdapter(requireContext(), new ArrayList<>(), false);
         completedGoalsAdapter = new GoalsAdapter(requireContext(), new ArrayList<>(), true);
@@ -97,19 +85,6 @@ public class GoalsFragment extends Fragment {
 
         ongoingListView.setAdapter(ongoingGoalsAdapter);
         completedListView.setAdapter(completedGoalsAdapter);
-
-        // Get the parent layout (ConstraintLayout)
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) completedListView.getLayoutParams();
-
-        // Set constraints dynamically
-        if (ongoingGoals.getGoals().size() == 0) {
-            params.topToBottom = noOngoingGoalText.getId();
-        } else {
-            params.topToBottom = ongoingListView.getId();
-        }
-
-        // Apply the updated layout params
-        completedListView.setLayoutParams(params);
 
         return view;
     }
@@ -123,5 +98,20 @@ public class GoalsFragment extends Fragment {
         else {
             noOngoingGoalText.setText("");
         }
+    }
+
+    private void updateCompletedGoalsParams(boolean ongoingIsEmpty) {
+        if(getView() == null) {return;}
+        ListView ongoingListView = getView().findViewById(R.id.ongoing_goals_list);
+        ListView completedListView = getView().findViewById(R.id.completed_goals_list);
+        TextView noOngoingGoalText = getView().findViewById(R.id.no_ongoing_goals_text);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) completedListView.getLayoutParams();
+        if(ongoingIsEmpty) {
+            params.topToBottom = noOngoingGoalText.getId();
+        }
+        else {
+            params.topToBottom = ongoingListView.getId();
+        }
+        completedListView.setLayoutParams(params);
     }
 }
