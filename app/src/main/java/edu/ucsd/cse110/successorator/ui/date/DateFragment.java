@@ -44,7 +44,7 @@ public class DateFragment extends Fragment {
 
     public static final DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern(
-                    "E M/d");
+                    "EEEE M/d");
 
     // No arg constructor for the goalsFragment
     public DateFragment()
