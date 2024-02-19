@@ -37,7 +37,6 @@ public class RoomTimeManager implements TimeManager {
 
     @Override
     public LocalDateTime getLastCleared() {
-        if (timeDao.get() == null) updateLastCleared(LocalDateTime.now());
         return timeDao.get().toTime();
     }
 

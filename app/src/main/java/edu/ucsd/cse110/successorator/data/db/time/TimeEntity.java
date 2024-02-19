@@ -24,7 +24,7 @@ public class TimeEntity {
     @ColumnInfo(name = "hour")
     public int hour;
 
-    TimeEntity(int year, int month, int dayOfMonth, int hour) {
+    TimeEntity(@NonNull int year, int month, int dayOfMonth, int hour) {
         this.year = year;
         this.month = month;
         this.dayOfMonth = dayOfMonth;
