@@ -4,18 +4,19 @@ import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLI
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalRepository;
+import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
-import edu.ucsd.cse110.successorator.ui.date.CalendarManager;
+import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
 public class MainViewModel extends ViewModel {
     private final GoalRepository ongoingGoalRepository;
@@ -24,9 +25,8 @@ public class MainViewModel extends ViewModel {
     private final MutableSubject<List<Goal>> completedGoals;
     private final MutableSubject<List<Goal>> ongoingGoals;
 
-    private final CalendarManager calendarManager;
-    private final MutableSubject<Calendar> calendar;
-
+    private final TimeManager timeManager;
+    private final MutableSubject<LocalDateTime> time;
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
                     MainViewModel.class,
@@ -36,12 +36,14 @@ public class MainViewModel extends ViewModel {
                         return new MainViewModel(
                                 app.getOngoingGoalRepository(),
                                 app.getCompletedGoalRepository(),
-                                CalendarManager.newInstance(Calendar.getInstance()));
+                                app.getTimeManager());
                     });
+
+
     public MainViewModel(
             GoalRepository ongoingGoalRepository,
             GoalRepository completedGoalRepository,
-            CalendarManager calendarManager) {
+            TimeManager timeManager) {
         this.ongoingGoalRepository = ongoingGoalRepository;
         this.completedGoalRepository = completedGoalRepository;
 
@@ -51,11 +53,9 @@ public class MainViewModel extends ViewModel {
         this.ongoingGoals = new SimpleSubject<>();
         this.ongoingGoals.setValue(new ArrayList<>());
 
-        this.calendarManager = calendarManager;
-        this.calendar = new SimpleSubject<>();
-        this.calendar.setValue(null);
-
-        // not sure if this is repetitive code.....might be
+        this.timeManager = timeManager;
+        this.time = new SimpleSubject<>();
+        this.time.setValue(null);
 
         // When the list of ongoing goals changes, reset the ordering
         ongoingGoalRepository.findAll().observe(goals -> {
@@ -77,12 +77,22 @@ public class MainViewModel extends ViewModel {
 
             completedGoals.setValue(newCompletedGoals);
         });
+        timeManager.getLocalDateTime().observe(time -> {
+            if (time == null) return;
 
-        calendarManager.getCalendar().observe(calendar -> {
-            if (calendar == null) return;
+            this.time.setValue(time);
 
-            this.calendar.setValue(calendar);
+            LocalDateTime lastClearedTime = timeManager.getLastCleared();
+//             if time >= 2am && lastClearedTime is the day before time
+            if(time.getHour() >= 0 && time.isAfter(lastClearedTime)) {
+                clearCompleted();
+            }
+
+            System.out.println(time + " " + lastClearedTime);
+
+            timeManager.updateLastCleared(time);
         });
+
     }
 
     public Subject<List<Goal>> getOngoingGoals() {
@@ -93,12 +103,10 @@ public class MainViewModel extends ViewModel {
         return completedGoals;
     }
 
-    public Subject<Calendar> getCalendar() {
-        return calendar;
+    public Subject<LocalDateTime> getTime() {
+        return timeManager.getLocalDateTime();
     }
 
-
-    // need an append method for adding a goal
     public void append(Goal goal) {
         if (goal.isCompleted()) {
             completedGoalRepository.append(goal);
@@ -106,8 +114,6 @@ public class MainViewModel extends ViewModel {
             ongoingGoalRepository.append(goal);
         }
     }
-
-    // prepend method for uncompleting a goal
 
 
     public void completeGoal(Goal goal) {
@@ -120,16 +126,6 @@ public class MainViewModel extends ViewModel {
             ongoingGoalRepository.remove(goal.id());
             completedGoalRepository.prepend(completedGoal);
         }
-
-//      Update the Lists
-//        List<Goal> updatedOngoingGoals = new ArrayList<>(ongoingGoals.getValue());
-//        updatedOngoingGoals.remove(goal);
-//        ongoingGoals.setValue(updatedOngoingGoals);
-//
-//        List<Goal> updatedCompletedGoals = new ArrayList<>(completedGoals.getValue());
-//        updatedCompletedGoals.add(0, completedGoal);
-//        completedGoals.setValue(updatedCompletedGoals);
-
     }
 
     public void unCompleteGoal(Goal goal) {
@@ -145,6 +141,11 @@ public class MainViewModel extends ViewModel {
     }
 
     public void nextDay() {
-        calendarManager.nextDay();
+        timeManager.nextDay();
+
+    }
+
+    public void clearCompleted() {
+        completedGoalRepository.clear();
     }
 }

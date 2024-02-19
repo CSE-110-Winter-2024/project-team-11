@@ -3,22 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <!--found the android:maxLines="1" & android:maxLength="20" attribute using ChatGPT-->
 
     <EditText
         android:id="@+id/goal_edit_text"
-        android:layout_width="325dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="25dp"
-        android:maxLength="18"
-        android:hint="@string/enter_goal2"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
+        android:hint="@string/enter_goal2"
         android:importantForAutofill="no"
         android:inputType="text"
+        android:maxLength="18"
         android:maxLines="1"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

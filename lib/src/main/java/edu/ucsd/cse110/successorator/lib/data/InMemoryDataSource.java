@@ -112,16 +112,6 @@ public class InMemoryDataSource {
         putGoals(goals);
     }
 
-    // Prepend goal to list and shift sort orders
-    public void prepend(Goal goal) {
-        if (goals.isEmpty() || minSortOrder > 0) {
-            putGoal(goal.withSortOrder(0));
-        } else {
-            shiftSortOrders(0, maxSortOrder, 1);
-            putGoal(goal.withSortOrder(0));
-        }
-    }
-
     /**
      * Private utility method to maintain state of the fake DB: ensures that new
      * goals inserted have an id, and updates the nextId if necessary.
@@ -180,5 +170,22 @@ public class InMemoryDataSource {
         // Between min and max...
         assert sortOrders.stream().allMatch(i -> i >= minSortOrder);
         assert sortOrders.stream().allMatch(i -> i <= maxSortOrder);
+    }
+
+    // Prepend goal to list and shift sort orders
+    public void prepend(Goal goal) {
+        if (goals.isEmpty() || minSortOrder > 0) {
+            putGoal(goal.withSortOrder(0));
+        } else {
+            shiftSortOrders(0, maxSortOrder, 1);
+            putGoal(goal.withSortOrder(0));
+        }
+    }
+
+    public void clear() {
+        List<Goal> list = getGoals();
+        for (Goal goal : list) {
+            removeGoal(goal.id());
+        }
     }
 }

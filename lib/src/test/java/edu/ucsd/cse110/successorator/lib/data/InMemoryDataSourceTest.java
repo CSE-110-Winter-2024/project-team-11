@@ -162,4 +162,13 @@ public class InMemoryDataSourceTest {
         assertGoalListEquals(expected, src.getGoals());
         assertEquals(0, src.getMinSortOrder());
     }
+
+    @Test
+    public void clear() {
+        ArrayList<Goal> expected = new ArrayList<>(List.of());
+        src.clear();
+        assertGoalListEquals(expected, src.getGoals());
+        assertEquals(Integer.MIN_VALUE, src.getMaxSortOrder());
+        assertEquals(Integer.MAX_VALUE, src.getMinSortOrder());
+    }
 }

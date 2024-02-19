@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.data.db;
+package edu.ucsd.cse110.successorator.data.db.goals;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
@@ -61,5 +61,10 @@ public class RoomGoalRepository implements GoalRepository {
     @Override
     public void remove(int id) {
         goalDao.delete(id);
+    }
+
+    @Override
+    public void clear() {
+        goalDao.clear();
     }
 }
