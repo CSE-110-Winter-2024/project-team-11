@@ -29,6 +29,13 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
     // Listener for Goal completion
     private OnGoalCompleteListener onGoalCompleteListener;
 
+    public interface OnGoalUnCompleteListener {
+        void onGoalUnComplete(Goal goal);
+    }
+
+    // Listener for Goal completion
+    private OnGoalUnCompleteListener onGoalUnCompleteListener;
+
     // Hold if the adapter is for the ongoing goals
     private boolean isCompleted;
 
@@ -41,6 +48,11 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
     }
 
     // Set listener for goal completion
+    public void setOnGoalUnCompleteListener(OnGoalUnCompleteListener listener) {
+        this.onGoalUnCompleteListener = listener;
+    }
+
+    // Set listener for goal uncompletion
     public void setOnGoalCompleteListener(OnGoalCompleteListener listener) {
         this.onGoalCompleteListener = listener;
     }
@@ -58,9 +70,16 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         convertView.setOnClickListener(v -> {
             Goal goal = getItem(position);
             if (goal != null) {
-                goal = goal.withIsCompleted(true); // Mark the goal as completed
-                if (onGoalCompleteListener != null) {
-                    onGoalCompleteListener.onGoalComplete(goal);
+                if (goal.isCompleted()) {
+                    goal = goal.withIsCompleted(true); // Mark the goal as uncompleted
+                    if (onGoalUnCompleteListener != null) {
+                        onGoalUnCompleteListener.onGoalUnComplete(goal);
+                    }
+                } else {
+                    goal = goal.withIsCompleted(true); // Mark the goal as completed
+                    if (onGoalCompleteListener != null) {
+                        onGoalCompleteListener.onGoalComplete(goal);
+                    }
                 }
             }
         });

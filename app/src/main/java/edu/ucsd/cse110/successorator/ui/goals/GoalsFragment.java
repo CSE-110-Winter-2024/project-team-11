@@ -83,6 +83,11 @@ public class GoalsFragment extends Fragment {
             activityModel.completeGoal(goal);
         });
 
+        completedGoalsAdapter.setOnGoalUnCompleteListener(goal -> {
+            // Set uncomplete goal listener
+            activityModel.unCompleteGoal(goal);
+        });
+
         ongoingListView.setAdapter(ongoingGoalsAdapter);
         completedListView.setAdapter(completedGoalsAdapter);
 
