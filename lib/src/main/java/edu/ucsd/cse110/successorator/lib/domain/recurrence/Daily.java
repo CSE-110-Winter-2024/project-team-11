@@ -1,11 +1,13 @@
 package edu.ucsd.cse110.successorator.lib.domain.recurrence;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDateTime;
 
 public class Daily implements Recurrence {
     LocalDateTime startDate;
 
-    public Daily(LocalDateTime startDate) {
+    public Daily(@NonNull LocalDateTime startDate) {
         this.startDate = startDate;
     }
 

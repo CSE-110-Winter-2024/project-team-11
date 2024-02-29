@@ -1,12 +1,14 @@
 package edu.ucsd.cse110.successorator.lib.domain.recurrence;
 
+import androidx.annotation.NonNull;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 public class Weekly implements Recurrence {
     LocalDateTime startDate;
 
-    public Weekly(LocalDateTime startDate) {
+    public Weekly(@NonNull LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
