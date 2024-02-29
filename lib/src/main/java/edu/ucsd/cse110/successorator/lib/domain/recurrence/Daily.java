@@ -45,6 +45,6 @@ public class Daily implements Recurrence {
 
     @Override
     public String recurrenceText() {
-        return ", daily";
+        return "daily";
     }
 }

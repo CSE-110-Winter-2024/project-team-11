@@ -63,7 +63,7 @@ public class WeeklyTest {
     @Test
     public void recurrenceText() {
         LocalDateTime now = LocalDateTime.now();
-        String expected = ", weekly on " + now.getDayOfWeek().name();
+        String expected = "weekly on " + now.getDayOfWeek().name();
         assertEquals(expected, new Weekly(now).recurrenceText());
     }
 }

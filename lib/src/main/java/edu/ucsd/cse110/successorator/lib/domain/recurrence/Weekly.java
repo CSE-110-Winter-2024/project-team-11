@@ -24,7 +24,8 @@ public class Weekly implements Recurrence {
 
     @Override
     public boolean occursOnDay(LocalDateTime date) {
-        return !date.isBefore(startDate) && date.getDayOfWeek() == startDate.getDayOfWeek();
+        return !date.isBefore(startDate)
+                && date.getDayOfWeek() == startDate.getDayOfWeek();
     }
 
     @Override
@@ -46,6 +47,6 @@ public class Weekly implements Recurrence {
 
     @Override
     public String recurrenceText() {
-        return ", weekly on " + startDate.getDayOfWeek();
+        return "weekly on " + startDate.getDayOfWeek();
     }
 }

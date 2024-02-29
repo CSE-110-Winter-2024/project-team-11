@@ -28,7 +28,7 @@ public class RecurringGoal {
     }
 
     public String text() {
-        return getGoal().text() + getRecurrence().recurrenceText();
+        return getGoal().text() + ", " + getRecurrence().recurrenceText();
     }
 
     public Recurrence getRecurrence() {

@@ -61,7 +61,7 @@ public class DailyTest {
 
     @Test
     public void recurrenceText() {
-        String expected = ", daily";
+        String expected = "daily";
         assertEquals(expected, new Daily(LocalDateTime.now()).recurrenceText());
     }
 }
