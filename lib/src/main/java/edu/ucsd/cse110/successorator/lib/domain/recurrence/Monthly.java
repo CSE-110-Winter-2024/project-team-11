@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.successorator.lib.domain.recurrence;
 
+import static edu.ucsd.cse110.successorator.lib.domain.recurrence.Weekly.dayOfWeekAbbreviation;
+
 import androidx.annotation.NonNull;
 
 import java.time.DayOfWeek;
@@ -89,6 +91,6 @@ public class Monthly implements Recurrence {
     public String recurrenceText() {
         int nthDayOfWeek = countSameDayOfWeek(startDate, startDate.getMonthValue());
         return "monthly " + nthDayOfWeek + ORDINAL_SUFFIX.get(nthDayOfWeek)
-                + " " + startDate.getDayOfWeek();
+                + " " + dayOfWeekAbbreviation(startDate.getDayOfWeek());
     }
 }

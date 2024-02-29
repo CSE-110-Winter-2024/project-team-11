@@ -86,23 +86,23 @@ public class MonthlyTest {
     @Test
     public void recurrenceText() {
         LocalDateTime now = LocalDate.of(2024, 2, 29).atStartOfDay();
-        String expected = "monthly 5th THURSDAY";
+        String expected = "monthly 5th Th";
         assertEquals(expected, new Monthly(now).recurrenceText());
 
         now = LocalDate.of(2024, 2, 6).atStartOfDay();
-        expected = "monthly 1st TUESDAY";
+        expected = "monthly 1st Tu";
         assertEquals(expected, new Monthly(now).recurrenceText());
 
         now = LocalDate.of(2024, 2, 14).atStartOfDay();
-        expected = "monthly 2nd WEDNESDAY";
+        expected = "monthly 2nd We";
         assertEquals(expected, new Monthly(now).recurrenceText());
 
         now = LocalDate.of(2024, 2, 16).atStartOfDay();
-        expected = "monthly 3rd FRIDAY";
+        expected = "monthly 3rd Fr";
         assertEquals(expected, new Monthly(now).recurrenceText());
 
         now = LocalDate.of(2024, 2, 24).atStartOfDay();
-        expected = "monthly 4th SATURDAY";
+        expected = "monthly 4th Sa";
         assertEquals(expected, new Monthly(now).recurrenceText());
     }
 }

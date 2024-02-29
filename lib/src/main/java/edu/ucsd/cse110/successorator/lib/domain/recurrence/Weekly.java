@@ -45,8 +45,13 @@ public class Weekly implements Recurrence {
         return occursOnDay(endDate);
     }
 
+    public static String dayOfWeekAbbreviation(DayOfWeek dayOfWeek) {
+        return dayOfWeek.name().charAt(0) + ""
+                + dayOfWeek.name().toLowerCase().charAt(1);
+    }
+
     @Override
     public String recurrenceText() {
-        return "weekly on " + startDate.getDayOfWeek();
+        return "weekly on " + dayOfWeekAbbreviation(startDate.getDayOfWeek());
     }
 }

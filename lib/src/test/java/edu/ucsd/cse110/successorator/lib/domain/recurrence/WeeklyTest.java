@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
@@ -62,8 +63,16 @@ public class WeeklyTest {
 
     @Test
     public void recurrenceText() {
-        LocalDateTime now = LocalDateTime.now();
-        String expected = "weekly on " + now.getDayOfWeek().name();
+        LocalDateTime now = LocalDate.of(2024, 2, 29).atStartOfDay();
+        String expected = "weekly on Th";
+        assertEquals(expected, new Weekly(now).recurrenceText());
+
+        now = LocalDate.of(2024, 2, 28).atStartOfDay();
+        expected = "weekly on We";
+        assertEquals(expected, new Weekly(now).recurrenceText());
+
+        now = LocalDate.of(2024, 2, 27).atStartOfDay();
+        expected = "weekly on Tu";
         assertEquals(expected, new Weekly(now).recurrenceText());
     }
 }
