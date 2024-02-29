@@ -20,5 +20,7 @@ public class RecurrenceFactoryTest {
         LocalDateTime now = LocalDateTime.now();
         assertEquals(Daily.class, factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.DAILY).getClass());
         assertEquals(Weekly.class, factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.WEEKLY).getClass());
+        assertEquals(Monthly.class, factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.MONTHLY).getClass());
+        assertEquals(Yearly.class, factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.YEARLY).getClass());
     }
 }

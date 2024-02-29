@@ -48,13 +48,13 @@ public class SimpleRecurringGoalRepositoryTest {
                 new RecurringGoal(0, goals.get(0), factory.createRecurrence(now,
                         RecurrenceFactory.RecurrenceEnum.WEEKLY)),
                 new RecurringGoal(1, goals.get(1), factory.createRecurrence(yesterday,
-                        RecurrenceFactory.RecurrenceEnum.DAILY)),
+                        RecurrenceFactory.RecurrenceEnum.YEARLY)),
                 new RecurringGoal(2, goals.get(2), factory.createRecurrence(tomorrow,
                         RecurrenceFactory.RecurrenceEnum.WEEKLY)),
                 new RecurringGoal(3, goals.get(3), factory.createRecurrence(now,
                         RecurrenceFactory.RecurrenceEnum.DAILY)),
                 new RecurringGoal(4, goals.get(4), factory.createRecurrence(yesterday,
-                        RecurrenceFactory.RecurrenceEnum.DAILY))
+                        RecurrenceFactory.RecurrenceEnum.MONTHLY))
         ));
 
         repo.addAll(List.copyOf(goalList));
@@ -97,7 +97,7 @@ public class SimpleRecurringGoalRepositoryTest {
 
         goal = new Goal(6, "play", 5, false);
         recurringGoal = new RecurringGoal(6, goal,
-                factory.createRecurrence(tomorrow.plusDays(2), RecurrenceFactory.RecurrenceEnum.DAILY));
+                factory.createRecurrence(tomorrow.plusDays(2), RecurrenceFactory.RecurrenceEnum.YEARLY));
         goalList.add(recurringGoal);
         repo.add(recurringGoal);
 
@@ -111,7 +111,7 @@ public class SimpleRecurringGoalRepositoryTest {
 
         goal = new Goal(7, "game", 5, false);
         recurringGoal = new RecurringGoal(7, goal,
-                factory.createRecurrence(tomorrow.plusDays(1), RecurrenceFactory.RecurrenceEnum.WEEKLY));
+                factory.createRecurrence(tomorrow.plusDays(1), RecurrenceFactory.RecurrenceEnum.MONTHLY));
         goalList.add(recurringGoal);
         repo.add(recurringGoal);
 
