@@ -1,7 +1,5 @@
 package edu.ucsd.cse110.successorator.lib.domain;
 
-import static org.junit.Assert.*;
-
 import static edu.ucsd.cse110.successorator.lib.testUtils.Assertions.assertGoalListEquals;
 
 import org.junit.Before;
@@ -11,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import edu.ucsd.cse110.successorator.lib.data.InMemoryDataSource;
+import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.SimpleGoalRepository;
 
 public class SimpleGoalRepositoryTest {
 
-    InMemoryDataSource src;
+    GoalInMemoryDataSource src;
     SimpleGoalRepository repo;
     List<Goal> goalList;
 
@@ -29,7 +29,7 @@ public class SimpleGoalRepositoryTest {
                 new Goal(4, "haircut", 4, false)
         ));
 
-        src = new InMemoryDataSource();
+        src = new GoalInMemoryDataSource();
         src.putGoals(List.copyOf(goalList));
 
         repo = new SimpleGoalRepository(src);

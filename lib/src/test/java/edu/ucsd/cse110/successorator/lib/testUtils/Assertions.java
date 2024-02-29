@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 
 public class Assertions {
     public static void assertGoalListEquals(List<Goal> expected, List<Goal> actual) {
