@@ -8,7 +8,7 @@ public class Daily implements Recurrence {
     LocalDateTime startDate;
 
     public Daily(@NonNull LocalDateTime startDate) {
-        this.startDate = startDate;
+        this.startDate = startDate.toLocalDate().atStartOfDay();
     }
 
     @Override

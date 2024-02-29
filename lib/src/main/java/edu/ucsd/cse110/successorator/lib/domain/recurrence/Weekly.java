@@ -9,7 +9,7 @@ public class Weekly implements Recurrence {
     LocalDateTime startDate;
 
     public Weekly(@NonNull LocalDateTime startDate) {
-        this.startDate = startDate;
+        this.startDate = startDate.toLocalDate().atStartOfDay();
     }
 
     @Override

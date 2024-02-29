@@ -13,7 +13,7 @@ import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 public class DailyTest {
     @Test
     public void occursOnDay() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().withHour(6);
         
         Daily daily = new Daily(now);
 
@@ -54,6 +54,9 @@ public class DailyTest {
         // It should occur after it started
         assertTrue(daily.occursDuringInterval(now.plusDays(1), now.plusDays(2)));
         assertTrue(daily.occursDuringInterval(now.plusDays(1), now.plusDays(20)));
+
+        // It should occur on the start date regardless of time
+        assertTrue(daily.occursDuringInterval(now.minusDays(1), now.minusHours(1)));
     }
 
     @Test
