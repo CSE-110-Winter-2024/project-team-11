@@ -30,7 +30,7 @@ public class Weekly implements Recurrence {
 
     @Override
     public boolean occursDuringInterval(LocalDateTime startDate, LocalDateTime endDate) {
-        if (endDate.isBefore(this.startDate)
+        if (endDate.isBefore(this.startDate) || endDate.isBefore(startDate)
                 || (startDate.getDayOfYear() == endDate.getDayOfYear()
                 && startDate.getYear() == endDate.getYear())) {
             return false;

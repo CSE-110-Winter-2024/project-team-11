@@ -34,31 +34,34 @@ public class WeeklyTest {
 
     @Test
     public void occursDuringInterval() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().withHour(6);
 
-        Weekly Weekly = new Weekly(now);
+        Weekly weekly = new Weekly(now);
 
         // It shouldn't occur again today (the start of any interval should
         // always be accounted for by a previous occurrence check)
-        assertFalse(Weekly.occursDuringInterval(now, now));
+        assertFalse(weekly.occursDuringInterval(now, now));
 
         // It shouldn't occur any time in the next 6 days
         for (int i = 1; i < 7; i++) {
-            assertFalse(Weekly.occursDuringInterval(now, now.plusDays(i)));
+            assertFalse(weekly.occursDuringInterval(now, now.plusDays(i)));
         }
 
         // It should occur today if it wasn't checked since yesterday
-        assertTrue(Weekly.occursDuringInterval(now.minusDays(1), now));
+        assertTrue(weekly.occursDuringInterval(now.minusDays(1), now));
 
         // It shouldn't occur before it started
-        assertFalse(Weekly.occursDuringInterval(now.minusDays(2000), now.minusDays(1)));
+        assertFalse(weekly.occursDuringInterval(now.minusDays(2000), now.minusDays(1)));
 
         // It should occur after it started
-        assertTrue(Weekly.occursDuringInterval(now.plusDays(1), now.plusDays(2000)));
-        assertTrue(Weekly.occursDuringInterval(now.plusDays(1), now.plusDays(7)));
+        assertTrue(weekly.occursDuringInterval(now.plusDays(1), now.plusDays(2000)));
+        assertTrue(weekly.occursDuringInterval(now.plusDays(1), now.plusDays(7)));
 
         // It should occur after it started even if it starts on today
-        assertTrue(Weekly.occursDuringInterval(now.plusDays(0), now.plusDays(7)));
+        assertTrue(weekly.occursDuringInterval(now.plusDays(0), now.plusDays(7)));
+
+        // It shouldn't occur when the start date is after the end date
+        assertFalse(weekly.occursDuringInterval(now.plusDays(1).plusSeconds(1), now.plusDays(1)));
     }
 
     @Test

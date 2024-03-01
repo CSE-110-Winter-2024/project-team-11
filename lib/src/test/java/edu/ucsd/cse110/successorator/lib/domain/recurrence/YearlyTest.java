@@ -54,7 +54,7 @@ public class YearlyTest {
 
     @Test
     public void occursDuringInterval() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().withHour(6);
 
         Yearly yearly = new Yearly(now);
 
@@ -79,6 +79,9 @@ public class YearlyTest {
 
         // It should occur after it started even if it starts on today
         assertTrue(yearly.occursDuringInterval(now.plusDays(0), now.plusDays(366)));
+
+        // It shouldn't occur when the start date is after the end date
+        assertFalse(yearly.occursDuringInterval(now.plusDays(1).plusSeconds(1), now.plusDays(1)));
     }
 
     @Test

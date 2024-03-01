@@ -33,7 +33,7 @@ public class DailyTest {
 
     @Test
     public void occursDuringInterval() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().withHour(6);
 
         Daily daily = new Daily(now);
 
@@ -57,6 +57,9 @@ public class DailyTest {
 
         // It should occur on the start date regardless of time
         assertTrue(daily.occursDuringInterval(now.minusDays(1), now.minusHours(1)));
+
+        // It shouldn't occur when the start date is after the end date
+        assertFalse(daily.occursDuringInterval(now.plusDays(1).plusSeconds(1), now.plusDays(1)));
     }
 
     @Test

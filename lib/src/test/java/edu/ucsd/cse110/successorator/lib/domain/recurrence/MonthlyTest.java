@@ -56,7 +56,7 @@ public class MonthlyTest {
 
     @Test
     public void occursDuringInterval() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().withHour(6);
 
         Monthly monthly = new Monthly(now);
 
@@ -81,6 +81,9 @@ public class MonthlyTest {
 
         // It should occur after it started even if it starts on today
         assertTrue(monthly.occursDuringInterval(now.plusDays(0), now.plusDays(35)));
+
+        // It shouldn't occur when the start date is after the end date
+        assertFalse(monthly.occursDuringInterval(now.plusDays(1).plusSeconds(1), now.plusDays(1)));
     }
 
     @Test
