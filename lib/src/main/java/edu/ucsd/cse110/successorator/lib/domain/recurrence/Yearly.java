@@ -45,19 +45,19 @@ public class Yearly implements Recurrence {
 
     @Override
     public boolean occursDuringInterval(LocalDateTime startDate, LocalDateTime endDate) {
-        if (endDate.isBefore(this.startDate) || endDate.isBefore(startDate)
-                || (startDate.getDayOfYear() == endDate.getDayOfYear()
-                && startDate.getYear() == endDate.getYear())) {
+        startDate = startDate.toLocalDate().atStartOfDay();
+        endDate = endDate.toLocalDate().atStartOfDay();
+        if (endDate.isBefore(this.startDate) || endDate.isBefore(startDate)) {
             return false;
         }
 
         // Check whether or not any day in the interval matches the recurrence relation
-        for (LocalDateTime date = startDate.plusDays(1); date.isBefore(endDate); date = date.plusDays(1)) {
+        for (LocalDateTime date = startDate.plusDays(1); !date.isAfter(endDate); date = date.plusDays(1)) {
             if (occursOnDay(date)) {
                 return true;
             }
         }
-        return occursOnDay(endDate);
+        return false;
     }
 
     @Override

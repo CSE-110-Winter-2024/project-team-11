@@ -83,7 +83,7 @@ public class MonthlyTest {
         assertTrue(monthly.occursDuringInterval(now.plusDays(0), now.plusDays(35)));
 
         // It shouldn't occur when the start date is after the end date
-        assertFalse(monthly.occursDuringInterval(now.plusDays(1).plusSeconds(1), now.plusDays(1)));
+        assertFalse(monthly.occursDuringInterval(now.plusDays(2), now.plusDays(1)));
     }
 
     @Test

@@ -81,7 +81,7 @@ public class YearlyTest {
         assertTrue(yearly.occursDuringInterval(now.plusDays(0), now.plusDays(366)));
 
         // It shouldn't occur when the start date is after the end date
-        assertFalse(yearly.occursDuringInterval(now.plusDays(1).plusSeconds(1), now.plusDays(1)));
+        assertFalse(yearly.occursDuringInterval(now.plusDays(2), now.plusDays(1)));
     }
 
     @Test

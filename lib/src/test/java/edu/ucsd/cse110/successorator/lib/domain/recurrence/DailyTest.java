@@ -59,7 +59,7 @@ public class DailyTest {
         assertTrue(daily.occursDuringInterval(now.minusDays(1), now.minusHours(1)));
 
         // It shouldn't occur when the start date is after the end date
-        assertFalse(daily.occursDuringInterval(now.plusDays(1).plusSeconds(1), now.plusDays(1)));
+        assertFalse(daily.occursDuringInterval(now.plusDays(2), now.plusDays(1)));
     }
 
     @Test
