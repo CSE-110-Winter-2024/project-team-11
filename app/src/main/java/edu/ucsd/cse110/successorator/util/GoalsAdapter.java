@@ -2,6 +2,7 @@ package edu.ucsd.cse110.successorator.util;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,12 +60,10 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
     }
 
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
-    {
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        // Inflate the list item view
-        if (convertView == null)
-        {
+        // Inflate the list item view if necessary
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_goal_card, parent, false);
         }
 
@@ -84,23 +84,59 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
             }
         });
 
-
         // Get the data item for this position
         Goal goal = getItem(position);
 
         // Get reference to views in the list item layout
         TextView textViewGoalText = convertView.findViewById(R.id.goal_text);
+        TextView contextText = convertView.findViewById(R.id.contextText);
 
         // Check if the text is for the completed goals
-        if(isCompleted)  textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        // Set data to views
-        if (goal != null)
-        {
-            textViewGoalText.setText(goal.text()); // Set the text from the Goal object
+        if(isCompleted) {
+            textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            // Set background drawable of the contextText for completed goals
+            contextText.setBackgroundResource(R.drawable.rectangle_background_completed);
+            // Set text of the contextText
+            contextText.setText(""); // Optionally set text here if needed
+        } else {
+            // Set data to views
+            if (goal != null) {
+                textViewGoalText.setText(goal.text()); // Set the text from the Goal object
+
+                // Set the context text and background drawable based on the goal context
+                Drawable contextBackground = null;
+                String contextType = "";
+                switch (goal.getContext()) {
+                    case ERRAND:
+                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_errand);
+                        contextType = "Errand";
+                        break;
+                    case HOME:
+                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_home);
+                        contextType = "Home";
+                        break;
+                    case SCHOOL:
+                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_school);
+                        contextType = "School";
+                        break;
+                    case WORK:
+                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_work);
+                        contextType = "Work";
+                        break;
+                }
+
+                // Set background drawable of the contextText
+                contextText.setBackground(contextBackground);
+
+                // Set text of the contextText
+                contextText.setText(contextType);
+            }
         }
 
         return convertView;
     }
+
     public void updateData(List<Goal> newGoals) {
         clear(); // Clear the existing data
         addAll(newGoals); // Add the new data

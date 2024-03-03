@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- button1_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFF00"/> <!-- Yellow color -->
+    <corners android:radius="8dp"/> <!-- Adjust radius for rectangle corners -->
+</shape>
