@@ -119,4 +119,9 @@ public class GoalsFragment extends Fragment {
         }
         completedListView.setLayoutParams(params);
     }
+
+
+
+
+
 }

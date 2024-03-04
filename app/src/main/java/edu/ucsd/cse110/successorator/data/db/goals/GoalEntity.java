@@ -14,27 +14,31 @@ public class GoalEntity {
     @ColumnInfo(name = "text")
     public String text;
 
+    @ColumnInfo(name = "context")
+    public String context;
+
     @ColumnInfo(name = "sort_order")
     public int sortOrder;
 
     @ColumnInfo(name = "is_completed")
     public boolean isCompleted;
 
-    GoalEntity(@NonNull String text, int sortOrder, boolean isCompleted) {
+    GoalEntity(@NonNull String text, String context, int sortOrder, boolean isCompleted) {
         this.text = text;
+       // this.context = context;
         this.sortOrder = sortOrder;
         this.isCompleted = isCompleted;
     }
 
     // turns Goal object into GoalEntity so that it can be added to database
     public static GoalEntity fromGoal(Goal goal) {
-        var entity = new GoalEntity(goal.text(), goal.sortOrder(), goal.isCompleted());
+        var entity = new GoalEntity(goal.text(), goal.getContext(), goal.sortOrder(), goal.isCompleted());
         entity.id = goal.id();
         return entity;
     }
 
     // turns GoalEntity into Goal object
     public @NonNull Goal toGoal() {
-        return new Goal(id, text, sortOrder, isCompleted);
+        return new Goal(id, text, context,  sortOrder, isCompleted);
     }
 }

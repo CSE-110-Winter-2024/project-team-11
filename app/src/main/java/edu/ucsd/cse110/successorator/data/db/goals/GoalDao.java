@@ -37,7 +37,7 @@ public interface GoalDao {
     default int append(GoalEntity goal) {
         var maxSortOrder = getMaxSortOrder(goal.isCompleted);
         var newGoal = new GoalEntity(
-                goal.text, maxSortOrder + 1, goal.isCompleted
+                goal.text, goal.context, maxSortOrder + 1, goal.isCompleted
         );
         return Math.toIntExact(insert(newGoal));
     }
@@ -51,7 +51,7 @@ public interface GoalDao {
         });
 
         // Insert new goal with new min sort order
-        var newGoal = new GoalEntity(goal.text, getMinSortOrder(goal.isCompleted) - 1, goal.isCompleted);
+        var newGoal = new GoalEntity(goal.text, goal.context, getMinSortOrder(goal.isCompleted) - 1, goal.isCompleted);
         return Math.toIntExact(insert(newGoal));
     }
 
