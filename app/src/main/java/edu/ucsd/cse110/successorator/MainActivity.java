@@ -42,4 +42,22 @@ public class MainActivity extends AppCompatActivity
             modelProvider.get(MainViewModel.class).getTime();
         });
     }
+
+    //    @Override
+//    protected void onPause(){
+//        super.onPause();
+//        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(binding.dateFragmentContainer.getId(), new DateFragment())
+//                .commit();
+//
+//    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        getSupportFragmentManager().beginTransaction()
+                .replace(binding.dateFragmentContainer.getId(), new DateFragment())
+                .commit();
+    }
 }
