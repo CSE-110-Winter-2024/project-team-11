@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -75,7 +76,7 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
     }
 
     public void saveGoal(Recurrence daily, Recurrence weekly, Recurrence monthly, Recurrence yearly) {
-        if(getView() == null) {return;}
+//        if(getView() == null) {return;} IDK why getView() returns null but it causes the function to exit
         var goalText = view.enterGoalText.getText().toString();
         var goal = new Goal(null, goalText, -1, false);
 
