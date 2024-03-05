@@ -7,7 +7,7 @@
 
     <!-- Indicator TextView with default rectangle background for completed goals -->
     <TextView
-        android:id="@+id/contextText"
+        android:id="@+id/context_text"
         android:layout_width="48dp"
         android:layout_height="32dp"
         android:layout_alignParentStart="true"
@@ -23,7 +23,7 @@
         android:id="@+id/goalText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/contextText"
+        android:layout_toEndOf="@id/context_text"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:text="Goal Text"

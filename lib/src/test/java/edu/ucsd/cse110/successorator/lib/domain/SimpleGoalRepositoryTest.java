@@ -22,11 +22,11 @@ public class SimpleGoalRepositoryTest {
     @Before
     public void setup() {
         goalList = new ArrayList<>(List.of(
-                new Goal(0, "shopping", 0, false),
-                new Goal(1, "homework", 1, false),
-                new Goal(2, "study", 2, false),
-                new Goal(3, "laundry", 3, false),
-                new Goal(4, "haircut", 4, false)
+                new Goal(0, "shopping", "ERRAND",0, false),
+                new Goal(1, "homework", "SCHOOL",1, false),
+                new Goal(2, "study", "SCHOOL",2, false),
+                new Goal(3, "laundry", "HOME",3, false),
+                new Goal(4, "haircut", "ERRAND",4, false)
         ));
 
         src = new InMemoryDataSource();
@@ -37,8 +37,8 @@ public class SimpleGoalRepositoryTest {
 
     @Test
     public void append() {
-        goalList.add(new Goal(5, "sleep", 5, false));
-        repo.append(new Goal(5, "sleep", 10, false));
+        goalList.add(new Goal(5, "sleep", "HOME",5, false));
+        repo.append(new Goal(5, "sleep", "HOME",10, false));
         assertGoalListEquals(goalList, Objects.requireNonNull(repo.findAll().getValue()));
     }
 

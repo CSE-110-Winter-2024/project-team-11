@@ -22,11 +22,11 @@ public class InMemoryDataSourceTest {
         src = new InMemoryDataSource();
 
         goalList = new ArrayList<>(List.of(
-                new Goal(0, "shopping", 0, false),
-                new Goal(1, "homework", 1, false),
-                new Goal(2, "study", 2, false),
-                new Goal(3, "laundry", 3, false),
-                new Goal(4, "haircut", 4, false)
+                new Goal(0, "ERRAND","shopping", 0, false),
+                new Goal(1, "SCHOOL","homework", 1, false),
+                new Goal(2, "SCHOOL","study", 2, false),
+                new Goal(3, "HOME","laundry", 3, false),
+                new Goal(4, "ERRAND","haircut", 4, false)
         ));
 
         src.putGoals(List.copyOf(goalList));
@@ -84,8 +84,8 @@ public class InMemoryDataSourceTest {
 
     @Test
     public void putGoal() {
-        goalList.add(new Goal(5, "sleep", 5, false));
-        src.putGoal(new Goal(5, "sleep", 5, false));
+        goalList.add(new Goal(5, "HOME","sleep", 5, false));
+        src.putGoal(new Goal(5, "HOME","sleep", 5, false));
 
         var expected = goalList;
         var actual = src.getGoals();
@@ -96,8 +96,8 @@ public class InMemoryDataSourceTest {
     @Test
     public void putGoals() {
         var append = List.of(
-                new Goal(5, "sleep", 5, false),
-                new Goal(6, "drink water", 6, false)
+                new Goal(5, "HOME","sleep", 5, false),
+                new Goal(6, "HOME","drink water", 6, false)
         );
         goalList.addAll(append);
         src.putGoals(List.copyOf(append));
@@ -111,27 +111,27 @@ public class InMemoryDataSourceTest {
     @Test
     public void removeGoal() {
         var expected = new ArrayList<>(List.of(
-                new Goal(0, "shopping", 0, false),
-                new Goal(2, "study", 1, false),
-                new Goal(3, "laundry", 2, false),
-                new Goal(4, "haircut", 3, false)
+                new Goal(0, "ERRAND","shopping", 0, false),
+                new Goal(2, "SCHOOL","study", 1, false),
+                new Goal(3, "HOME","laundry", 2, false),
+                new Goal(4, "ERRAND","haircut", 3, false)
         ));
         src.removeGoal(1);
         var actual = src.getGoals();
         assertGoalListEquals(expected, actual);
 
         expected = new ArrayList<>(List.of(
-                new Goal(2, "study", 0, false),
-                new Goal(3, "laundry", 1, false),
-                new Goal(4, "haircut", 2, false)
+                new Goal(2, "SCHOOL","study", 0, false),
+                new Goal(3, "HOME","laundry", 1, false),
+                new Goal(4, "ERRAND","haircut", 2, false)
         ));
         src.removeGoal(0);
         actual = src.getGoals();
         assertGoalListEquals(expected, actual);
 
         expected = new ArrayList<>(List.of(
-                new Goal(2, "study", 0, false),
-                new Goal(3, "laundry", 1, false)
+                new Goal(2, "SCHOOL","study", 0, false),
+                new Goal(3, "HOME","laundry", 1, false)
         ));
         src.removeGoal(4);
         actual = src.getGoals();
@@ -142,22 +142,22 @@ public class InMemoryDataSourceTest {
     public void shiftSortOrders() {
         src.shiftSortOrders(0, 1, 5);
         var expected = new ArrayList<>(List.of(
-                new Goal(0, "shopping", 5, false),
-                new Goal(1, "homework", 6, false),
-                new Goal(2, "study", 2, false),
-                new Goal(3, "laundry", 3, false),
-                new Goal(4, "haircut", 4, false)
+                new Goal(0, "ERRAND","shopping", 5, false),
+                new Goal(1, "SCHOOL","homework", 6, false),
+                new Goal(2, "SCHOOL","study", 2, false),
+                new Goal(3, "HOME","laundry", 3, false),
+                new Goal(4, "ERRAND","haircut", 4, false)
         ));
         assertGoalListEquals(expected, src.getGoals());
         assertEquals(6, src.getMaxSortOrder());
 
         src.shiftSortOrders(1, 5, -2);
         expected = new ArrayList<>(List.of(
-                new Goal(0, "shopping", 3, false),
-                new Goal(1, "homework", 6, false),
-                new Goal(2, "study", 0, false),
-                new Goal(3, "laundry", 1, false),
-                new Goal(4, "haircut", 2, false)
+                new Goal(0, "ERRAND","shopping", 3, false),
+                new Goal(1, "SCHOOL","homework", 6, false),
+                new Goal(2, "SCHOOL","study", 0, false),
+                new Goal(3, "HOME","laundry", 1, false),
+                new Goal(4, "ERRAND","haircut", 2, false)
         ));
         assertGoalListEquals(expected, src.getGoals());
         assertEquals(0, src.getMinSortOrder());

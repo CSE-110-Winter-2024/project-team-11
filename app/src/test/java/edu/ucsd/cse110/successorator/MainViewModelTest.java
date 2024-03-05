@@ -55,7 +55,7 @@ public class MainViewModelTest {
             addTo.add(g);
             model.append(g);
 
-            assertEquals(ongoingList, model.getOngoingGoals().getValue());
+            assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
             assertEquals(completedList, model.getCompletedGoals().getValue());
         }
     }
@@ -68,7 +68,7 @@ public class MainViewModelTest {
         completedList.add(simple.withIsCompleted(true));
         model.append(simple);
         model.completeGoal(simple);
-        assertEquals(ongoingList, model.getOngoingGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -84,7 +84,7 @@ public class MainViewModelTest {
         model.append(done);
         model.append(simple);
         model.completeGoal(simple);
-        assertEquals(ongoingList, model.getOngoingGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -112,7 +112,7 @@ public class MainViewModelTest {
         model.append(complete2);
         model.append(complete3);
         model.completeGoal(incomplete2);
-        assertEquals(ongoingList, model.getOngoingGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -125,7 +125,7 @@ public class MainViewModelTest {
         ongoingList.add(simple.withIsCompleted(false));
         model.append(simple);
         model.unCompleteGoal(simple);
-        assertEquals(ongoingList, model.getOngoingGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -141,7 +141,7 @@ public class MainViewModelTest {
         model.append(done);
         model.append(simple);
         model.unCompleteGoal(simple);
-        assertEquals(ongoingList, model.getOngoingGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
     }
 
@@ -168,7 +168,7 @@ public class MainViewModelTest {
         model.append(complete2);
         model.append(complete3);
         model.unCompleteGoal(complete2);
-        assertEquals(ongoingList, model.getOngoingGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -221,7 +221,7 @@ public class MainViewModelTest {
 
             appResetModel.nextDay();
 
-            assertEquals(ongoingList, appResetModel.getOngoingGoals().getValue());
+            assertEquals(ongoingList, appResetModel.getOngoingHomeGoals().getValue());
             assertEquals(completedList, appResetModel.getCompletedGoals().getValue());
         }
 

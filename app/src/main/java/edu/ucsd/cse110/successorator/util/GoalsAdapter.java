@@ -3,7 +3,6 @@ package edu.ucsd.cse110.successorator.util;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,16 +88,16 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
 
         // Get reference to views in the list item layout
         TextView textViewGoalText = convertView.findViewById(R.id.goal_text);
-        TextView contextText = convertView.findViewById(R.id.contextText);
+        TextView textViewContextText = convertView.findViewById(R.id.context_text);
 
         // Check if the text is for the completed goals
         if(isCompleted) {
             textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-            // Set background drawable of the contextText for completed goals
-            contextText.setBackgroundResource(R.drawable.rectangle_background_completed);
-            // Set text of the contextText
-            contextText.setText(""); // Optionally set text here if needed
+            textViewGoalText.setText(goal.text());
+            // Set background drawable of the textViewContextText for completed goals
+            textViewContextText.setBackgroundResource(R.drawable.rectangle_background_completed);
+            // Set text of the textViewContextText
+            textViewContextText.setText("Completed"); // Optionally set text here if needed
         } else {
             // Set data to views
             if (goal != null) {
@@ -107,30 +106,32 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
                 // Set the context text and background drawable based on the goal context
                 Drawable contextBackground = null;
                 String contextType = "";
+               
                 switch (goal.getContext()) {
-                    case "ERRAND":
-                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_errand);
-                        contextType = "Errand";
-                        break;
                     case "HOME":
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_home);
                         contextType = "Home";
-                        break;
-                    case "SCHOOL":
-                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_school);
-                        contextType = "School";
                         break;
                     case "WORK":
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_work);
                         contextType = "Work";
                         break;
+                    case "SCHOOL":
+                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_school);
+                        contextType = "School";
+                        break;
+                    case "ERRAND":
+                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_errand);
+                        contextType = "Errand";
+                        break;
+
                 }
 
-                // Set background drawable of the contextText
-                contextText.setBackground(contextBackground);
+                // Set background drawable of the textViewContextText
+                textViewContextText.setBackground(contextBackground);
 
-                // Set text of the contextText
-                contextText.setText(contextType);
+                // Set text of the textViewContextText
+                textViewContextText.setText(contextType);
             }
         }
 

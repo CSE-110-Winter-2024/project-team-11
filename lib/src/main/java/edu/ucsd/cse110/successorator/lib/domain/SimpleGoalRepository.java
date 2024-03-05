@@ -40,7 +40,7 @@ public class SimpleGoalRepository implements GoalRepository {
     @Override
     public void append(Goal goal) {
         dataSource.putGoal(
-                goal.withSortOrder(Math.max(0, dataSource.getMaxSortOrder() + 1))
+                goal.withSortOrder(goal.sortOrder())
         );
     }
 

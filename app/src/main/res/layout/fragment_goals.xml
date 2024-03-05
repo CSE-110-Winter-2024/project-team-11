@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- Original no_ongoing_goals_text -->
         <TextView
             android:id="@+id/no_ongoing_goals_text"
             android:layout_width="wrap_content"
@@ -21,25 +21,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Ongoing Goals ListViews -->
         <ListView
-            android:id="@+id/ongoing_goals_list"
+            android:id="@+id/home_goals_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
+            app:layout_constraintTop_toBottomOf="@id/no_ongoing_goals_text"
+            android:layout_marginTop="8dp">
         </ListView>
 
+        <ListView
+            android:id="@+id/work_goals_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_goals_list"
+            android:layout_marginTop="8dp">
+        </ListView>
+
+        <ListView
+            android:id="@+id/school_goals_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/work_goals_list"
+            android:layout_marginTop="8dp">
+        </ListView>
+
+        <ListView
+            android:id="@+id/errand_goals_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/school_goals_list"
+            android:layout_marginTop="8dp">
+        </ListView>
+
+        <!-- Completed Goals ListView -->
         <ListView
             android:id="@+id/completed_goals_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ongoing_goals_list">
-
+            app:layout_constraintTop_toBottomOf="@+id/errand_goals_list">
         </ListView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

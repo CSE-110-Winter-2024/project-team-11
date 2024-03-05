@@ -15,7 +15,7 @@ public class GoalEntity {
     public String text;
 
     @ColumnInfo(name = "context")
-    public String context;
+    public String context; // New column
 
     @ColumnInfo(name = "sort_order")
     public int sortOrder;
@@ -25,7 +25,7 @@ public class GoalEntity {
 
     GoalEntity(@NonNull String text, String context, int sortOrder, boolean isCompleted) {
         this.text = text;
-       // this.context = context;
+        this.context = context;
         this.sortOrder = sortOrder;
         this.isCompleted = isCompleted;
     }

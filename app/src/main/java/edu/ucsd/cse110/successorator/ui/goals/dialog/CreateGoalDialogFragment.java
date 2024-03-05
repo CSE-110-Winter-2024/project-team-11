@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -44,7 +46,7 @@ public class CreateGoalDialogFragment extends DialogFragment {
 
     }
     private void setSelectedContext(String context) {
-        String selectedContext = context;
+        this.selectedContext = context;
     }
 
 
@@ -68,13 +70,9 @@ public class CreateGoalDialogFragment extends DialogFragment {
                 .create();
     }
 
-
-
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         var goalText = view.goalEditText.getText().toString();
-
         var goal = new Goal(null, goalText, selectedContext, -1, false);
-
         // once persistence is added to this database, this should work
         activityModel.append(goal);
         dialog.dismiss();
