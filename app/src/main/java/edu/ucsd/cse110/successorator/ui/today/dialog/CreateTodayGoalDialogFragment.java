@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDateTime;
+
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.databinding.FragmentCreateTodayGoalBinding;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
@@ -55,11 +57,12 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         this.view = FragmentCreateTodayGoalBinding.inflate(getLayoutInflater());
 
+        LocalDateTime time = activityModel.getTime().getValue();
         RecurrenceFactory recurrenceFactory = new RecurrenceFactory();
-        Recurrence daily = recurrenceFactory.createRecurrence(activityModel.getTime().getValue(), DAILY);
-        Recurrence weekly = recurrenceFactory.createRecurrence(activityModel.getTime().getValue(), WEEKLY);
-        Recurrence monthly = recurrenceFactory.createRecurrence(activityModel.getTime().getValue(), MONTHLY);
-        Recurrence yearly = recurrenceFactory.createRecurrence(activityModel.getTime().getValue(), YEARLY);
+        Recurrence daily = recurrenceFactory.createRecurrence(time, DAILY);
+        Recurrence weekly = recurrenceFactory.createRecurrence(time, WEEKLY);
+        Recurrence monthly = recurrenceFactory.createRecurrence(time, MONTHLY);
+        Recurrence yearly = recurrenceFactory.createRecurrence(time, YEARLY);
         view.weeklyRadioButton.setText(weekly.recurrenceText());
         view.monthlyRadioButton.setText(monthly.recurrenceText());
         view.yearlyRadioButton.setText(yearly.recurrenceText());
@@ -80,8 +83,9 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
         var goalText = view.enterGoalText.getText().toString();
         var goal = new Goal(null, goalText, -1, false);
 
+        activityModel.append(goal);
         if(view.oneTimeRadioButton.isChecked()) {
-            activityModel.append(goal);
+
         }
         else if(view.dailyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, daily);
