@@ -38,7 +38,8 @@ public class RecurringGoalTest {
                 RecurrenceFactory.RecurrenceEnum.WEEKLY);
         recurringGoal = new RecurringGoal(2, goal, recur);
 
-        assertEquals("Clean garbage, weekly on " + LocalDateTime.now().getDayOfWeek()
+        assertEquals("Clean garbage, weekly on " + LocalDateTime.now().getDayOfWeek().name().charAt(0) + ""
+                        + LocalDateTime.now().getDayOfWeek().name().toLowerCase().charAt(1)
                 , recurringGoal.text());
     }
 }
