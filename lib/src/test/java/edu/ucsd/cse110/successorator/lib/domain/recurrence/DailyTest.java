@@ -20,8 +20,8 @@ public class DailyTest {
         // always occurs on start day
         assertTrue(daily.occursOnDay(now));
 
-        // occurs every day for the next 10 days
-        for (int i = 0; i < 10; i++) {
+        // occurs every day for the next 1000 days
+        for (int i = 0; i < 1000; i++) {
             assertTrue(daily.occursOnDay(now.plusDays(i+1)));
         }
 

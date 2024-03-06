@@ -47,7 +47,7 @@ public class YearlyTest {
         }
 
         // doesn't occur for previous days
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 2000; i++) {
             assertFalse(yearly.occursOnDay(startDate.minusDays(i+1)));
         }
     }
