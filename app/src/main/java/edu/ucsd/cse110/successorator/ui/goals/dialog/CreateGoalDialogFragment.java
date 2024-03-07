@@ -56,7 +56,7 @@ public class CreateGoalDialogFragment extends DialogFragment {
         var goal = new Goal(null, goalText, -1, false);
 
         // once persistence is added to this database, this should work
-        activityModel.append(goal);
+        activityModel.todayAppend(goal);
         dialog.dismiss();
 
     }

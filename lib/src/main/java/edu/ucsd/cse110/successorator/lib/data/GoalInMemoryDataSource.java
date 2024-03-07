@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.successorator.lib.data;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +30,13 @@ public class GoalInMemoryDataSource {
             = new SimpleSubject<>();
 
     public GoalInMemoryDataSource() {
+        allGoalsSubject.setValue(getGoals());
     }
 
     public List<Goal> getGoals() {
-        return List.copyOf(goals.values());
+        return List.copyOf(goals.values()).stream()
+                .sorted(Comparator.comparing(Goal::sortOrder))
+                .collect(Collectors.toList());
     }
 
     public Goal getGoal(int id) {

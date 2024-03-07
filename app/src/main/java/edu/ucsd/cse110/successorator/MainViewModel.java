@@ -5,27 +5,29 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalRepository;
-import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
-import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
+import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
+import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoalRepository;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
 public class MainViewModel extends ViewModel {
-    private final GoalRepository ongoingGoalRepository;
-    private final GoalRepository completedGoalRepository;
+    // Today
+    private final GoalRepository todayOngoingGoalRepository, todayCompletedGoalRepository;
 
-    private final MutableSubject<List<Goal>> completedGoals;
-    private final MutableSubject<List<Goal>> ongoingGoals;
+    // Tomorrow
+    private final GoalRepository tmrwOngoingGoalRepository, tmrwCompletedGoalRepository;
+
+    // Pending
+    private final GoalRepository pendingGoalRepository;
+
+    // Recurring
+    private final RecurringGoalRepository recurringGoalRepository;
 
     private final TimeManager timeManager;
-    private final MutableSubject<LocalDateTime> time;
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
                     MainViewModel.class,
@@ -33,120 +35,120 @@ public class MainViewModel extends ViewModel {
                         var app = (SuccessoratorApplication) creationExtras.get(APPLICATION_KEY);
                         assert app != null;
                         return new MainViewModel(
-                                app.getOngoingGoalRepository(),
-                                app.getCompletedGoalRepository(),
+                                app.getTodayOngoingGoalRepository(),
+                                app.getTodayCompletedGoalRepository(),
+                                app.getTmrwOngoingGoalRepository(),
+                                app.getTmrwCompletedGoalRepository(),
+                                app.getPendingGoalRepository(),
+                                app.getRecurringGoalRepository(),
                                 app.getTimeManager());
                     });
 
 
     public MainViewModel(
-            GoalRepository ongoingGoalRepository,
-            GoalRepository completedGoalRepository,
+            GoalRepository todayOngoingGoalRepository,
+            GoalRepository todayCompletedGoalRepository,
+            GoalRepository tmrwOngoingGoalRepository,
+            GoalRepository tmrwCompletedGoalRepository,
+            GoalRepository pendingGoalRepository,
+            RecurringGoalRepository recurringGoalRepository,
             TimeManager timeManager) {
-        this.ongoingGoalRepository = ongoingGoalRepository;
-        this.completedGoalRepository = completedGoalRepository;
+        this.todayOngoingGoalRepository = todayOngoingGoalRepository;
+        this.todayCompletedGoalRepository = todayCompletedGoalRepository;
 
-        this.completedGoals = new SimpleSubject<>();
-        this.completedGoals.setValue(new ArrayList<>());
+        this.tmrwOngoingGoalRepository = tmrwOngoingGoalRepository;
+        this.tmrwCompletedGoalRepository = tmrwCompletedGoalRepository;
 
-        this.ongoingGoals = new SimpleSubject<>();
-        this.ongoingGoals.setValue(new ArrayList<>());
+        this.pendingGoalRepository = pendingGoalRepository;
+
+        this.recurringGoalRepository = recurringGoalRepository;
 
         this.timeManager = timeManager;
-        this.time = new SimpleSubject<>();
-        this.time.setValue(null);
 
-        // When the list of ongoing goals changes, reset the ordering
-        ongoingGoalRepository.findAll().observe(goals -> {
-            if (goals == null) return; // not ready yet, ignore
-
-            var newOngoingGoals = goals.stream()
-                    .sorted(Comparator.comparingInt(Goal::sortOrder))
-                    .collect(Collectors.toList());
-
-            ongoingGoals.setValue(newOngoingGoals);
-        });
-        // When the list of completed goals changes, reset the ordering
-        completedGoalRepository.findAll().observe(goals -> {
-            if (goals == null) return; // not ready yet, ignore
-
-            var newCompletedGoals = goals.stream()
-                    .sorted(Comparator.comparingInt(Goal::sortOrder))
-                    .collect(Collectors.toList());
-
-            completedGoals.setValue(newCompletedGoals);
-        });
         timeManager.getLocalDateTime().observe(time -> {
             if (time == null) return;
 
-            this.time.setValue(time);
-
             LocalDateTime lastClearedTime = timeManager.getLastCleared();
-//             if the date changed and the new date is after the old date
+
+            // if the date changed and the new date is after the old date
             if(time.isAfter(lastClearedTime)
                     && (time.getDayOfYear() != lastClearedTime.getDayOfYear()
                     || time.getYear() != lastClearedTime.getYear())) {
                 clearCompleted();
             }
 
-            System.out.println(time + " " + lastClearedTime);
-
             timeManager.updateLastCleared(time);
         });
 
     }
 
-    public Subject<List<Goal>> getOngoingGoals() {
-        return ongoingGoals;
+    public Subject<List<Goal>> getTodayOngoingGoals() {
+        return todayOngoingGoalRepository.findAll();
     }
 
-    public Subject<List<Goal>> getCompletedGoals() {
-        return completedGoals;
+    public Subject<List<Goal>> getTodayCompletedGoals() {
+        return todayCompletedGoalRepository.findAll();
+    }
+
+    public Subject<List<Goal>> getTmrwOngoingGoals() {
+        return tmrwOngoingGoalRepository.findAll();
+    }
+
+    public Subject<List<Goal>> getTmrwCompletedGoals() {
+        return tmrwCompletedGoalRepository.findAll();
+    }
+
+    public Subject<List<Goal>> getPendingGoals() {
+        return pendingGoalRepository.findAll();
+    }
+
+    public Subject<List<RecurringGoal>> getRecurringGoals() {
+        return recurringGoalRepository.findAll();
     }
 
     public Subject<LocalDateTime> getTime() {
         return timeManager.getLocalDateTime();
     }
 
-    public void append(Goal goal) {
+    public void todayAppend(Goal goal) {
         if (goal.isCompleted()) {
-            completedGoalRepository.append(goal);
+            todayCompletedGoalRepository.append(goal);
         } else {
-            ongoingGoalRepository.append(goal);
+            todayOngoingGoalRepository.append(goal);
         }
     }
 
 
-    public void completeGoal(Goal goal) {
+    public void todayCompleteGoal(Goal goal) {
         // Set the goal as completed
         Goal completedGoal = goal.withIsCompleted(true);
 //        Goal completedGoal = temp.withSortOrder(0);
 
         // Remove old goal, add new Completed Goal
         if (goal.id() != null) {
-            ongoingGoalRepository.remove(goal.id());
-            completedGoalRepository.prepend(completedGoal);
+            todayOngoingGoalRepository.remove(goal.id());
+            todayCompletedGoalRepository.prepend(completedGoal);
         }
     }
 
-    public void unCompleteGoal(Goal goal) {
+    public void todayUncompleteGoal(Goal goal) {
         // Set the goal as completed
         Goal completedGoal = goal.withIsCompleted(false);
 //        Goal completedGoal = temp.withSortOrder(0);
 
         // Remove old goal, add new Completed Goal
         if (goal.id() != null) {
-            completedGoalRepository.remove(goal.id());
-            ongoingGoalRepository.prepend(completedGoal);
+            todayCompletedGoalRepository.remove(goal.id());
+            todayOngoingGoalRepository.prepend(completedGoal);
         }
     }
 
     public void nextDay() {
         timeManager.nextDay();
-
     }
 
     public void clearCompleted() {
-        completedGoalRepository.clear();
+        todayCompletedGoalRepository.clear();
+        tmrwCompletedGoalRepository.clear();
     }
 }

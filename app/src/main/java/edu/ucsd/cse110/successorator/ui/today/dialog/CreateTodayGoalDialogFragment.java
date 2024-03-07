@@ -7,11 +7,7 @@ import static edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFact
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +21,6 @@ import edu.ucsd.cse110.successorator.databinding.FragmentCreateTodayGoalBinding;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
-import edu.ucsd.cse110.successorator.lib.domain.recurrence.Weekly;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 
 public class CreateTodayGoalDialogFragment extends DialogFragment {
@@ -83,7 +78,7 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
         var goalText = view.enterGoalText.getText().toString();
         var goal = new Goal(null, goalText, -1, false);
 
-        activityModel.append(goal);
+        activityModel.todayAppend(goal);
         if(view.oneTimeRadioButton.isChecked()) {
 
         }

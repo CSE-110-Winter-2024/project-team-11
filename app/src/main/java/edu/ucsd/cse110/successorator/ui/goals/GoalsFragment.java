@@ -45,7 +45,7 @@ public class GoalsFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
 
-        activityModel.getOngoingGoals().observe(goals -> {
+        activityModel.getTodayOngoingGoals().observe(goals -> {
             ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
                     .sorted(Comparator.comparingInt(Goal::sortOrder))
                     .collect(Collectors.toList()) : null);
@@ -55,7 +55,7 @@ public class GoalsFragment extends Fragment {
                 updateCompletedGoalsParams(newOngoingGoals.isEmpty());
             }
         });
-        activityModel.getCompletedGoals().observe(goals -> {
+        activityModel.getTodayCompletedGoals().observe(goals -> {
             ArrayList<Goal> newCompletedGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
                     .sorted(Comparator.comparingInt(Goal::sortOrder))
                     .collect(Collectors.toList()) : null);
@@ -80,12 +80,12 @@ public class GoalsFragment extends Fragment {
 
         ongoingGoalsAdapter.setOnGoalCompleteListener(goal -> {
             // Set complete goal listener
-            activityModel.completeGoal(goal);
+            activityModel.todayCompleteGoal(goal);
         });
 
         completedGoalsAdapter.setOnGoalUnCompleteListener(goal -> {
             // Set uncomplete goal listener
-            activityModel.unCompleteGoal(goal);
+            activityModel.todayUncompleteGoal(goal);
         });
 
         ongoingListView.setAdapter(ongoingGoalsAdapter);
