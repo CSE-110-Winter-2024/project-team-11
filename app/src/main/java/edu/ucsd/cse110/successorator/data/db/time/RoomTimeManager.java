@@ -5,8 +5,6 @@ import java.time.*;
 
 import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
-import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
-import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 
 public class RoomTimeManager implements TimeManager {
@@ -26,24 +24,13 @@ public class RoomTimeManager implements TimeManager {
     }
 
     @Override
-    public Subject<LocalDateTime> getLocalDateTime() {
-        return this.timeManager.getLocalDateTime();
+    public Subject<LocalDate> getDate() {
+        return this.timeManager.getDate();
     }
 
     @Override
-    public Subject<LocalDateTime> getLocalDateTime(LocalDateTime localDateTime) {
-        return this.timeManager.getLocalDateTime(localDateTime);
-    }
-
-    @Override
-    public LocalDateTime getLastCleared() {
-        if (timeDao.get() == null) updateLastCleared(LocalDateTime.now());
-        return timeDao.get().toTime();
-    }
-
-    @Override
-    public void updateLastCleared(LocalDateTime time) {
-        this.timeDao.update(TimeEntity.fromTime(time));
+    public Subject<LocalDate> getDate(LocalDateTime localDateTime) {
+        return this.timeManager.getDate(localDateTime);
     }
 
     @Override

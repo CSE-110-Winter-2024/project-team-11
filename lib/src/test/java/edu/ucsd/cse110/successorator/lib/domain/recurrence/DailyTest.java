@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
@@ -13,7 +14,7 @@ import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 public class DailyTest {
     @Test
     public void occursOnDay() {
-        LocalDateTime now = LocalDateTime.now().withHour(6);
+        LocalDate now = LocalDate.now();
         
         Daily daily = new Daily(now);
 
@@ -33,7 +34,7 @@ public class DailyTest {
 
     @Test
     public void occursDuringInterval() {
-        LocalDateTime now = LocalDateTime.now().withHour(6);
+        LocalDate now = LocalDate.now();
 
         Daily daily = new Daily(now);
 
@@ -55,9 +56,6 @@ public class DailyTest {
         assertTrue(daily.occursDuringInterval(now.plusDays(1), now.plusDays(2)));
         assertTrue(daily.occursDuringInterval(now.plusDays(1), now.plusDays(20)));
 
-        // It should occur on the start date regardless of time
-        assertTrue(daily.occursDuringInterval(now.minusDays(1), now.minusHours(1)));
-
         // It shouldn't occur when the start date is after the end date
         assertFalse(daily.occursDuringInterval(now.plusDays(2), now.plusDays(1)));
     }
@@ -65,6 +63,6 @@ public class DailyTest {
     @Test
     public void recurrenceText() {
         String expected = "daily";
-        assertEquals(expected, new Daily(LocalDateTime.now()).recurrenceText());
+        assertEquals(expected, new Daily(LocalDate.now()).recurrenceText());
     }
 }

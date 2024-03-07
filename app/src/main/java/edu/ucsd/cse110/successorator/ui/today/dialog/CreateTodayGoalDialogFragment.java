@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
@@ -52,12 +53,12 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         this.view = FragmentCreateTodayGoalBinding.inflate(getLayoutInflater());
 
-        LocalDateTime time = activityModel.getTime().getValue();
+        LocalDate date = activityModel.getDate().getValue();
         RecurrenceFactory recurrenceFactory = new RecurrenceFactory();
-        Recurrence daily = recurrenceFactory.createRecurrence(time, DAILY);
-        Recurrence weekly = recurrenceFactory.createRecurrence(time, WEEKLY);
-        Recurrence monthly = recurrenceFactory.createRecurrence(time, MONTHLY);
-        Recurrence yearly = recurrenceFactory.createRecurrence(time, YEARLY);
+        Recurrence daily = recurrenceFactory.createRecurrence(date, DAILY);
+        Recurrence weekly = recurrenceFactory.createRecurrence(date, WEEKLY);
+        Recurrence monthly = recurrenceFactory.createRecurrence(date, MONTHLY);
+        Recurrence yearly = recurrenceFactory.createRecurrence(date, YEARLY);
         view.weeklyRadioButton.setText(weekly.recurrenceText());
         view.monthlyRadioButton.setText(monthly.recurrenceText());
         view.yearlyRadioButton.setText(yearly.recurrenceText());

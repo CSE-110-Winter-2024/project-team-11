@@ -11,9 +11,9 @@ public class SimpleTimeManager implements TimeManager {
 
     private int daysOffset;
 
-    private MutableSubject<LocalDateTime> localDateTime;
+    private MutableSubject<LocalDate> date;
 
-    private LocalDateTime lastCleared;
+    private LocalDate lastCleared;
 
     public SimpleTimeManager() {
         this(LocalDateTime.now());
@@ -22,40 +22,35 @@ public class SimpleTimeManager implements TimeManager {
     public SimpleTimeManager(LocalDateTime localDateTime) {
         daysOffset = 0;
 
-        this.localDateTime = new SimpleSubject<>();
-        this.localDateTime.setValue(localDateTime.minusHours(DAY_START_HOUR));
-        this.lastCleared = localDateTime.minusHours(DAY_START_HOUR);
+        LocalDate date = localDateTime.minusHours(DAY_START_HOUR).toLocalDate();
+
+        this.date = new SimpleSubject<>();
+        this.date.setValue(date);
+        this.lastCleared = date;
     }
 
     @Override
-    public Subject<LocalDateTime> getLocalDateTime() {
+    public Subject<LocalDate> getDate() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        return getLocalDateTime(localDateTime);
+        return getDate(localDateTime);
     }
 
     @Override
-    public Subject<LocalDateTime> getLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime.setValue(
-                localDateTime
-                        .minusHours(DAY_START_HOUR)
-                        .plusDays(daysOffset)
-        );
-        return this.localDateTime;
-    }
+    public Subject<LocalDate> getDate(LocalDateTime localDateTime) {
+        LocalDate date = localDateTime
+                .minusHours(DAY_START_HOUR)
+                .toLocalDate()
+                .plusDays(daysOffset);
 
-    @Override
-    public LocalDateTime getLastCleared() {
-        return this.lastCleared;
-    }
-
-    @Override
-    public void updateLastCleared(LocalDateTime time) {
-        this.lastCleared = time;
+        if (!date.isEqual(this.date.getValue())) {
+            this.date.setValue(date);
+        }
+        return this.date;
     }
 
     @Override
     public void nextDay() {
         daysOffset++;
-        getLocalDateTime();
+        getDate();
     }
 }

@@ -3,13 +3,13 @@ package edu.ucsd.cse110.successorator.lib.domain.recurrence;
 import androidx.annotation.NonNull;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Weekly implements Recurrence {
-    LocalDateTime startDate;
+    LocalDate startDate;
 
-    public Weekly(@NonNull LocalDateTime startDate) {
-        this.startDate = startDate.toLocalDate().atStartOfDay();
+    public Weekly(@NonNull LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     @Override
@@ -18,26 +18,24 @@ public class Weekly implements Recurrence {
     }
 
     @Override
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
     @Override
-    public boolean occursOnDay(LocalDateTime date) {
+    public boolean occursOnDay(LocalDate date) {
         return !date.isBefore(startDate)
                 && date.getDayOfWeek() == startDate.getDayOfWeek();
     }
 
     @Override
-    public boolean occursDuringInterval(LocalDateTime startDate, LocalDateTime endDate) {
-        startDate = startDate.toLocalDate().atStartOfDay();
-        endDate = endDate.toLocalDate().atStartOfDay();
+    public boolean occursDuringInterval(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(this.startDate) || endDate.isBefore(startDate)) {
             return false;
         }
 
         // Check whether or not any day in the interval matches the recurrence relation
-        for (LocalDateTime date = startDate.plusDays(1); !date.isAfter(endDate); date = date.plusDays(1)) {
+        for (LocalDate date = startDate.plusDays(1); !date.isAfter(endDate); date = date.plusDays(1)) {
             if (occursOnDay(date)) {
                 return true;
             }

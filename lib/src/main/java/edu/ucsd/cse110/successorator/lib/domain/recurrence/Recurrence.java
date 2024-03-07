@@ -1,13 +1,13 @@
 package edu.ucsd.cse110.successorator.lib.domain.recurrence;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public interface Recurrence {
     public RecurrenceFactory.RecurrenceEnum getType();
 
-    public LocalDateTime getStartDate();
+    public LocalDate getStartDate();
 
-    public boolean occursOnDay(LocalDateTime date);
+    public boolean occursOnDay(LocalDate date);
 
     /**
      * Whether or not this should occur between startDate and endDate,
@@ -17,7 +17,7 @@ public interface Recurrence {
      * @param endDate The end of the interval (should always be now according to TimeManager)
      * @return Whether it should occur in this interval
      */
-    public boolean occursDuringInterval(LocalDateTime startDate, LocalDateTime endDate);
+    public boolean occursDuringInterval(LocalDate startDate, LocalDate endDate);
 
     public String recurrenceText();
 }

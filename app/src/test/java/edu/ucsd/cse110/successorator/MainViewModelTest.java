@@ -202,13 +202,13 @@ public class MainViewModelTest {
   
     @Test
     public void nextDay() {
-        LocalDateTime expected = model.getTime().getValue();
+        LocalDateTime expected = model.getDate().getValue();
         for(int i = 0; i < 100; i++) {
 
             expected = expected.plusDays(1);
             model.nextDay();
 
-            LocalDateTime actual = model.getTime().getValue();
+            LocalDateTime actual = model.getDate().getValue();
             assertEquals(expected.getDayOfMonth(), actual.getDayOfMonth());
             assertEquals(expected.getDayOfWeek(), actual.getDayOfWeek());
             assertEquals(expected.getMonth(), actual.getMonth());

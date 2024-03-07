@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -56,7 +57,7 @@ public class DateFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-        activityModel.getTime().observe(time -> {
+        activityModel.getDate().observe(time -> {
             updateDateText(time);
         });
     }
@@ -73,14 +74,14 @@ public class DateFragment extends Fragment {
             activityModel.nextDay();
         });
 
-        updateDateText(activityModel.getTime().getValue());
+        updateDateText(activityModel.getDate().getValue());
         return view.getRoot();
     }
 
-    private void updateDateText(LocalDateTime time) {
+    private void updateDateText(LocalDate date) {
         if (this.view == null) {return;}
         TextView dateTextView = this.view.dateTextView;
-        String dateText = DATE_TIME_FORMATTER.format(time);
+        String dateText = DATE_TIME_FORMATTER.format(date);
         dateTextView.setText(dateText);
     }
 }

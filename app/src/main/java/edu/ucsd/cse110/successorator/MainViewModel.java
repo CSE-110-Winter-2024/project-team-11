@@ -4,6 +4,7 @@ import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLI
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -65,19 +66,10 @@ public class MainViewModel extends ViewModel {
 
         this.timeManager = timeManager;
 
-        timeManager.getLocalDateTime().observe(time -> {
+        timeManager.getDate().observe(time -> {
             if (time == null) return;
 
-            LocalDateTime lastClearedTime = timeManager.getLastCleared();
-
-            // if the date changed and the new date is after the old date
-            if(time.isAfter(lastClearedTime)
-                    && (time.getDayOfYear() != lastClearedTime.getDayOfYear()
-                    || time.getYear() != lastClearedTime.getYear())) {
-                clearCompleted();
-            }
-
-            timeManager.updateLastCleared(time);
+            clearCompleted();
         });
 
     }
@@ -106,8 +98,8 @@ public class MainViewModel extends ViewModel {
         return recurringGoalRepository.findAll();
     }
 
-    public Subject<LocalDateTime> getTime() {
-        return timeManager.getLocalDateTime();
+    public Subject<LocalDate> getDate() {
+        return timeManager.getDate();
     }
 
     public void todayAppend(Goal goal) {
