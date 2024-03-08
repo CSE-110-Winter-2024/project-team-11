@@ -1,14 +1,14 @@
-package edu.ucsd.cse110.successorator.lib.domain;
+package edu.ucsd.cse110.successorator.lib.domain.goal;
 
 import java.util.List;
 
-import edu.ucsd.cse110.successorator.lib.data.InMemoryDataSource;
+import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 
 public class SimpleGoalRepository implements GoalRepository {
-    private final InMemoryDataSource dataSource;
+    private final GoalInMemoryDataSource dataSource;
 
-    public SimpleGoalRepository(InMemoryDataSource dataSource) {
+    public SimpleGoalRepository(GoalInMemoryDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
