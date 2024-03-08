@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.lib.domain;
+package edu.ucsd.cse110.successorator.lib.domain.goal;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,12 +9,9 @@ import java.util.Objects;
 public class Goal implements Serializable {
     private final @Nullable Integer id;
     private final @NonNull String text;
-
     private final String context;
-
     private boolean isCompleted;
-
-    private int sortOrder;
+    private final int sortOrder;
 
     public Goal(@Nullable Integer id, @NonNull String text, String context, int sortOrder, boolean isCompleted) {
         this.id = id;
@@ -42,7 +39,12 @@ public class Goal implements Serializable {
         return sortOrder;
     }
 
+
     public Goal withId(int id) {
+        return new Goal(id, this.text, this.context, this.sortOrder, this.isCompleted);
+    }
+
+    public Goal withId(@Nullable Integer id) {
         return new Goal(id, this.text, this.context, this.sortOrder, this.isCompleted);
     }
 

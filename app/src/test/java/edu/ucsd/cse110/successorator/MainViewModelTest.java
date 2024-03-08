@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ucsd.cse110.successorator.lib.data.InMemoryDataSource;
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
-import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalRepository;
+import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.SimpleGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
@@ -21,8 +21,8 @@ public class MainViewModelTest {
 
     @Before
     public void setUp() throws Exception {
-        SimpleGoalRepository ongoingRepo = new SimpleGoalRepository(new InMemoryDataSource());
-        SimpleGoalRepository completedRepo = new SimpleGoalRepository(new InMemoryDataSource());
+        SimpleGoalRepository ongoingRepo = new SimpleGoalRepository(new GoalInMemoryDataSource());
+        SimpleGoalRepository completedRepo = new SimpleGoalRepository(new GoalInMemoryDataSource());
         TimeManager timeManager = new SimpleTimeManager();
         LocalDateTime beforeReset = LocalDateTime.now()
                 .withHour(1)

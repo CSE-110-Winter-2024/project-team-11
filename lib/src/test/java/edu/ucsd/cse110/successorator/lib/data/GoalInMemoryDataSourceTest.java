@@ -9,17 +9,16 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 
-public class InMemoryDataSourceTest {
-    InMemoryDataSource src;
+public class GoalInMemoryDataSourceTest {
+    GoalInMemoryDataSource src;
     List<Goal> goalList;
 
     @Before
     public void setup() {
-        src = new InMemoryDataSource();
+        src = new GoalInMemoryDataSource();
 
         goalList = new ArrayList<>(List.of(
                 new Goal(0, "ERRAND","shopping", 0, false),

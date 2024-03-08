@@ -11,6 +11,7 @@ import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
 import edu.ucsd.cse110.successorator.ui.goals.dialog.CreateGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayGoalDialogFragment;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -31,8 +32,8 @@ public class MainActivity extends AppCompatActivity
 
         // Set the click listener for the createGoalButton
         binding.createGoalButton.setOnClickListener(v -> {
-            CreateGoalDialogFragment dialogFragment = CreateGoalDialogFragment.newInstance();
-            dialogFragment.show(getSupportFragmentManager(), "CreateGoalDialogFragment");
+            CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
+            dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
         });
 
         binding.getRoot().setOnClickListener(v -> {
