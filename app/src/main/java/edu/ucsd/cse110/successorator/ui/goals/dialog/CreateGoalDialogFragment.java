@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ public class CreateGoalDialogFragment extends DialogFragment {
     private FragmentDialogCreateGoalBinding view;
     private MainViewModel activityModel;
 
-    private String selectedContext;
+    private String selectedContext = "NULL";
 
     CreateGoalDialogFragment() {
 
@@ -49,17 +50,35 @@ public class CreateGoalDialogFragment extends DialogFragment {
         this.selectedContext = context;
     }
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        this.view = FragmentDialogCreateGoalBinding.inflate(getLayoutInflater());
+        // Inflate the layout and get the binding instance
+        view = FragmentDialogCreateGoalBinding.inflate(getLayoutInflater());
 
-        view.button1.setOnClickListener(v -> setSelectedContext("HOME"));
-        view.button2.setOnClickListener(v -> setSelectedContext("WORK"));
-        view.button3.setOnClickListener(v -> setSelectedContext("SCHOOL"));
-        view.button4.setOnClickListener(v -> setSelectedContext("ERRAND"));
+        // Define your TextViews
+        TextView homeTextView = view.button1;
+        TextView workTextView = view.button2;
+        TextView schoolTextView = view.button3;
+        TextView errandTextView = view.button4;
 
+        // Set click listeners for each TextView
+        homeTextView.setOnClickListener(v -> {
+            setSelectedContext("HOME");
+            toggleTextViewBackground(homeTextView);
+        });
+        workTextView.setOnClickListener(v -> {
+            setSelectedContext("WORK");
+            toggleTextViewBackground(workTextView);
+        });
+        schoolTextView.setOnClickListener(v -> {
+            setSelectedContext("SCHOOL");
+            toggleTextViewBackground(schoolTextView);
+        });
+        errandTextView.setOnClickListener(v -> {
+            setSelectedContext("ERRAND");
+            toggleTextViewBackground(errandTextView);
+        });
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle("New Goal")
@@ -70,8 +89,49 @@ public class CreateGoalDialogFragment extends DialogFragment {
                 .create();
     }
 
+    private void toggleTextViewBackground(TextView textView) {
+        // Remove black border from all TextViews
+        view.button1.setSelected(false);
+        view.button1.setBackgroundResource(R.drawable.button_background_home);
+        view.button2.setSelected(false);
+        view.button2.setBackgroundResource(R.drawable.button_background_work);
+        view.button3.setSelected(false);
+        view.button3.setBackgroundResource(R.drawable.button_background_school);
+        view.button4.setSelected(false);
+        view.button4.setBackgroundResource(R.drawable.button_background_errand);
+
+        // Set selected TextView and apply custom background
+        textView.setSelected(true);
+        textView.setBackgroundResource(getBackgroundResource(textView));
+    }
+
+    private int getBackgroundResource(TextView textView) {
+        int resourceId;
+        if (textView.getId() == R.id.button1) {
+            resourceId = R.drawable.button_background_home;
+        } else if (textView.getId() == R.id.button2) {
+            resourceId = R.drawable.button_background_work;
+        } else if (textView.getId() == R.id.button3) {
+            resourceId = R.drawable.button_background_school;
+        } else if (textView.getId() == R.id.button4) {
+            resourceId = R.drawable.button_background_errand;
+        } else {
+            resourceId = R.drawable.button_background_home; // Default case
+        }
+        return resourceId;
+    }
+
+
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
+        if (selectedContext.equals("NULL"))
+        {
+            return;
+        }
         var goalText = view.goalEditText.getText().toString();
+        if (TextUtils.isEmpty(goalText)) {
+            // Handle empty goal text
+            return;
+        }
         var goal = new Goal(null, goalText, selectedContext, -1, false);
         // once persistence is added to this database, this should work
         activityModel.append(goal);
