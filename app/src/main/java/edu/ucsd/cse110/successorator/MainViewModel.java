@@ -5,15 +5,17 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoalRepository;
+import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
+import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
+import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 
 public class MainViewModel extends ViewModel {
     // Today
@@ -27,6 +29,10 @@ public class MainViewModel extends ViewModel {
 
     // Recurring
     private final RecurringGoalRepository recurringGoalRepository;
+
+    public enum ViewEnum { TODAY, TMRW, PENDING, RECURRING }
+    private final MutableSubject<ViewEnum> currentView = new SimpleSubject<>();
+    private DateFragment.DisplayTextLogic dateDisplayTextLogic;
 
     private final TimeManager timeManager;
     public static final ViewModelInitializer<MainViewModel> initializer =
@@ -64,6 +70,8 @@ public class MainViewModel extends ViewModel {
 
         this.recurringGoalRepository = recurringGoalRepository;
 
+        currentView.setValue(ViewEnum.TODAY);
+
         this.timeManager = timeManager;
 
         timeManager.getDate().observe(time -> {
@@ -96,6 +104,26 @@ public class MainViewModel extends ViewModel {
 
     public Subject<List<RecurringGoal>> getRecurringGoals() {
         return recurringGoalRepository.findAll();
+    }
+
+    public Subject<ViewEnum> getCurrentView() {
+        return currentView;
+    }
+
+    public void setCurrentView(ViewEnum viewEnum) {
+        if (viewEnum == currentView.getValue()) {
+            return;
+        }
+
+        currentView.setValue(viewEnum);
+    }
+
+    public String getDateDisplayText(String dateText) {
+        return dateDisplayTextLogic.fromDateText(dateText);
+    }
+
+    public void setDateDisplayTextLogic(DateFragment.DisplayTextLogic dateDisplayTextLogic) {
+        this.dateDisplayTextLogic = dateDisplayTextLogic;
     }
 
     public Subject<LocalDate> getDate() {

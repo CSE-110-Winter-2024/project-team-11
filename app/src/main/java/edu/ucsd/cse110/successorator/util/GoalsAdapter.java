@@ -28,12 +28,12 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
     // Listener for Goal uncompletion
     private OnGoalCompleteListener onGoalCompleteListener;
 
-    public interface OnGoalUnCompleteListener {
+    public interface OnGoalUncompleteListener {
         void onGoalUnComplete(Goal goal);
     }
 
     // Listener for Goal completion
-    private OnGoalUnCompleteListener onGoalUnCompleteListener;
+    private OnGoalUncompleteListener onGoalUnCompleteListener;
 
     // Hold if the adapter is for the ongoing goals
     private boolean isCompleted;
@@ -47,7 +47,7 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
     }
 
     // Set listener for goal completion
-    public void setOnGoalUnCompleteListener(OnGoalUnCompleteListener listener) {
+    public void setOnGoalUnCompleteListener(OnGoalUncompleteListener listener) {
         this.onGoalUnCompleteListener = listener;
     }
 
