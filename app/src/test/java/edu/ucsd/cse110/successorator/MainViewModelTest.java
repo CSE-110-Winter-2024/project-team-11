@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -202,13 +203,13 @@ public class MainViewModelTest {
   
     @Test
     public void nextDay() {
-        LocalDateTime expected = model.getDate().getValue();
+        LocalDate expected = model.getDate().getValue();
         for(int i = 0; i < 100; i++) {
 
             expected = expected.plusDays(1);
             model.nextDay();
 
-            LocalDateTime actual = model.getDate().getValue();
+            LocalDate actual = model.getDate().getValue();
             assertEquals(expected.getDayOfMonth(), actual.getDayOfMonth());
             assertEquals(expected.getDayOfWeek(), actual.getDayOfWeek());
             assertEquals(expected.getMonth(), actual.getMonth());

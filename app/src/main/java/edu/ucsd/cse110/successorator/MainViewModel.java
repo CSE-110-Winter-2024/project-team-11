@@ -163,6 +163,10 @@ public class MainViewModel extends ViewModel {
         }
     }
 
+    public void recurringAppend(RecurringGoal goal) {
+        recurringGoalRepository.add(goal);
+    }
+
     public void nextDay() {
         timeManager.nextDay();
     }

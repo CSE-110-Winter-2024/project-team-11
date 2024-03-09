@@ -85,19 +85,19 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
         }
         else if(view.dailyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, daily);
-            // append ... can't implement yet
+            activityModel.recurringAppend(recurringGoal);
         }
         else if(view.weeklyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, weekly);
-            // append ... can't implement yet
+            activityModel.recurringAppend(recurringGoal);
         }
         else if(view.monthlyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, monthly);
-            // append ... can't implement yet
+            activityModel.recurringAppend(recurringGoal);
         }
         else if(view.yearlyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, yearly);
-            // append ... can't implement yet
+            activityModel.recurringAppend(recurringGoal);
         }
         else {
             throw new IllegalStateException("No radio button selected");

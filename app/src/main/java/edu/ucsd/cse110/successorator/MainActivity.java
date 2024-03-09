@@ -15,6 +15,7 @@ import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
+import edu.ucsd.cse110.successorator.ui.recurringgoals.RecurringGoalsFragment;
 import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayGoalDialogFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -66,22 +67,6 @@ public class MainActivity extends AppCompatActivity
 
                     break;
                 }
-                case RECURRING: {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(binding.goalsFragmentContainer.getId(),
-                                    new GoalsFragment())
-                            .commit();
-
-                    activityModel.setDateDisplayTextLogic(dateText ->  "Recurring");
-
-                    // Set the click listener for the createGoalButton
-                    binding.createGoalButton.setOnClickListener(v -> {
-                        CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
-                        dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
-                    });
-
-                    break;
-                }
                 case PENDING: {
                     getSupportFragmentManager().beginTransaction()
                             .replace(binding.goalsFragmentContainer.getId(),
@@ -92,6 +77,23 @@ public class MainActivity extends AppCompatActivity
 
                     // Set the click listener for the createGoalButton
                     binding.createGoalButton.setOnClickListener(v -> {
+                        CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
+                    });
+
+                    break;
+                }
+                case RECURRING: {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(binding.goalsFragmentContainer.getId(),
+                                    new RecurringGoalsFragment())
+                            .commit();
+
+                    activityModel.setDateDisplayTextLogic(dateText ->  "Recurring");
+
+                    // Set the click listener for the createGoalButton
+                    binding.createGoalButton.setOnClickListener(v -> {
+                        // To be changed
                         CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
