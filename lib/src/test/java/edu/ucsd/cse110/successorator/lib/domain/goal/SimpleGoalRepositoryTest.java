@@ -45,14 +45,14 @@ public class SimpleGoalRepositoryTest {
     @Test
     public void prepend() {
         goalList = new ArrayList<>(List.of(
-                new Goal(0, "shopping", 1, false),
-                new Goal(1, "homework", 2, false),
-                new Goal(2, "study", 3, false),
-                new Goal(3, "laundry", 4, false),
-                new Goal(4, "haircut", 5, false),
-                new Goal(5, "sleep", 0, false)
+                new Goal(0, "shopping", "ERRAND",1, false),
+                new Goal(1, "homework", "SCHOOL", 2, false),
+                new Goal(2, "study", "SCHOOL",3, false),
+                new Goal(3, "laundry", "HOME",4, false),
+                new Goal(4, "haircut", "ERRAND",5, false),
+                new Goal(5, "sleep", "HOME",0, false)
         ));
-        repo.prepend(new Goal(5, "sleep", 10, false));
+        repo.prepend(new Goal(5, "sleep", "HOME", 10, false));
         assertGoalListEquals(goalList, Objects.requireNonNull(repo.findAll().getValue()));
     }
 

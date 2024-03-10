@@ -12,7 +12,7 @@ public class GoalTest {
     public void getters() {
         var goal = new Goal(4, "shopping", "ERRAND",12, false);
         assertEquals(Integer.valueOf(4), goal.id());
-        assertEquals("shopping", "ERRAND", goal.text());
+        assertEquals( "shopping", goal.text());
         assertEquals(12, goal.sortOrder());
     }
 

@@ -14,7 +14,7 @@ public class RecurringGoalTest {
 
     @Test
     public void creation() {
-        Goal goal = new Goal(3, "Clean garbage", 0, true);
+        Goal goal = new Goal(3, "Clean garbage", "ERRAND",0, true);
         Recurrence recur = new RecurrenceFactory().createRecurrence(LocalDateTime.now(), RecurrenceFactory.RecurrenceEnum.DAILY);
         RecurringGoal recurringGoal = new RecurringGoal(2, goal, recur);
 
@@ -27,7 +27,7 @@ public class RecurringGoalTest {
 
     @Test
     public void text() {
-        Goal goal = new Goal(3, "Clean garbage", 0, true);
+        Goal goal = new Goal(3, "Clean garbage", "ERRAND", 0, true);
         Recurrence recur = new RecurrenceFactory().createRecurrence(LocalDateTime.now(),
                 RecurrenceFactory.RecurrenceEnum.DAILY);
         RecurringGoal recurringGoal = new RecurringGoal(2, goal, recur);
