@@ -9,11 +9,11 @@ import java.util.Objects;
 public class Goal implements Serializable {
     private final @Nullable Integer id;
     private final @NonNull String text;
-    private final String context;
+    private final GoalContext context;
     private boolean isCompleted;
     private final int sortOrder;
 
-    public Goal(@Nullable Integer id, @NonNull String text, String context, int sortOrder, boolean isCompleted) {
+    public Goal(@Nullable Integer id, @NonNull String text, GoalContext context, int sortOrder, boolean isCompleted) {
         this.id = id;
         this.text = text;
         this.context = context;
@@ -29,7 +29,7 @@ public class Goal implements Serializable {
         return text;
     }
 
-    public String getContext() { return context; }
+    public GoalContext getContext() { return context; }
 
     public boolean isCompleted() {
         return isCompleted;

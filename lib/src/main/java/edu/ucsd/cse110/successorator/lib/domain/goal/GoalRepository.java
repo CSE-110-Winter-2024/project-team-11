@@ -9,6 +9,8 @@ public interface GoalRepository {
 
     Subject<List<Goal>> findAll();
 
+    Subject<List<Goal>> findAllContextSorted();
+
     void save(Goal goal);
 
     void save(List<Goal> goals);

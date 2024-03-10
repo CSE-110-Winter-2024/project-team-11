@@ -22,7 +22,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 
 /**
@@ -74,13 +75,13 @@ public class MainActivityTest {
     }
 
     @Test
-    public void persistentGaols() {
+    public void persistentGoals() {
         List<Goal> goalList = new ArrayList<>(List.of(
-                new Goal(1, "shopping", 0, false),
-                new Goal(2, "homework", 1, false),
-                new Goal(3, "study", 2, false),
-                new Goal(4, "laundry", 3, false),
-                new Goal(5, "haircut", 4, false)
+                new Goal(1, "shopping", GoalContext.HOME, 0, false),
+                new Goal(2, "homework", GoalContext.HOME, 1, false),
+                new Goal(3, "study", GoalContext.WORK, 2, false),
+                new Goal(4, "laundry", GoalContext.SCHOOL, 3, false),
+                new Goal(5, "haircut", GoalContext.ERRAND, 4, false)
         ));
 
 
@@ -100,18 +101,18 @@ public class MainActivityTest {
         scenario.moveToState(Lifecycle.State.STARTED);
         scenario.close();
 
-
         var scenario2 = ActivityScenario.launch(MainActivity.class);
-        scenario2.moveToState(Lifecycle.State.STARTED);
-
         scenario2.onActivity(activity -> {
             var modelOwner = activity;
             var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
             var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
             var activityModel = modelProvider.get(MainViewModel.class);
 
-            assertEquals(goalList, activityModel.getOngoingGoals().getValue());
+            activityModel.getOngoingGoals().observe(goals -> {
+                assertEquals(goalList, goals);
+            });
         });
 
+        scenario2.moveToState(Lifecycle.State.STARTED);
     }
 }

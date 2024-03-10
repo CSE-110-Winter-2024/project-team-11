@@ -5,26 +5,24 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentDialogCreateGoalBinding;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 
 public class CreateGoalDialogFragment extends DialogFragment {
     private FragmentDialogCreateGoalBinding view;
     private MainViewModel activityModel;
 
-    private String selectedContext = "NULL";
+    private GoalContext selectedContext = null;
 
     CreateGoalDialogFragment() {
 
@@ -46,8 +44,8 @@ public class CreateGoalDialogFragment extends DialogFragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
     }
-    private void setSelectedContext(String context) {
-        this.selectedContext = context;
+    private void setSelectedContext(GoalContext goalContext) {
+        this.selectedContext = goalContext;
     }
 
     @NonNull
@@ -64,19 +62,19 @@ public class CreateGoalDialogFragment extends DialogFragment {
 
         // Set click listeners for each TextView
         homeTextView.setOnClickListener(v -> {
-            setSelectedContext("HOME");
+            setSelectedContext(GoalContext.HOME);
             toggleTextViewBackground(homeTextView);
         });
         workTextView.setOnClickListener(v -> {
-            setSelectedContext("WORK");
+            setSelectedContext(GoalContext.WORK);
             toggleTextViewBackground(workTextView);
         });
         schoolTextView.setOnClickListener(v -> {
-            setSelectedContext("SCHOOL");
+            setSelectedContext(GoalContext.SCHOOL);
             toggleTextViewBackground(schoolTextView);
         });
         errandTextView.setOnClickListener(v -> {
-            setSelectedContext("ERRAND");
+            setSelectedContext(GoalContext.ERRAND);
             toggleTextViewBackground(errandTextView);
         });
 
@@ -123,10 +121,10 @@ public class CreateGoalDialogFragment extends DialogFragment {
 
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
-        if (selectedContext.equals("NULL"))
-        {
+        if (selectedContext == null) {
             return;
         }
+
         var goalText = view.goalEditText.getText().toString();
         if (TextUtils.isEmpty(goalText)) {
             // Handle empty goal text

@@ -12,10 +12,9 @@ public class TimeManagerTest {
     @Test
     public void nextDay() {
         LocalDateTime expected = LocalDateTime.now();
-        expected = expected.withHour(6);
+        expected = expected.minusHours(2);
 
         LocalDateTime actual = LocalDateTime.now();
-        actual = actual.withHour(6);
 
         timeManager = new SimpleTimeManager(actual);
         for(int i = 0; i < 100; i++) {

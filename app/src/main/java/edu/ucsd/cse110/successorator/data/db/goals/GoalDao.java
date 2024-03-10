@@ -26,6 +26,9 @@ public interface GoalDao {
     @Query("SELECT * FROM goals ORDER BY sort_order")
     LiveData<List<GoalEntity>> findAllAsLiveData();
 
+    @Query("SELECT * FROM goals ORDER BY context, sort_order")
+    LiveData<List<GoalEntity>> findAllContextSortedAsLiveData();
+
     @Query("SELECT MIN(sort_order) FROM goals WHERE is_completed = :isCompleted")
     int getMinSortOrder(boolean isCompleted);
 

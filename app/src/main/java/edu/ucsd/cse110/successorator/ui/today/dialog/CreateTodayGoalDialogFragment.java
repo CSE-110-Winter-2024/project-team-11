@@ -26,6 +26,7 @@ import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentCreateTodayGoalBinding;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Weekly;
@@ -35,7 +36,7 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
 
     private FragmentCreateTodayGoalBinding view;
     private MainViewModel activityModel;
-    private String selectedContext = "NULL";
+    private GoalContext selectedContext = null;
 
     CreateTodayGoalDialogFragment() {}
 
@@ -87,24 +88,24 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
         TextView errandTextView = view.button4;
 
         homeTextView.setOnClickListener(v -> {
-            setSelectedContext("HOME");
+            setSelectedContext(GoalContext.HOME);
             toggleTextViewBackground(homeTextView);
         });
         workTextView.setOnClickListener(v -> {
-            setSelectedContext("WORK");
+            setSelectedContext(GoalContext.WORK);
             toggleTextViewBackground(workTextView);
         });
         schoolTextView.setOnClickListener(v -> {
-            setSelectedContext("SCHOOL");
+            setSelectedContext(GoalContext.SCHOOL);
             toggleTextViewBackground(schoolTextView);
         });
         errandTextView.setOnClickListener(v -> {
-            setSelectedContext("ERRAND");
+            setSelectedContext(GoalContext.ERRAND);
             toggleTextViewBackground(errandTextView);
         });
     }
 
-    private void setSelectedContext(String context) {
+    private void setSelectedContext(GoalContext context) {
         this.selectedContext = context;
     }
 

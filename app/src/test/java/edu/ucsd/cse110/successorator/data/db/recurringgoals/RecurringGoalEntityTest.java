@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
@@ -15,7 +16,7 @@ public class RecurringGoalEntityTest {
 
     @Test
     public void toRecurringGoal() {
-        Goal goal = new Goal(3, "Clean garbage", 0, true);
+        Goal goal = new Goal(3, "Clean garbage", GoalContext.HOME, 0, true);
         Recurrence recur = new RecurrenceFactory().createRecurrence(LocalDateTime.now(), RecurrenceFactory.RecurrenceEnum.DAILY);
         RecurringGoal expected = new RecurringGoal(2, goal, recur);
 

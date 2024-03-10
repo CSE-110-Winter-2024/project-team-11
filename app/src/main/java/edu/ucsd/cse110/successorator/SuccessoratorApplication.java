@@ -12,10 +12,7 @@ import edu.ucsd.cse110.successorator.lib.domain.goal.GoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
 public class SuccessoratorApplication extends Application {
-    private GoalRepository ongoingHomeGoalRepository;
-    private GoalRepository ongoingWorkGoalRepository;
-    private GoalRepository ongoingSchoolGoalRepository;
-    private GoalRepository ongoingErrandGoalRepository;
+    private GoalRepository ongoingGoalRepository;
     private GoalRepository completedGoalRepository;
 
     private TimeManager timeManager;
@@ -24,34 +21,10 @@ public class SuccessoratorApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        var ongoingHomeDatabase = Room.databaseBuilder(
+        var ongoingDatabase = Room.databaseBuilder(
                         getApplicationContext(),
                         GoalDatabase.class,
-                        "successorator-ongoing-home-database"
-                )
-                .allowMainThreadQueries()
-                .build();
-
-        var ongoingWorkDatabase = Room.databaseBuilder(
-                        getApplicationContext(),
-                        GoalDatabase.class,
-                        "successorator-ongoing-work-database"
-                )
-                .allowMainThreadQueries()
-                .build();
-
-        var ongoingSchoolDatabase = Room.databaseBuilder(
-                        getApplicationContext(),
-                        GoalDatabase.class,
-                        "successorator-ongoing-school-database"
-                )
-                .allowMainThreadQueries()
-                .build();
-
-        var ongoingErrandDatabase = Room.databaseBuilder(
-                        getApplicationContext(),
-                        GoalDatabase.class,
-                        "successorator-ongoing-errand-database"
+                        "successorator-ongoing-database"
                 )
                 .allowMainThreadQueries()
                 .build();
@@ -72,28 +45,13 @@ public class SuccessoratorApplication extends Application {
                 .allowMainThreadQueries()
                 .build();
 
-        this.ongoingHomeGoalRepository = new RoomGoalRepository(ongoingHomeDatabase.goalDao());
-        this.ongoingWorkGoalRepository = new RoomGoalRepository(ongoingWorkDatabase.goalDao());
-        this.ongoingSchoolGoalRepository = new RoomGoalRepository(ongoingSchoolDatabase.goalDao());
-        this.ongoingErrandGoalRepository = new RoomGoalRepository(ongoingErrandDatabase.goalDao());
+        this.ongoingGoalRepository = new RoomGoalRepository(ongoingDatabase.goalDao());
         this.completedGoalRepository = new RoomGoalRepository(completedDatabase.goalDao());
         this.timeManager = new RoomTimeManager(timeDatabase.timeDao());
     }
 
-    public GoalRepository getOngoingHomeGoalRepository() {
-        return ongoingHomeGoalRepository;
-    }
-
-    public GoalRepository getOngoingWorkGoalRepository() {
-        return ongoingWorkGoalRepository;
-    }
-
-    public GoalRepository getOngoingSchoolGoalRepository() {
-        return ongoingSchoolGoalRepository;
-    }
-
-    public GoalRepository getOngoingErrandGoalRepository() {
-        return ongoingErrandGoalRepository;
+    public GoalRepository getOngoingGoalRepository() {
+        return ongoingGoalRepository;
     }
 
     public GoalRepository getCompletedGoalRepository() {

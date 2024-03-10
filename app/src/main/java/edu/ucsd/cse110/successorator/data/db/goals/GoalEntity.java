@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
+
 @Entity(tableName = "goals")
 public class GoalEntity {
     @PrimaryKey(autoGenerate = true)
@@ -15,7 +17,7 @@ public class GoalEntity {
     public String text;
 
     @ColumnInfo(name = "context")
-    public String context; // New column
+    public int context; // New column
 
     @ColumnInfo(name = "sort_order")
     public int sortOrder;
@@ -23,7 +25,7 @@ public class GoalEntity {
     @ColumnInfo(name = "is_completed")
     public boolean isCompleted;
 
-    GoalEntity(@NonNull String text, String context, int sortOrder, boolean isCompleted) {
+    GoalEntity(@NonNull String text, int context, int sortOrder, boolean isCompleted) {
         this.text = text;
         this.context = context;
         this.sortOrder = sortOrder;
@@ -32,13 +34,13 @@ public class GoalEntity {
 
     // turns Goal object into GoalEntity so that it can be added to database
     public static GoalEntity fromGoal(Goal goal) {
-        var entity = new GoalEntity(goal.text(), goal.getContext(), goal.sortOrder(), goal.isCompleted());
+        var entity = new GoalEntity(goal.text(), goal.getContext().ordinal(), goal.sortOrder(), goal.isCompleted());
         entity.id = goal.id();
         return entity;
     }
 
     // turns GoalEntity into Goal object
     public @NonNull Goal toGoal() {
-        return new Goal(id, text, context,  sortOrder, isCompleted);
+        return new Goal(id, text, GoalContext.values()[context],  sortOrder, isCompleted);
     }
 }

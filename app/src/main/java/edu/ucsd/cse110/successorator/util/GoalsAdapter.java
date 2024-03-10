@@ -111,19 +111,19 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
                 String contextType = "";
                
                 switch (goal.getContext()) {
-                    case "HOME":
+                    case HOME:
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_home);
                         contextType = "Home";
                         break;
-                    case "WORK":
+                    case WORK:
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_work);
                         contextType = "Work";
                         break;
-                    case "SCHOOL":
+                    case SCHOOL:
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_school);
                         contextType = "School";
                         break;
-                    case "ERRAND":
+                    case ERRAND:
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_errand);
                         contextType = "Errand";
                         break;

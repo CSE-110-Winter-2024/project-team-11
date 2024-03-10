@@ -14,6 +14,7 @@ import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.data.RecurringGoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.goal.SimpleGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 
@@ -35,11 +36,11 @@ public class SimpleRecurringGoalRepositoryTest {
         repo = new SimpleRecurringGoalRepository(src);
 
         List<Goal> goals = new ArrayList<>(List.of(
-                new Goal(0, "shopping", "HOME", 0, false),
-                new Goal(1, "homework", "SCHOOL",1, true),
-                new Goal(2, "study", "SCHOOL",2, true),
-                new Goal(3, "laundry", "ERRAND", 3, true),
-                new Goal(4, "haircut", "HOME",4, false)
+                new Goal(0, "shopping", GoalContext.HOME, 0, false),
+                new Goal(1, "homework", GoalContext.SCHOOL,1, true),
+                new Goal(2, "study", GoalContext.SCHOOL,2, true),
+                new Goal(3, "laundry", GoalContext.ERRAND, 3, true),
+                new Goal(4, "haircut", GoalContext.HOME,4, false)
         ));
 
         factory = new RecurrenceFactory();
@@ -81,7 +82,7 @@ public class SimpleRecurringGoalRepositoryTest {
 
     @Test
     public void add() {
-        Goal goal = new Goal(5, "sleep", "HOME",5, false);
+        Goal goal = new Goal(5, "sleep", GoalContext.HOME,5, false);
         RecurringGoal recurringGoal = new RecurringGoal(5, goal,
                 factory.createRecurrence(yesterday.minusDays(1), RecurrenceFactory.RecurrenceEnum.WEEKLY));
         goalList.add(recurringGoal);
@@ -95,7 +96,7 @@ public class SimpleRecurringGoalRepositoryTest {
 
 
 
-        goal = new Goal(6, "play with my dog", "HOME",5, false);
+        goal = new Goal(6, "play with my dog", GoalContext.HOME,5, false);
         recurringGoal = new RecurringGoal(6, goal,
                 factory.createRecurrence(tomorrow.plusDays(2), RecurrenceFactory.RecurrenceEnum.YEARLY));
         goalList.add(recurringGoal);
@@ -109,7 +110,7 @@ public class SimpleRecurringGoalRepositoryTest {
 
 
 
-        goal = new Goal(7, "play game", "HOME",5, false);
+        goal = new Goal(7, "play game", GoalContext.HOME,5, false);
         recurringGoal = new RecurringGoal(7, goal,
                 factory.createRecurrence(tomorrow.plusDays(1), RecurrenceFactory.RecurrenceEnum.MONTHLY));
         goalList.add(recurringGoal);
@@ -126,7 +127,7 @@ public class SimpleRecurringGoalRepositoryTest {
     public void addAll() {
         List<RecurringGoal> add = new ArrayList<>();
 
-        Goal goal = new Goal(5, "sleep", "HOME",5, false);
+        Goal goal = new Goal(5, "sleep", GoalContext.HOME,5, false);
         RecurringGoal recurringGoal = new RecurringGoal(5, goal,
                 factory.createRecurrence(yesterday.minusDays(1), RecurrenceFactory.RecurrenceEnum.WEEKLY));
         goalList.add(recurringGoal);
@@ -134,7 +135,7 @@ public class SimpleRecurringGoalRepositoryTest {
 
 
 
-        goal = new Goal(6, "play with my dog", "HOME", 5, false);
+        goal = new Goal(6, "play with my dog", GoalContext.HOME, 5, false);
         recurringGoal = new RecurringGoal(6, goal,
                 factory.createRecurrence(tomorrow.plusDays(2), RecurrenceFactory.RecurrenceEnum.DAILY));
         goalList.add(recurringGoal);
@@ -142,7 +143,7 @@ public class SimpleRecurringGoalRepositoryTest {
 
 
 
-        goal = new Goal(7, "play game","HOME", 5, false);
+        goal = new Goal(7, "play game",GoalContext.HOME, 5, false);
         recurringGoal = new RecurringGoal(7, goal,
                 factory.createRecurrence(tomorrow.plusDays(1), RecurrenceFactory.RecurrenceEnum.WEEKLY));
         goalList.add(recurringGoal);

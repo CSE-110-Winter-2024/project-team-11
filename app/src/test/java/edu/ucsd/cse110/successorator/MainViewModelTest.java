@@ -11,6 +11,7 @@ import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.goal.SimpleGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
@@ -50,12 +51,12 @@ public class MainViewModelTest {
             boolean isCompleted = Math.random() > 0.5;
             List<Goal> addTo = isCompleted ? completedList : ongoingList;
 
-            Goal g = new Goal(i, text, addTo.size(), isCompleted);
+            Goal g = new Goal(i, text, GoalContext.HOME, addTo.size(), isCompleted);
 
             addTo.add(g);
             model.append(g);
 
-            assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
+            assertEquals(ongoingList, model.getOngoingGoals().getValue());
             assertEquals(completedList, model.getCompletedGoals().getValue());
         }
     }
@@ -64,11 +65,11 @@ public class MainViewModelTest {
     public void ListMovetest1() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal simple = new Goal(1, "Hello", ongoingList.size(), false);
+        Goal simple = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), false);
         completedList.add(simple.withIsCompleted(true));
         model.append(simple);
         model.completeGoal(simple);
-        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -77,14 +78,14 @@ public class MainViewModelTest {
     public void ListMovetest2() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal simple = new Goal(1, "Hello", ongoingList.size(), false);
-        Goal done = new Goal(2, "Wow", completedList.size(), true);
+        Goal simple = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), false);
+        Goal done = new Goal(2, "Wow", GoalContext.HOME, completedList.size(), true);
         completedList.add(simple.withIsCompleted(true));
         completedList.add(done);
         model.append(done);
         model.append(simple);
         model.completeGoal(simple);
-        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -93,17 +94,17 @@ public class MainViewModelTest {
     public void ListMovetest3() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal incomplete1 = new Goal(1, "Hello", ongoingList.size(), false);
+        Goal incomplete1 = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete1);
-        Goal complete1 = new Goal(2, "Wow", completedList.size(), true);
+        Goal complete1 = new Goal(2, "Wow", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete1);
-        Goal incomplete2 = new Goal(3, "My", ongoingList.size(), false);
+        Goal incomplete2 = new Goal(3, "My", GoalContext.HOME, ongoingList.size(), false);
         completedList.add(0, incomplete2.withIsCompleted(true));
-        Goal complete2 = new Goal(4, "Name", completedList.size(), true);
+        Goal complete2 = new Goal(4, "Name", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete2);
-        Goal incomplete3 = new Goal(5, "Is", ongoingList.size(), false);
+        Goal incomplete3 = new Goal(5, "Is", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete3);
-        Goal complete3 = new Goal(6, "Not", completedList.size(), true);
+        Goal complete3 = new Goal(6, "Not", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete3);
         model.append(incomplete1);
         model.append(incomplete2);
@@ -112,7 +113,7 @@ public class MainViewModelTest {
         model.append(complete2);
         model.append(complete3);
         model.completeGoal(incomplete2);
-        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -121,11 +122,11 @@ public class MainViewModelTest {
     public void uncompleteGoal1() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal simple = new Goal(1, "Hello", ongoingList.size(), true);
+        Goal simple = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), true);
         ongoingList.add(simple.withIsCompleted(false));
         model.append(simple);
         model.unCompleteGoal(simple);
-        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -134,14 +135,14 @@ public class MainViewModelTest {
     public void uncompleteGoal2() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal simple = new Goal(1, "Hello", ongoingList.size(), true);
-        Goal done = new Goal(2, "Wow", completedList.size(), true);
+        Goal simple = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), true);
+        Goal done = new Goal(2, "Wow", GoalContext.HOME, completedList.size(), true);
         ongoingList.add(simple.withIsCompleted(false));
         completedList.add(done);
         model.append(done);
         model.append(simple);
         model.unCompleteGoal(simple);
-        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
     }
 
@@ -149,17 +150,17 @@ public class MainViewModelTest {
     public void uncompleteGoal3() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal incomplete1 = new Goal(1, "Hello", ongoingList.size(), false);
+        Goal incomplete1 = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete1);
-        Goal complete1 = new Goal(2, "Wow", completedList.size(), true);
+        Goal complete1 = new Goal(2, "Wow", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete1);
-        Goal incomplete2 = new Goal(3, "My", ongoingList.size(), false);
+        Goal incomplete2 = new Goal(3, "My", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete2);
-        Goal complete2 = new Goal(4, "Name", completedList.size(), true);
+        Goal complete2 = new Goal(4, "Name", GoalContext.HOME, completedList.size(), true);
         ongoingList.add(0, complete2.withIsCompleted(false));
-        Goal incomplete3 = new Goal(5, "Is", ongoingList.size(), false);
+        Goal incomplete3 = new Goal(5, "Is", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete3);
-        Goal complete3 = new Goal(6, "Not", completedList.size(), true);
+        Goal complete3 = new Goal(6, "Not", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete3);
         model.append(incomplete1);
         model.append(incomplete2);
@@ -168,7 +169,7 @@ public class MainViewModelTest {
         model.append(complete2);
         model.append(complete3);
         model.unCompleteGoal(complete2);
-        assertEquals(ongoingList, model.getOngoingHomeGoals().getValue());
+        assertEquals(ongoingList, model.getOngoingGoals().getValue());
         assertEquals(completedList, model.getCompletedGoals().getValue());
 
     }
@@ -191,8 +192,8 @@ public class MainViewModelTest {
     @Test
     public void clearList() {
         ArrayList<Goal> listExpected = new ArrayList<>();
-        Goal test1 = new Goal(1, "", 1, true);
-        Goal test2 = new Goal(2, "", 2, true);
+        Goal test1 = new Goal(1, "", GoalContext.HOME, 1, true);
+        Goal test2 = new Goal(2, "", GoalContext.HOME, 2, true);
         for(int i = 0; i < 100; i++) {
             model.append(test1);
             model.append(test2);
@@ -209,9 +210,9 @@ public class MainViewModelTest {
     public void beforeAppReset() {
         ArrayList<Goal> ongoingList = new ArrayList<>();
         ArrayList<Goal> completedList = new ArrayList<>();
-        Goal test1 = new Goal(1, "", 1, true);
-        Goal test2 = new Goal(2, "", 2, true);
-        Goal test3 = new Goal(1, "", 1, false);
+        Goal test1 = new Goal(1, "", GoalContext.HOME, 1, true);
+        Goal test2 = new Goal(2, "", GoalContext.HOME, 2, true);
+        Goal test3 = new Goal(1, "", GoalContext.HOME, 1, false);
         ongoingList.add(test3);
 
         for(int i = 0; i < 100; i++) {
@@ -221,7 +222,7 @@ public class MainViewModelTest {
 
             appResetModel.nextDay();
 
-            assertEquals(ongoingList, appResetModel.getOngoingHomeGoals().getValue());
+            assertEquals(ongoingList, appResetModel.getOngoingGoals().getValue());
             assertEquals(completedList, appResetModel.getCompletedGoals().getValue());
         }
 
