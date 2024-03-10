@@ -44,25 +44,78 @@ public class GoalsFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
+        activityModel.getCurrentView().observe(viewEnum -> {
+            observeGoals(viewEnum);
+        });
+    }
 
-        activityModel.getTodayOngoingGoals().observe(goals -> {
-            ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
-                    .sorted(Comparator.comparingInt(Goal::sortOrder))
-                    .collect(Collectors.toList()) : null);
-            if (ongoingGoalsAdapter != null) {
-                ongoingGoalsAdapter.updateData(newOngoingGoals);
-                updateOngoingGoalsText(newOngoingGoals.isEmpty());
-                updateCompletedGoalsParams(newOngoingGoals.isEmpty());
-            }
-        });
-        activityModel.getTodayCompletedGoals().observe(goals -> {
-            ArrayList<Goal> newCompletedGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
-                    .sorted(Comparator.comparingInt(Goal::sortOrder))
-                    .collect(Collectors.toList()) : null);
-            if (completedGoalsAdapter != null) {
-                completedGoalsAdapter.updateData(newCompletedGoals);
-            }
-        });
+    private void observeGoals(MainViewModel.ViewEnum type) {
+        if(type == MainViewModel.ViewEnum.TODAY) {
+            activityModel.getTodayOngoingGoals().observe(goals -> {
+                ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
+                        .sorted(Comparator.comparingInt(Goal::sortOrder))
+                        .collect(Collectors.toList()) : null);
+                if (ongoingGoalsAdapter != null) {
+                    ongoingGoalsAdapter.updateData(newOngoingGoals);
+                    updateOngoingGoalsText(newOngoingGoals.isEmpty());
+                    updateCompletedGoalsParams(newOngoingGoals.isEmpty());
+                }
+            });
+            activityModel.getTodayCompletedGoals().observe(goals -> {
+                ArrayList<Goal> newCompletedGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
+                        .sorted(Comparator.comparingInt(Goal::sortOrder))
+                        .collect(Collectors.toList()) : null);
+                if (completedGoalsAdapter != null) {
+                    completedGoalsAdapter.updateData(newCompletedGoals);
+                }
+            });
+        }
+        else if(type == MainViewModel.ViewEnum.TMRW) {
+            activityModel.getTmrwOngoingGoals().observe(goals -> {
+                ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
+                        .sorted(Comparator.comparingInt(Goal::sortOrder))
+                        .collect(Collectors.toList()) : null);
+                if (ongoingGoalsAdapter != null) {
+                    ongoingGoalsAdapter.updateData(newOngoingGoals);
+                    updateOngoingGoalsText(newOngoingGoals.isEmpty());
+                    updateCompletedGoalsParams(newOngoingGoals.isEmpty());
+                }
+            });
+            activityModel.getTmrwCompletedGoals().observe(goals -> {
+                ArrayList<Goal> newCompletedGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
+                        .sorted(Comparator.comparingInt(Goal::sortOrder))
+                        .collect(Collectors.toList()) : null);
+                if (completedGoalsAdapter != null) {
+                    completedGoalsAdapter.updateData(newCompletedGoals);
+                }
+            });
+        }
+
+    }
+
+    private void completeGoalsListeners(MainViewModel.ViewEnum type) {
+        if(type == MainViewModel.ViewEnum.TODAY) {
+            ongoingGoalsAdapter.setOnGoalCompleteListener(goal -> {
+                // Set complete goal listener
+                activityModel.todayCompleteGoal(goal);
+            });
+
+            completedGoalsAdapter.setOnGoalUnCompleteListener(goal -> {
+                // Set uncomplete goal listener
+                activityModel.todayUncompleteGoal(goal);
+            });
+        }
+        else if(type == MainViewModel.ViewEnum.TMRW) {
+            ongoingGoalsAdapter.setOnGoalCompleteListener(goal -> {
+                // Set complete goal listener
+                activityModel.tmrwCompleteGoal(goal);
+            });
+
+            completedGoalsAdapter.setOnGoalUnCompleteListener(goal -> {
+                // Set uncomplete goal listener
+                activityModel.tmrwUncompleteGoal(goal);
+            });
+        }
     }
 
     @Override
@@ -78,15 +131,7 @@ public class GoalsFragment extends Fragment {
         ongoingGoalsAdapter = new GoalsAdapter(requireContext(), new ArrayList<>(), false);
         completedGoalsAdapter = new GoalsAdapter(requireContext(), new ArrayList<>(), true);
 
-        ongoingGoalsAdapter.setOnGoalCompleteListener(goal -> {
-            // Set complete goal listener
-            activityModel.todayCompleteGoal(goal);
-        });
-
-        completedGoalsAdapter.setOnGoalUnCompleteListener(goal -> {
-            // Set uncomplete goal listener
-            activityModel.todayUncompleteGoal(goal);
-        });
+        completeGoalsListeners(activityModel.getCurrentView().getValue());
 
         ongoingListView.setAdapter(ongoingGoalsAdapter);
         completedListView.setAdapter(completedGoalsAdapter);

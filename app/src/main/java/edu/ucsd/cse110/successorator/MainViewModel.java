@@ -162,6 +162,27 @@ public class MainViewModel extends ViewModel {
             todayOngoingGoalRepository.prepend(completedGoal);
         }
     }
+    public void tmrwCompleteGoal(Goal goal) {
+        // Set the goal as completed
+        Goal completedGoal = goal.withIsCompleted(true);
+
+        // Remove old goal, add new Completed Goal
+        if (goal.id() != null) {
+            tmrwOngoingGoalRepository.remove(goal.id());
+            tmrwCompletedGoalRepository.prepend(completedGoal);
+        }
+    }
+
+    public void tmrwUncompleteGoal(Goal goal) {
+        // Set the goal as completed
+        Goal completedGoal = goal.withIsCompleted(false);
+
+        // Remove old goal, add new Completed Goal
+        if (goal.id() != null) {
+            tmrwCompletedGoalRepository.remove(goal.id());
+            tmrwOngoingGoalRepository.prepend(completedGoal);
+        }
+    }
 
     public void recurringAppend(RecurringGoal goal) {
         recurringGoalRepository.add(goal);
