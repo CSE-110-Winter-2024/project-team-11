@@ -13,6 +13,7 @@ public class GoalTest {
         var goal = new Goal(4, "shopping", "ERRAND",12, false);
         assertEquals(Integer.valueOf(4), goal.id());
         assertEquals( "shopping", goal.text());
+        assertEquals( "ERRAND", goal.getContext());
         assertEquals(12, goal.sortOrder());
     }
 
