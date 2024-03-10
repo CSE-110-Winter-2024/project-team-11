@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
@@ -15,7 +15,7 @@ import edu.ucsd.cse110.successorator.lib.util.Subject;
  * will be replaced with a real database in the future, but can also be used
  * for testing.
  */
-public class InMemoryDataSource {
+public class GoalInMemoryDataSource {
     private int nextId = 0;
 
     private int minSortOrder = Integer.MAX_VALUE;
@@ -28,7 +28,7 @@ public class InMemoryDataSource {
     private final MutableSubject<List<Goal>> allGoalsSubject
             = new SimpleSubject<>();
 
-    public InMemoryDataSource() {
+    public GoalInMemoryDataSource() {
     }
 
     public List<Goal> getGoals() {
