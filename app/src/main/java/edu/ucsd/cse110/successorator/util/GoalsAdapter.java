@@ -3,6 +3,8 @@ package edu.ucsd.cse110.successorator.util;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +93,7 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         TextView textViewContextText = convertView.findViewById(R.id.context_text);
 
         // Check if the text is for the completed goals
+
         if(isCompleted) {
             textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             textViewGoalText.setText(goal.text());
@@ -133,6 +136,7 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
                 // Set text of the textViewContextText
                 textViewContextText.setText(contextType);
             }
+
         }
 
         return convertView;
