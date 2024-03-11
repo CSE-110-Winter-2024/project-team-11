@@ -264,31 +264,31 @@ public class MainViewModelTest {
     @Test
     public void goalSeparation() {
         List<Goal> today = List.of(
-                new Goal(0, "1", 0, false),
-                new Goal(1, "2", 1, false)
+                new Goal(0, "1", GoalContext.HOME, 0, false),
+                new Goal(1, "2", GoalContext.HOME, 1, false)
         );
         List<Goal> todayc = List.of(
-                new Goal(0, "1c", 0, true),
-                new Goal(1, "2c", 1, true)
+                new Goal(0, "1c", GoalContext.HOME, 0, true),
+                new Goal(1, "2c", GoalContext.HOME, 1, true)
         );
         List<Goal> tmrw = List.of(
-                new Goal(0, "3", 0, false),
-                new Goal(1, "4", 1, false)
+                new Goal(0, "3", GoalContext.HOME, 0, false),
+                new Goal(1, "4", GoalContext.HOME, 1, false)
         );
         List<Goal> tmrwc = List.of(
-                new Goal(0, "3c", 0, true),
-                new Goal(1, "4c", 1, true)
+                new Goal(0, "3c", GoalContext.HOME, 0, true),
+                new Goal(1, "4c", GoalContext.HOME, 1, true)
         );
         List<Goal> pending = List.of(
-                new Goal(0, "5", 0, false),
-                new Goal(1, "6", 1, false)
+                new Goal(0, "5", GoalContext.HOME, 0, false),
+                new Goal(1, "6", GoalContext.HOME, 1, false)
         );
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence w = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
         Recurrence m = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.MONTHLY);
         List<RecurringGoal> recurring = List.of(
-                new RecurringGoal(0, new Goal(null, "5", 0, false), w),
-                new RecurringGoal(1, new Goal(null, "6", 1, false), m)
+                new RecurringGoal(0, new Goal(null, "5", GoalContext.HOME, 0, false), w),
+                new RecurringGoal(1, new Goal(null, "6", GoalContext.HOME, 1, false), m)
         );
 
         for (Goal goal : today) model.todayAppend(goal);
@@ -299,10 +299,10 @@ public class MainViewModelTest {
         for (RecurringGoal goal : recurring) model.recurringAppend(goal);
 
         today = List.of(
-                new Goal(0, "1", 0, false),
-                new Goal(1, "2", 1, false),
-                new Goal(2, "5", 2, false),
-                new Goal(3, "6", 3, false)
+                new Goal(0, "1", GoalContext.HOME, 0, false),
+                new Goal(1, "2", GoalContext.HOME, 1, false),
+                new Goal(2, "5", GoalContext.HOME, 2, false),
+                new Goal(3, "6", GoalContext.HOME, 3, false)
         );
 
         assertEquals(today, model.getTodayOngoingGoals().getValue());
@@ -315,7 +315,7 @@ public class MainViewModelTest {
 
     @Test
     public void oneTime() {
-        Goal g = new Goal(0, "1", 0, false);
+        Goal g = new Goal(0, "1", GoalContext.HOME, 0, false);
         model.todayAppend(g);
         model.todayCompleteGoal(g);
         model.nextDay();
@@ -328,7 +328,7 @@ public class MainViewModelTest {
     public void daily() {
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence daily = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.DAILY);
-        Goal g = new Goal(0, "1", 0, false);
+        Goal g = new Goal(0, "1", GoalContext.HOME, 0, false);
         RecurringGoal rg = new RecurringGoal(null, g, daily);
         model.recurringAppend(rg);
         model.todayCompleteGoal(g);
@@ -368,7 +368,7 @@ public class MainViewModelTest {
     public void infrequently() {
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence weekly = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
-        Goal g = new Goal(0, "1", 0, false);
+        Goal g = new Goal(0, "1", GoalContext.HOME, 0, false);
         RecurringGoal rg = new RecurringGoal(null, g, weekly);
         model.recurringAppend(rg);
         assertEquals(List.of(g), model.getTodayOngoingGoals().getValue());
@@ -402,7 +402,7 @@ public class MainViewModelTest {
     public void collision() {
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence daily = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.DAILY);
-        Goal g = new Goal(0, "1", 0, false);
+        Goal g = new Goal(0, "1", GoalContext.HOME, 0, false);
         RecurringGoal rg = new RecurringGoal(null, g, daily);
         model.recurringAppend(rg);
         model.todayCompleteGoal(g);

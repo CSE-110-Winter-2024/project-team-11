@@ -76,7 +76,7 @@ public class MainActivityTest {
             var rootView = activity.findViewById(R.id.root);
             var binding = ActivityMainBinding.bind(rootView);
             TextView dateTextView = activity.findViewById(R.id.dateTextView);
-            LocalDate date = LocalDate.now();
+            LocalDate date = LocalDateTime.now().minusHours(2).toLocalDate();
 
             Map<MainViewModel.ViewEnum, String> expected = new HashMap<>() {{
                 put(TODAY, "Today, " + DateFragment.DATE_TIME_FORMATTER.format(date));
