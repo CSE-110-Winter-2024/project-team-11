@@ -23,12 +23,14 @@ public class MainViewModel extends ViewModel {
 
     // Tomorrow
     private final GoalRepository tmrwOngoingGoalRepository, tmrwCompletedGoalRepository;
+    private final MutableSubject<List<Goal>> rolloverGoals = new SimpleSubject<>();
 
     // Pending
     private final GoalRepository pendingGoalRepository;
 
     // Recurring
     private final RecurringGoalRepository recurringGoalRepository;
+    private final MutableSubject<List<RecurringGoal>> goalGenerators = new SimpleSubject<>();
 
     public enum ViewEnum { TODAY, TMRW, PENDING, RECURRING }
     private final MutableSubject<ViewEnum> currentView = new SimpleSubject<>();
@@ -75,11 +77,47 @@ public class MainViewModel extends ViewModel {
 
         this.timeManager = timeManager;
 
-        timeManager.getDate().observe(time -> {
-            if (time == null) return;
+        tmrwOngoingGoalRepository.findAll().observe(rolloverGoals::setValue);
+
+        recurringGoalRepository.findAll().observe(goalGenerators::setValue);
+
+        timeManager.getDate().observe(date -> {
+            if (date == null) return;
+            LocalDate lastCleared = timeManager.getLastCleared();
+            if (date.isEqual(lastCleared)) return;
 
             clearCompleted();
-            displayTime.setValue(time.plusDays(currentView.getValue()==ViewEnum.TMRW ? 1 : 0));
+
+            // Tomorrow's goals are moved to today
+            List<Goal> tmrwGoals = rolloverGoals.getValue();
+            if (tmrwGoals != null) {
+                for (Goal goal : tmrwGoals) {
+                    todayAppend(goal);
+                }
+                tmrwOngoingGoalRepository.clear();
+            }
+
+
+            List<RecurringGoal> recurringGoals = goalGenerators.getValue();
+            if (recurringGoals != null) {
+                // Add 'skipped' recurring goals to today
+                LocalDate lastClearedTmrw = lastCleared.plusDays(1);
+                for (RecurringGoal recurringGoal : recurringGoals) {
+                    if (recurringGoal.getRecurrence().occursDuringInterval(lastClearedTmrw, date)) {
+                        todayAppend(recurringGoal.getGoal());
+                    }
+                }
+
+                // Update tomorrow's goals
+                LocalDate tmrw = date.plusDays(1);
+                for (RecurringGoal recurringGoal : recurringGoals) {
+                    if (recurringGoal.getRecurrence().occursOnDay(tmrw)) {
+                        tmrwAppend(recurringGoal.getGoal());
+                    }
+                }
+            }
+
+            displayTime.setValue(date.plusDays(currentView.getValue()==ViewEnum.TMRW ? 1 : 0));
         });
 
         getCurrentView().observe(view -> {
@@ -200,6 +238,12 @@ public class MainViewModel extends ViewModel {
 
     public void recurringAppend(RecurringGoal goal) {
         recurringGoalRepository.add(goal);
+        if (goal.getRecurrence().occursOnDay(getDate().getValue())) {
+            todayAppend(goal.getGoal());
+        }
+        if (goal.getRecurrence().occursOnDay(getDate().getValue().plusDays(1))) {
+            tmrwAppend(goal.getGoal());
+        }
     }
 
     public void pendingAppend(Goal goal) {

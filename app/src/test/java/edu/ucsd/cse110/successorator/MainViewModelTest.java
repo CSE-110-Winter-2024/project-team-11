@@ -263,31 +263,31 @@ public class MainViewModelTest {
     @Test
     public void goalSeparation() {
         List<Goal> today = List.of(
-                new Goal(1, "1", 0, false),
-                new Goal(2, "2", 1, false)
+                new Goal(0, "1", 0, false),
+                new Goal(1, "2", 1, false)
         );
         List<Goal> todayc = List.of(
-                new Goal(1, "1c", 0, true),
-                new Goal(2, "2c", 1, true)
+                new Goal(0, "1c", 0, true),
+                new Goal(1, "2c", 1, true)
         );
         List<Goal> tmrw = List.of(
-                new Goal(1, "3", 0, false),
-                new Goal(2, "4", 1, false)
+                new Goal(0, "3", 0, false),
+                new Goal(1, "4", 1, false)
         );
         List<Goal> tmrwc = List.of(
-                new Goal(1, "3c", 0, true),
-                new Goal(2, "4c", 1, true)
+                new Goal(0, "3c", 0, true),
+                new Goal(1, "4c", 1, true)
         );
         List<Goal> pending = List.of(
-                new Goal(1, "5", 0, false),
-                new Goal(2, "6", 1, false)
+                new Goal(0, "5", 0, false),
+                new Goal(1, "6", 1, false)
         );
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence w = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
         Recurrence m = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.MONTHLY);
         List<RecurringGoal> recurring = List.of(
-                new RecurringGoal(1, new Goal(1, "5", 0, false), w),
-                new RecurringGoal(2, new Goal(2, "6", 1, false), m)
+                new RecurringGoal(0, new Goal(null, "5", 0, false), w),
+                new RecurringGoal(1, new Goal(null, "6", 1, false), m)
         );
 
         for (Goal goal : today) model.todayAppend(goal);
@@ -297,11 +297,126 @@ public class MainViewModelTest {
         for (Goal goal : pending) model.pendingAppend(goal);
         for (RecurringGoal goal : recurring) model.recurringAppend(goal);
 
+        today = List.of(
+                new Goal(0, "1", 0, false),
+                new Goal(1, "2", 1, false),
+                new Goal(2, "5", 2, false),
+                new Goal(3, "6", 3, false)
+        );
+
         assertEquals(today, model.getTodayOngoingGoals().getValue());
         assertEquals(todayc, model.getTodayCompletedGoals().getValue());
         assertEquals(tmrw, model.getTmrwOngoingGoals().getValue());
         assertEquals(tmrwc, model.getTmrwCompletedGoals().getValue());
         assertEquals(pending, model.getPendingGoals().getValue());
         assertEquals(recurring, model.getRecurringGoals().getValue());
+    }
+
+    @Test
+    public void oneTime() {
+        Goal g = new Goal(0, "1", 0, false);
+        model.todayAppend(g);
+        model.todayCompleteGoal(g);
+        model.nextDay();
+
+        assertEquals(List.of(), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+    }
+
+    @Test
+    public void daily() {
+        RecurrenceFactory factory = new RecurrenceFactory();
+        Recurrence daily = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.DAILY);
+        Goal g = new Goal(0, "1", 0, false);
+        RecurringGoal rg = new RecurringGoal(null, g, daily);
+        model.recurringAppend(rg);
+        model.todayCompleteGoal(g);
+        model.nextDay();
+
+        assertEquals(List.of(g), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        assertEquals(List.of(g.withId(1)), model.getTmrwOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+
+        model.todayCompleteGoal(g);
+        model.nextDay();
+
+        assertEquals(List.of(g.withId(1)), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        assertEquals(List.of(g.withId(2)), model.getTmrwOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+
+        model.todayCompleteGoal(g.withId(1));
+        model.tmrwCompleteGoal(g.withId(2));
+        model.nextDay();
+
+        assertEquals(List.of(), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        assertEquals(List.of(g.withId(3)), model.getTmrwOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+
+        model.nextDay();
+
+        assertEquals(List.of(g.withId(3)), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        assertEquals(List.of(g.withId(4)), model.getTmrwOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+    }
+
+    @Test
+    public void infrequently() {
+        RecurrenceFactory factory = new RecurrenceFactory();
+        Recurrence weekly = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
+        Goal g = new Goal(0, "1", 0, false);
+        RecurringGoal rg = new RecurringGoal(null, g, weekly);
+        model.recurringAppend(rg);
+        assertEquals(List.of(g), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+
+        model.todayCompleteGoal(g);
+        for (int i = 0; i < 5; i++) {
+            model.nextDay();
+
+            assertEquals(List.of(), model.getTodayOngoingGoals().getValue());
+            assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+            assertEquals(List.of(), model.getTmrwOngoingGoals().getValue());
+            assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        }
+        model.nextDay();
+
+        assertEquals(List.of(), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        assertEquals(List.of(g), model.getTmrwOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+
+        model.nextDay();
+
+        assertEquals(List.of(g), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        assertEquals(List.of(), model.getTmrwOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+    }
+
+    @Test
+    public void collision() {
+        RecurrenceFactory factory = new RecurrenceFactory();
+        Recurrence daily = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.DAILY);
+        Goal g = new Goal(0, "1", 0, false);
+        RecurringGoal rg = new RecurringGoal(null, g, daily);
+        model.recurringAppend(rg);
+        model.todayCompleteGoal(g);
+        model.nextDay();
+
+        assertEquals(List.of(g), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        assertEquals(List.of(g.withId(1)), model.getTmrwOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+
+        model.nextDay();
+
+        assertEquals(List.of(g), model.getTodayOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+        assertEquals(List.of(g.withId(2)), model.getTmrwOngoingGoals().getValue());
+        assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
     }
 }

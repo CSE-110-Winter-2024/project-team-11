@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity(tableName = "time")
@@ -21,34 +22,28 @@ public class TimeEntity {
     @ColumnInfo(name = "day_of_month")
     public int dayOfMonth;
 
-    @ColumnInfo(name = "hour")
-    public int hour;
-
-    TimeEntity(int year, int month, int dayOfMonth, int hour) {
+    TimeEntity(int year, int month, int dayOfMonth) {
         this.year = year;
         this.month = month;
         this.dayOfMonth = dayOfMonth;
-        this.hour = hour;
     }
 
     // turns Goal object into GoalEntity so that it can be added to database
-    public static TimeEntity fromTime(LocalDateTime localDateTime) {
+    public static TimeEntity fromTime(LocalDate localDate) {
         var entity = new TimeEntity(
-                localDateTime.getYear(),
-                localDateTime.getMonthValue(),
-                localDateTime.getDayOfMonth(),
-                localDateTime.getHour()
+                localDate.getYear(),
+                localDate.getMonthValue(),
+                localDate.getDayOfMonth()
                 );
         entity.id = 0;
         return entity;
     }
 
     // turns GoalEntity into Goal object
-    public @NonNull LocalDateTime toTime() {
-        return LocalDateTime.now()
+    public @NonNull LocalDate toTime() {
+        return LocalDate.now()
                 .withYear(year)
                 .withMonth(month)
-                .withDayOfMonth(dayOfMonth)
-                .withHour(hour);
+                .withDayOfMonth(dayOfMonth);
     }
 }

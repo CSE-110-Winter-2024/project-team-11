@@ -79,9 +79,8 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
         var goalText = view.enterGoalText.getText().toString();
         var goal = new Goal(null, goalText, -1, false);
 
-        activityModel.todayAppend(goal);
         if(view.oneTimeRadioButton.isChecked()) {
-
+            activityModel.todayAppend(goal);
         }
         else if(view.dailyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, daily);

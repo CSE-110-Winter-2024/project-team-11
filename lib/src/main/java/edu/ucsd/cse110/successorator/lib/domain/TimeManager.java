@@ -12,5 +12,7 @@ public interface TimeManager {
 
     Subject<LocalDate> getDate(LocalDateTime localDateTime);
 
+    LocalDate getLastCleared();
+
     void nextDay();
 }

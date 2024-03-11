@@ -49,6 +49,13 @@ public class SimpleTimeManager implements TimeManager {
     }
 
     @Override
+    public LocalDate getLastCleared() {
+        LocalDate ret = lastCleared;
+        lastCleared = this.date.getValue();
+        return ret;
+    }
+
+    @Override
     public void nextDay() {
         daysOffset++;
         getDate();

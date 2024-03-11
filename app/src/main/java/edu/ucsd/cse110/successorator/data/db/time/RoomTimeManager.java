@@ -34,6 +34,14 @@ public class RoomTimeManager implements TimeManager {
     }
 
     @Override
+    public LocalDate getLastCleared() {
+        TimeEntity time = timeDao.get();
+        timeDao.update(TimeEntity.fromTime(getDate().getValue()));
+        if (time == null) time = timeDao.get();
+        return time.toTime();
+    }
+
+    @Override
     public void nextDay() {
         this.timeManager.nextDay();
     }
