@@ -35,6 +35,7 @@ public class MainViewModel extends ViewModel {
     private DateFragment.DisplayTextLogic dateDisplayTextLogic;
 
     private final TimeManager timeManager;
+    private final MutableSubject<LocalDate> displayTime = new SimpleSubject<>();
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
                     MainViewModel.class,
@@ -78,6 +79,11 @@ public class MainViewModel extends ViewModel {
             if (time == null) return;
 
             clearCompleted();
+            displayTime.setValue(time.plusDays(currentView.getValue()==ViewEnum.TMRW ? 1 : 0));
+        });
+
+        getCurrentView().observe(view -> {
+            displayTime.setValue(timeManager.getDate().getValue().plusDays(view==ViewEnum.TMRW ? 1 : 0));
         });
 
     }
@@ -127,7 +133,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<LocalDate> getDate() {
-        return timeManager.getDate();
+        return displayTime;
     }
 
     public void todayAppend(Goal goal) {

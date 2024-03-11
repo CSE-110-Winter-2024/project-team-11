@@ -98,7 +98,6 @@ public class DateFragment extends Fragment {
             }
         });
 
-        updateDateText(activityModel.getDate().getValue());
         activityModel.getDate().observe(time -> {
             updateDateText(time);
         });
