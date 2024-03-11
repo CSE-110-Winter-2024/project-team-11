@@ -12,6 +12,17 @@ public class SimpleGoalRepository implements GoalRepository {
         this.dataSource = dataSource;
     }
 
+    public boolean contains(Goal goal) {
+        List<Goal> goalList = findAll().getValue();
+        if (goalList == null) return false;
+        for (Goal g : goalList) {
+            if (goal.text().equals(g.text())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public Subject<Goal> find(int id) {
         return dataSource.getGoalSubject(id);
@@ -39,6 +50,8 @@ public class SimpleGoalRepository implements GoalRepository {
 
     @Override
     public void append(Goal goal) {
+        if (contains(goal)) return;
+
         dataSource.putGoal(
                 goal.withSortOrder(Math.max(0, dataSource.getMaxSortOrder() + 1))
         );
@@ -46,6 +59,8 @@ public class SimpleGoalRepository implements GoalRepository {
 
     @Override
     public void prepend(Goal goal) {
+        if (contains(goal)) return;
+
         dataSource.prepend(goal);
     }
 

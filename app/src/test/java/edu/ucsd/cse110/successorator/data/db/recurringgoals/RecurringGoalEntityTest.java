@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
@@ -16,7 +17,7 @@ public class RecurringGoalEntityTest {
     @Test
     public void toRecurringGoal() {
         Goal goal = new Goal(3, "Clean garbage", 0, true);
-        Recurrence recur = new RecurrenceFactory().createRecurrence(LocalDateTime.now(), RecurrenceFactory.RecurrenceEnum.DAILY);
+        Recurrence recur = new RecurrenceFactory().createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.DAILY);
         RecurringGoal expected = new RecurringGoal(2, goal, recur);
 
         RecurringGoal actual = RecurringGoalEntity.fromRecurringGoal(expected).toRecurringGoal();
@@ -30,8 +31,8 @@ public class RecurringGoalEntityTest {
         assertEquals(expected.getGoal(), actual.getGoal());
         assertEquals(expected.text(), actual.text());
 
-        assertEquals(expected.getRecurrence().getStartDate().toLocalDate(),
-                actual.getRecurrence().getStartDate().toLocalDate());
+        assertEquals(expected.getRecurrence().getStartDate(),
+                actual.getRecurrence().getStartDate());
 
         assertEquals(expected.getRecurrence().getType(), actual.getRecurrence().getType());
 

@@ -1,11 +1,11 @@
 package edu.ucsd.cse110.successorator.lib.domain.recurrence;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class RecurrenceFactory {
     public enum RecurrenceEnum { DAILY, WEEKLY, MONTHLY, YEARLY }
 
-    public Recurrence createRecurrence(LocalDateTime startDate, RecurrenceEnum recurrenceEnum) {
+    public Recurrence createRecurrence(LocalDate startDate, RecurrenceEnum recurrenceEnum) {
         switch(recurrenceEnum) {
             case DAILY:
                 return new Daily(startDate);

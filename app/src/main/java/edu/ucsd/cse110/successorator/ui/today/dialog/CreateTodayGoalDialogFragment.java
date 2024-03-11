@@ -7,17 +7,14 @@ import static edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFact
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
@@ -25,7 +22,6 @@ import edu.ucsd.cse110.successorator.databinding.FragmentCreateTodayGoalBinding;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
-import edu.ucsd.cse110.successorator.lib.domain.recurrence.Weekly;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 
 public class CreateTodayGoalDialogFragment extends DialogFragment {
@@ -57,12 +53,12 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         this.view = FragmentCreateTodayGoalBinding.inflate(getLayoutInflater());
 
-        LocalDateTime time = activityModel.getTime().getValue();
+        LocalDate date = activityModel.getDate().getValue();
         RecurrenceFactory recurrenceFactory = new RecurrenceFactory();
-        Recurrence daily = recurrenceFactory.createRecurrence(time, DAILY);
-        Recurrence weekly = recurrenceFactory.createRecurrence(time, WEEKLY);
-        Recurrence monthly = recurrenceFactory.createRecurrence(time, MONTHLY);
-        Recurrence yearly = recurrenceFactory.createRecurrence(time, YEARLY);
+        Recurrence daily = recurrenceFactory.createRecurrence(date, DAILY);
+        Recurrence weekly = recurrenceFactory.createRecurrence(date, WEEKLY);
+        Recurrence monthly = recurrenceFactory.createRecurrence(date, MONTHLY);
+        Recurrence yearly = recurrenceFactory.createRecurrence(date, YEARLY);
         view.weeklyRadioButton.setText(weekly.recurrenceText());
         view.monthlyRadioButton.setText(monthly.recurrenceText());
         view.yearlyRadioButton.setText(yearly.recurrenceText());
@@ -83,25 +79,24 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
         var goalText = view.enterGoalText.getText().toString();
         var goal = new Goal(null, goalText, -1, false);
 
-        activityModel.append(goal);
         if(view.oneTimeRadioButton.isChecked()) {
-
+            activityModel.todayAppend(goal);
         }
         else if(view.dailyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, daily);
-            // append ... can't implement yet
+            activityModel.recurringAppend(recurringGoal);
         }
         else if(view.weeklyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, weekly);
-            // append ... can't implement yet
+            activityModel.recurringAppend(recurringGoal);
         }
         else if(view.monthlyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, monthly);
-            // append ... can't implement yet
+            activityModel.recurringAppend(recurringGoal);
         }
         else if(view.yearlyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, yearly);
-            // append ... can't implement yet
+            activityModel.recurringAppend(recurringGoal);
         }
         else {
             throw new IllegalStateException("No radio button selected");

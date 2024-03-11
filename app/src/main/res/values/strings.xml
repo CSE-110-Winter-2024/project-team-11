@@ -11,4 +11,8 @@
     <string name="add">+</string>
     <string name="date">Date</string>
     <string name="tmrw">Tmrw</string>
+    <string name="today_string">Today</string>
+    <string name="tmrw_string">Tomorrow</string>
+    <string name="pending_string">Pending</string>
+    <string name="recurring_string">Recurring</string>
 </resources>

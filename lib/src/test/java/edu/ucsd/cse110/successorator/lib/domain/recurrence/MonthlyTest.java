@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +17,7 @@ import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 public class MonthlyTest {
     @Test
     public void occursToday() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
 
         Monthly Monthly = new Monthly(now);
 
@@ -27,24 +27,24 @@ public class MonthlyTest {
 
     @Test
     public void occursOnDay() {
-        LocalDateTime Thursday5thFeb = LocalDate.of(2024, 2, 29).atStartOfDay();
-        LocalDateTime Thursday5thMarOver = LocalDate.of(2024, 4, 4).atStartOfDay();
-        LocalDateTime Thursday5thAprOver = LocalDate.of(2024, 5, 2).atStartOfDay();
-        LocalDateTime Thursday5thMay = LocalDate.of(2024, 5, 30).atStartOfDay();
+        LocalDate Thursday5thFeb = LocalDate.of(2024, 2, 29);
+        LocalDate Thursday5thMarOver = LocalDate.of(2024, 4, 4);
+        LocalDate Thursday5thAprOver = LocalDate.of(2024, 5, 2);
+        LocalDate Thursday5thMay = LocalDate.of(2024, 5, 30);
 
-        HashSet<LocalDateTime> occurDates = new HashSet<>(List.of(
+        HashSet<LocalDate> occurDates = new HashSet<>(List.of(
             Thursday5thFeb,
             Thursday5thMarOver,
             Thursday5thAprOver,
             Thursday5thMay
         ));
 
-        LocalDateTime startDate = Thursday5thFeb;
+        LocalDate startDate = Thursday5thFeb;
         Monthly monthly = new Monthly(startDate);
 
         // occurs every 5th thursday days, starting from now
         for (int i = 0; i < 100; i++) {
-            LocalDateTime day = startDate.plusDays(i);
+            LocalDate day = startDate.plusDays(i);
             assertEquals(occurDates.contains(day), monthly.occursOnDay(day));
         }
 
@@ -56,7 +56,7 @@ public class MonthlyTest {
 
     @Test
     public void occursDuringInterval() {
-        LocalDateTime now = LocalDateTime.now().withHour(6);
+        LocalDate now = LocalDate.now();
 
         Monthly monthly = new Monthly(now);
 
@@ -88,23 +88,23 @@ public class MonthlyTest {
 
     @Test
     public void recurrenceText() {
-        LocalDateTime now = LocalDate.of(2024, 2, 29).atStartOfDay();
+        LocalDate now = LocalDate.of(2024, 2, 29);
         String expected = "monthly 5th Th";
         assertEquals(expected, new Monthly(now).recurrenceText());
 
-        now = LocalDate.of(2024, 2, 6).atStartOfDay();
+        now = LocalDate.of(2024, 2, 6);
         expected = "monthly 1st Tu";
         assertEquals(expected, new Monthly(now).recurrenceText());
 
-        now = LocalDate.of(2024, 2, 14).atStartOfDay();
+        now = LocalDate.of(2024, 2, 14);
         expected = "monthly 2nd We";
         assertEquals(expected, new Monthly(now).recurrenceText());
 
-        now = LocalDate.of(2024, 2, 16).atStartOfDay();
+        now = LocalDate.of(2024, 2, 16);
         expected = "monthly 3rd Fr";
         assertEquals(expected, new Monthly(now).recurrenceText());
 
-        now = LocalDate.of(2024, 2, 24).atStartOfDay();
+        now = LocalDate.of(2024, 2, 24);
         expected = "monthly 4th Sa";
         assertEquals(expected, new Monthly(now).recurrenceText());
     }

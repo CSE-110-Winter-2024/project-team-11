@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +17,7 @@ import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 public class YearlyTest {
     @Test
     public void occursToday() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
 
         Yearly Yearly = new Yearly(now);
 
@@ -27,22 +27,22 @@ public class YearlyTest {
 
     @Test
     public void occursOnDay() {
-        LocalDateTime y24 = LocalDate.of(2024, 2, 29).atStartOfDay();
-        LocalDateTime y25 = LocalDate.of(2025, 3, 1).atStartOfDay();
-        LocalDateTime y26 = LocalDate.of(2026, 3, 1).atStartOfDay();
-        LocalDateTime y27 = LocalDate.of(2027, 3, 1).atStartOfDay();
-        LocalDateTime y28 = LocalDate.of(2028, 2, 29).atStartOfDay();
+        LocalDate y24 = LocalDate.of(2024, 2, 29);
+        LocalDate y25 = LocalDate.of(2025, 3, 1);
+        LocalDate y26 = LocalDate.of(2026, 3, 1);
+        LocalDate y27 = LocalDate.of(2027, 3, 1);
+        LocalDate y28 = LocalDate.of(2028, 2, 29);
 
-        HashSet<LocalDateTime> occurDates = new HashSet<>(List.of(
+        HashSet<LocalDate> occurDates = new HashSet<>(List.of(
                 y24, y25, y26, y27, y28
         ));
 
-        LocalDateTime startDate = y24;
+        LocalDate startDate = y24;
         Yearly yearly = new Yearly(startDate);
 
         // occurs every leap day, or 3/1 if there's no leap day
         for (int i = 0; i < 1500; i++) {
-            LocalDateTime day = startDate.plusDays(i);
+            LocalDate day = startDate.plusDays(i);
             assertEquals(occurDates.contains(day), yearly.occursOnDay(day));
         }
 
@@ -54,7 +54,7 @@ public class YearlyTest {
 
     @Test
     public void occursDuringInterval() {
-        LocalDateTime now = LocalDateTime.now().withHour(6);
+        LocalDate now = LocalDate.now();
 
         Yearly yearly = new Yearly(now);
 
@@ -86,11 +86,11 @@ public class YearlyTest {
 
     @Test
     public void recurrenceText() {
-        LocalDateTime now = LocalDate.of(2024, 2, 29).atStartOfDay();
+        LocalDate now = LocalDate.of(2024, 2, 29);
         String expected = "yearly on 2/29";
         assertEquals(expected, new Yearly(now).recurrenceText());
 
-        now = LocalDate.of(2021, 12, 6).atStartOfDay();
+        now = LocalDate.of(2021, 12, 6);
         expected = "yearly on 12/6";
         assertEquals(expected, new Yearly(now).recurrenceText());
     }

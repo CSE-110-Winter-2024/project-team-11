@@ -5,16 +5,16 @@ import static edu.ucsd.cse110.successorator.lib.domain.recurrence.Weekly.dayOfWe
 import androidx.annotation.NonNull;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Monthly implements Recurrence {
-    LocalDateTime startDate;
+    LocalDate startDate;
 
-    public Monthly(@NonNull LocalDateTime startDate) {
-        this.startDate = startDate.toLocalDate().atStartOfDay();
+    public Monthly(@NonNull LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Monthly implements Recurrence {
     }
 
     @Override
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
@@ -35,9 +35,9 @@ public class Monthly implements Recurrence {
      * @param sinceMonth The month whose start is the start of the counting interval
      * @return The number of days that are the same day of week as date in the given interval
      */
-    public int countSameDayOfWeek(LocalDateTime date, int sinceMonth) {
+    public int countSameDayOfWeek(LocalDate date, int sinceMonth) {
         int count = 0;
-        for (LocalDateTime day = date.withMonth(sinceMonth).withDayOfMonth(1);
+        for (LocalDate day = date.withMonth(sinceMonth).withDayOfMonth(1);
              !day.isAfter(date);
              day = day.plusDays(1)) {
             if (day.getDayOfWeek() == date.getDayOfWeek()) {
@@ -48,7 +48,7 @@ public class Monthly implements Recurrence {
     }
 
     @Override
-    public boolean occursOnDay(LocalDateTime date) {
+    public boolean occursOnDay(LocalDate date) {
         if (date.isBefore(startDate) || date.getDayOfWeek() != startDate.getDayOfWeek()) {
             return false;
         }
@@ -63,15 +63,13 @@ public class Monthly implements Recurrence {
     }
 
     @Override
-    public boolean occursDuringInterval(LocalDateTime startDate, LocalDateTime endDate) {
-        startDate = startDate.toLocalDate().atStartOfDay();
-        endDate = endDate.toLocalDate().atStartOfDay();
+    public boolean occursDuringInterval(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(this.startDate) || endDate.isBefore(startDate)) {
             return false;
         }
 
         // Check whether or not any day in the interval matches the recurrence relation
-        for (LocalDateTime date = startDate.plusDays(1); !date.isAfter(endDate); date = date.plusDays(1)) {
+        for (LocalDate date = startDate.plusDays(1); !date.isAfter(endDate); date = date.plusDays(1)) {
             if (occursOnDay(date)) {
                 return true;
             }

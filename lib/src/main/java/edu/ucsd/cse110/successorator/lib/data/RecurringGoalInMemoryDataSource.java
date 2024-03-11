@@ -27,6 +27,7 @@ public class RecurringGoalInMemoryDataSource {
             = new SimpleSubject<>();
 
     public RecurringGoalInMemoryDataSource() {
+        allGoalsSubject.setValue(getGoals());
     }
 
     public List<RecurringGoal> getGoals() {
