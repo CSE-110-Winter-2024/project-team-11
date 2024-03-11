@@ -8,7 +8,7 @@ import static edu.ucsd.cse110.successorator.lib.testUtils.Assertions.assertRecur
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +24,11 @@ public class SimpleRecurringGoalRepositoryTest {
     RecurringGoalInMemoryDataSource src;
     List<RecurringGoal> goalList;
     RecurrenceFactory factory;
-    LocalDateTime now, yesterday, tomorrow;
+    LocalDate now, yesterday, tomorrow;
 
     @Before
     public void setup() {
-        now = LocalDateTime.now();
+        now = LocalDate.now();
         yesterday = now.minusDays(1);
         tomorrow = now.plusDays(1);
 

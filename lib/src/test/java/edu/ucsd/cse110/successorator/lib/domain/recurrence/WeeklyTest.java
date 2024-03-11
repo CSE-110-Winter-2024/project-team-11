@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
@@ -14,7 +14,7 @@ import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 public class WeeklyTest {
     @Test
     public void occursOnDay() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
 
         Weekly Weekly = new Weekly(now);
 
@@ -34,7 +34,7 @@ public class WeeklyTest {
 
     @Test
     public void occursDuringInterval() {
-        LocalDateTime now = LocalDateTime.now().withHour(6);
+        LocalDate now = LocalDate.now();
 
         Weekly weekly = new Weekly(now);
 
@@ -66,15 +66,15 @@ public class WeeklyTest {
 
     @Test
     public void recurrenceText() {
-        LocalDateTime now = LocalDate.of(2024, 2, 29).atStartOfDay();
+        LocalDate now = LocalDate.of(2024, 2, 29);
         String expected = "weekly on Th";
         assertEquals(expected, new Weekly(now).recurrenceText());
 
-        now = LocalDate.of(2024, 2, 28).atStartOfDay();
+        now = LocalDate.of(2024, 2, 28);
         expected = "weekly on We";
         assertEquals(expected, new Weekly(now).recurrenceText());
 
-        now = LocalDate.of(2024, 2, 27).atStartOfDay();
+        now = LocalDate.of(2024, 2, 27);
         expected = "weekly on Tu";
         assertEquals(expected, new Weekly(now).recurrenceText());
     }

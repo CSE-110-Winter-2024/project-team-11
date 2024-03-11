@@ -55,7 +55,7 @@ public class RecurringGoalEntity {
     public static RecurringGoalEntity fromRecurringGoal(RecurringGoal recurringGoal) {
         Goal goal = recurringGoal.getGoal();
         Recurrence recurrence = recurringGoal.getRecurrence();
-        LocalDateTime startDate = recurrence.getStartDate();
+        LocalDate startDate = recurrence.getStartDate();
         var entity = new RecurringGoalEntity(
                 goal.text(), goal.getContext().ordinal() ,goal.sortOrder(),
                 startDate.getYear(), startDate.getDayOfYear(), recurrence.getType().ordinal());
@@ -66,7 +66,7 @@ public class RecurringGoalEntity {
     // turns RecurringGoalEntity into RecurringGoal object
     public @NonNull RecurringGoal toRecurringGoal() {
         Goal goal = new Goal(null, text, GoalContext.values()[context], sortOrder, false);
-        LocalDateTime startDate = LocalDate.ofYearDay(year, dayOfYear).atStartOfDay();
+        LocalDate startDate = LocalDate.ofYearDay(year, dayOfYear);
         Recurrence recurrence = new RecurrenceFactory().createRecurrence(startDate,
                 RecurrenceFactory.RecurrenceEnum.values()[recurrenceType]);
 

@@ -20,6 +20,9 @@ public interface GoalDao {
     @Query("SELECT * FROM goals WHERE id = :id")
     GoalEntity find(int id);
 
+    @Query("SELECT * FROM goals WHERE text = :text")
+    GoalEntity find(String text);
+
     @Query("SELECT * FROM goals WHERE id = :id")
     LiveData<GoalEntity> findAsLiveData(int id);
 

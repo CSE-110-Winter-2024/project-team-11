@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class TimeManagerTest {
@@ -14,14 +15,14 @@ public class TimeManagerTest {
         LocalDateTime expected = LocalDateTime.now();
         expected = expected.minusHours(2);
 
-        LocalDateTime actual = LocalDateTime.now();
+        LocalDateTime input = LocalDateTime.now();
 
-        timeManager = new SimpleTimeManager(actual);
+        timeManager = new SimpleTimeManager(input);
         for(int i = 0; i < 100; i++) {
             expected = expected.plusDays(1);
             timeManager.nextDay();
 
-            actual = timeManager.getLocalDateTime().getValue();
+            LocalDate actual = timeManager.getDate().getValue();
             assertEquals(expected.getDayOfMonth(), actual.getDayOfMonth());
             assertEquals(expected.getDayOfWeek(), actual.getDayOfWeek());
             assertEquals(expected.getMonth(), actual.getMonth());
@@ -44,10 +45,10 @@ public class TimeManagerTest {
                 .withSecond(57);
 
         timeManager = new SimpleTimeManager(LocalDateTime.from(input));
-        LocalDateTime actual = LocalDateTime.now();
+        LocalDate actual = LocalDate.now();
 
         // Check that the date is still from yesterday before 2:00AM
-        actual = actual.with(timeManager.getLocalDateTime(LocalDateTime.from(input)).getValue());
+        actual = actual.with(timeManager.getDate(LocalDateTime.from(input)).getValue());
         assertEquals(expected.getDayOfMonth(), actual.getDayOfMonth());
         assertEquals(expected.getDayOfWeek(), actual.getDayOfWeek());
         assertEquals(expected.getMonth(), actual.getMonth());
@@ -57,7 +58,7 @@ public class TimeManagerTest {
 
         // Check that the date is now from today since it is after 2:00AM
         expected = expected.plusDays(1);
-        actual = actual.with(timeManager.getLocalDateTime(LocalDateTime.from(input)).getValue());
+        actual = actual.with(timeManager.getDate(LocalDateTime.from(input)).getValue());
         assertEquals(expected.getDayOfMonth(), actual.getDayOfMonth());
         assertEquals(expected.getDayOfWeek(), actual.getDayOfWeek());
         assertEquals(expected.getMonth(), actual.getMonth());

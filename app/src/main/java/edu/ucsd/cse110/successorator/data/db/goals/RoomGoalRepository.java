@@ -17,6 +17,10 @@ public class RoomGoalRepository implements GoalRepository {
         this.goalDao = goalDao;
     }
 
+    public boolean contains(Goal goal) {
+        return goalDao.find(goal.text()) != null;
+    }
+
     @Override
     public Subject<Goal> find(int id) {
         LiveData<GoalEntity> entityLiveData = goalDao.findAsLiveData(id);
@@ -62,10 +66,14 @@ public class RoomGoalRepository implements GoalRepository {
     // we only need append for us2
     @Override
     public void append(Goal goal) {
+        if (contains(goal)) return;
+
         goalDao.append(GoalEntity.fromGoal(goal));
     }
     @Override
     public void prepend(Goal goal) {
+        if (contains(goal)) return;
+
         goalDao.prepend(GoalEntity.fromGoal(goal));
     }
 

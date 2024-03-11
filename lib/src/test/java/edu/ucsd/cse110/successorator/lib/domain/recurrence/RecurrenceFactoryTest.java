@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class RecurrenceFactoryTest {
     RecurrenceFactory factory;
@@ -17,7 +17,7 @@ public class RecurrenceFactoryTest {
 
     @Test
     public void createRecurrence() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         assertEquals(Daily.class, factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.DAILY).getClass());
         assertEquals(Weekly.class, factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.WEEKLY).getClass());
         assertEquals(Monthly.class, factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.MONTHLY).getClass());
