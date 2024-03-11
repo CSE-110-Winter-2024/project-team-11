@@ -112,4 +112,19 @@ public class MainActivity extends AppCompatActivity
             activityModel.getDate();
         });
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        getSupportFragmentManager().beginTransaction()
+                .replace(binding.dateFragmentContainer.getId(), new DateFragment())
+                .commit();
+
+
+        var modelOwner = this;
+        var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
+        var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
+        modelProvider.get(MainViewModel.class).getTime();
+    }
 }

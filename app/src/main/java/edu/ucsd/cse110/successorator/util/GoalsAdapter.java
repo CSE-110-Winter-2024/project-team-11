@@ -2,6 +2,8 @@ package edu.ucsd.cse110.successorator.util;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +93,10 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         TextView textViewGoalText = convertView.findViewById(R.id.goal_text);
 
         // Check if the text is for the completed goals
-        if(isCompleted)  textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        if(isCompleted){
+            //textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            textViewGoalText.setBackgroundResource(R.drawable.strike_through);
+        }
         // Set data to views
         if (goal != null)
         {
