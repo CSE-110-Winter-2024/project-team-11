@@ -125,6 +125,6 @@ public class MainActivity extends AppCompatActivity
         var modelOwner = this;
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
-        modelProvider.get(MainViewModel.class).getTime();
+        modelProvider.get(MainViewModel.class).getDate();
     }
 }

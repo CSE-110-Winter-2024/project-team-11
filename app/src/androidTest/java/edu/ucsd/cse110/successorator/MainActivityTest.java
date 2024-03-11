@@ -28,7 +28,10 @@ import java.util.Map;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
-import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
+import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
+import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 
 /**
@@ -131,6 +134,14 @@ public class MainActivityTest {
                 new Goal(5, "haircut", 4, false)
         ));
 
+        LocalDate future = LocalDate.now().plusDays(2);
+        RecurrenceFactory factory = new RecurrenceFactory();
+        List<RecurringGoal> recurringGoalList = new ArrayList<>(List.of(
+                new RecurringGoal(0, goalList.get(0), factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.WEEKLY)),
+                new RecurringGoal(1, goalList.get(1), factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.DAILY)),
+                new RecurringGoal(2, goalList.get(2), factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.YEARLY))
+        ));
+
 
         var scenario = ActivityScenario.launch(MainActivity.class);
         scenario.onActivity(activity -> {
@@ -140,7 +151,13 @@ public class MainActivityTest {
             var activityModel = modelProvider.get(MainViewModel.class);
 
             for (Goal goal : goalList) {
-                activityModel.append(goal);
+                activityModel.todayAppend(goal);
+                activityModel.tmrwAppend(goal);
+                activityModel.pendingAppend(goal);
+            }
+
+            for (RecurringGoal goal : recurringGoalList) {
+                activityModel.recurringAppend(goal);
             }
         });
 
@@ -158,7 +175,21 @@ public class MainActivityTest {
             var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
             var activityModel = modelProvider.get(MainViewModel.class);
 
-            assertEquals(goalList, activityModel.getOngoingGoals().getValue());
+            activityModel.getTodayOngoingGoals().observe(goals -> {
+                assertEquals(goalList, goals);
+            });
+
+            activityModel.getTmrwOngoingGoals().observe(goals -> {
+                assertEquals(goalList, goals);
+            });
+
+            activityModel.getPendingGoals().observe(goals -> {
+                assertEquals(goalList, goals);
+            });
+
+            activityModel.getRecurringGoals().observe(goals -> {
+                assertEquals(recurringGoalList, goals);
+            });
         });
 
       
