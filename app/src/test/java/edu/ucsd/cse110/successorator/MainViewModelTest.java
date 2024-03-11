@@ -16,6 +16,9 @@ import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.SimpleGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
+import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
+import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.SimpleRecurringGoalRepository;
 
@@ -254,5 +257,51 @@ public class MainViewModelTest {
         }
 
 
+    }
+
+    // Test that goals for today, tmrw, pending, and recurring are separated
+    @Test
+    public void goalSeparation() {
+        List<Goal> today = List.of(
+                new Goal(1, "1", 0, false),
+                new Goal(2, "2", 1, false)
+        );
+        List<Goal> todayc = List.of(
+                new Goal(1, "1c", 0, true),
+                new Goal(2, "2c", 1, true)
+        );
+        List<Goal> tmrw = List.of(
+                new Goal(1, "3", 0, false),
+                new Goal(2, "4", 1, false)
+        );
+        List<Goal> tmrwc = List.of(
+                new Goal(1, "3c", 0, true),
+                new Goal(2, "4c", 1, true)
+        );
+        List<Goal> pending = List.of(
+                new Goal(1, "5", 0, false),
+                new Goal(2, "6", 1, false)
+        );
+        RecurrenceFactory factory = new RecurrenceFactory();
+        Recurrence w = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
+        Recurrence m = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.MONTHLY);
+        List<RecurringGoal> recurring = List.of(
+                new RecurringGoal(1, new Goal(1, "5", 0, false), w),
+                new RecurringGoal(2, new Goal(2, "6", 1, false), m)
+        );
+
+        for (Goal goal : today) model.todayAppend(goal);
+        for (Goal goal : todayc) model.todayAppend(goal);
+        for (Goal goal : tmrw) model.tmrwAppend(goal);
+        for (Goal goal : tmrwc) model.tmrwAppend(goal);
+        for (Goal goal : pending) model.pendingAppend(goal);
+        for (RecurringGoal goal : recurring) model.recurringAppend(goal);
+
+        assertEquals(today, model.getTodayOngoingGoals().getValue());
+        assertEquals(todayc, model.getTodayCompletedGoals().getValue());
+        assertEquals(tmrw, model.getTmrwOngoingGoals().getValue());
+        assertEquals(tmrwc, model.getTmrwCompletedGoals().getValue());
+        assertEquals(pending, model.getPendingGoals().getValue());
+        assertEquals(recurring, model.getRecurringGoals().getValue());
     }
 }

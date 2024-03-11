@@ -73,7 +73,7 @@ public class MainActivityTest {
 
                 Map<MainViewModel.ViewEnum, String> expected = new HashMap<>() {{
                     put(TODAY, "Today, " + DateFragment.DATE_TIME_FORMATTER.format(date));
-                    put(TMRW, "Tomorrow, " + DateFragment.DATE_TIME_FORMATTER.format(date));
+                    put(TMRW, "Tomorrow, " + DateFragment.DATE_TIME_FORMATTER.format(date.plusDays(1)));
                     put(PENDING, "Pending");
                     put(RECURRING, "Recurring");
                 }};

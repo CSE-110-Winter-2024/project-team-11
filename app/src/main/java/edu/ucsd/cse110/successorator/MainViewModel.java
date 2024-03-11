@@ -190,6 +190,14 @@ public class MainViewModel extends ViewModel {
         }
     }
 
+    public void tmrwAppend(Goal goal) {
+        if (goal.isCompleted()) {
+            tmrwCompletedGoalRepository.append(goal);
+        } else {
+            tmrwOngoingGoalRepository.append(goal);
+        }
+    }
+
     public void recurringAppend(RecurringGoal goal) {
         recurringGoalRepository.add(goal);
     }

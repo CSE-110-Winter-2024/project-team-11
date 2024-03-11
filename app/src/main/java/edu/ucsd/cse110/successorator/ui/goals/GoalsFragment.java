@@ -71,14 +71,14 @@ public class GoalsFragment extends Fragment {
             });
         }
         else if(type == MainViewModel.ViewEnum.TMRW) {
+            updateOngoingGoalsText(false);
+            updateCompletedGoalsParams(false);
             activityModel.getTmrwOngoingGoals().observe(goals -> {
                 ArrayList<Goal> newOngoingGoals = (ArrayList<Goal>) (goals != null ? goals.stream()
                         .sorted(Comparator.comparingInt(Goal::sortOrder))
                         .collect(Collectors.toList()) : null);
                 if (ongoingGoalsAdapter != null) {
                     ongoingGoalsAdapter.updateData(newOngoingGoals);
-                    updateOngoingGoalsText(newOngoingGoals.isEmpty());
-                    updateCompletedGoalsParams(newOngoingGoals.isEmpty());
                 }
             });
             activityModel.getTmrwCompletedGoals().observe(goals -> {
