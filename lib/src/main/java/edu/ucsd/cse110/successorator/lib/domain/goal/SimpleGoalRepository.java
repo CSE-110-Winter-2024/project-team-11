@@ -34,6 +34,11 @@ public class SimpleGoalRepository implements GoalRepository {
     }
 
     @Override
+    public Subject<List<Goal>> findAllContextSorted() {
+        return dataSource.getAllGoalsSubject();
+    }
+
+    @Override
     public void save(Goal goal) {
         dataSource.putGoal(goal);
     }

@@ -33,10 +33,29 @@ public class GoalInMemoryDataSource {
         allGoalsSubject.setValue(getGoals());
     }
 
+    public boolean containsOngoing() {
+        List<Goal> goalList = allGoalsSubject.getValue();
+        if (goalList == null) {
+            return false;
+        }
+
+        for (Goal goal : goalList) {
+            if (!goal.isCompleted()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<Goal> getGoals() {
-        return List.copyOf(goals.values()).stream()
+        List<Goal> goalList = List.copyOf(goals.values()).stream()
                 .sorted(Comparator.comparing(Goal::sortOrder))
                 .collect(Collectors.toList());
+
+        if (containsOngoing()) {
+            goalList.sort(Comparator.comparing(Goal::getContext));
+        }
+        return goalList;
     }
 
     public Goal getGoal(int id) {

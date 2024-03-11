@@ -22,11 +22,11 @@ public class SimpleGoalRepositoryTest {
     @Before
     public void setup() {
         goalList = new ArrayList<>(List.of(
-                new Goal(0, "shopping", 0, false),
-                new Goal(1, "homework", 1, false),
-                new Goal(2, "study", 2, false),
-                new Goal(3, "laundry", 3, false),
-                new Goal(4, "haircut", 4, false)
+                new Goal(0, "shopping", GoalContext.ERRAND,0, false),
+                new Goal(1, "homework", GoalContext.SCHOOL,1, false),
+                new Goal(2, "study", GoalContext.SCHOOL,2, false),
+                new Goal(3, "laundry", GoalContext.HOME,3, false),
+                new Goal(4, "haircut", GoalContext.ERRAND,4, false)
         ));
 
         src = new GoalInMemoryDataSource();
@@ -37,22 +37,22 @@ public class SimpleGoalRepositoryTest {
 
     @Test
     public void append() {
-        goalList.add(new Goal(5, "sleep", 5, false));
-        repo.append(new Goal(5, "sleep", 10, false));
+        goalList.add(new Goal(5, "sleep", GoalContext.HOME,5, false));
+        repo.append(new Goal(5, "sleep", GoalContext.HOME,10, false));
         assertGoalListEquals(goalList, Objects.requireNonNull(repo.findAll().getValue()));
     }
 
     @Test
     public void prepend() {
         goalList = new ArrayList<>(List.of(
-                new Goal(0, "shopping", 1, false),
-                new Goal(1, "homework", 2, false),
-                new Goal(2, "study", 3, false),
-                new Goal(3, "laundry", 4, false),
-                new Goal(4, "haircut", 5, false),
-                new Goal(5, "sleep", 0, false)
+                new Goal(0, "shopping", GoalContext.ERRAND,1, false),
+                new Goal(1, "homework", GoalContext.SCHOOL, 2, false),
+                new Goal(2, "study", GoalContext.SCHOOL,3, false),
+                new Goal(3, "laundry", GoalContext.HOME,4, false),
+                new Goal(4, "haircut", GoalContext.ERRAND,5, false),
+                new Goal(5, "sleep", GoalContext.HOME,0, false)
         ));
-        repo.prepend(new Goal(5, "sleep", 10, false));
+        repo.prepend(new Goal(5, "sleep", GoalContext.HOME, 10, false));
         assertGoalListEquals(goalList, Objects.requireNonNull(repo.findAll().getValue()));
     }
 

@@ -29,6 +29,7 @@ import java.util.List;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
@@ -75,7 +76,7 @@ public class MainActivityTest {
             var rootView = activity.findViewById(R.id.root);
             var binding = ActivityMainBinding.bind(rootView);
             TextView dateTextView = activity.findViewById(R.id.dateTextView);
-            LocalDate date = LocalDate.now();
+            LocalDate date = LocalDateTime.now().minusHours(2).toLocalDate();
 
             Map<MainViewModel.ViewEnum, String> expected = new HashMap<>() {{
                 put(TODAY, "Today, " + DateFragment.DATE_TIME_FORMATTER.format(date));
@@ -127,11 +128,11 @@ public class MainActivityTest {
     @Test
     public void persistentGoals() {
         List<Goal> goalList = new ArrayList<>(List.of(
-                new Goal(1, "shopping", 0, false),
-                new Goal(2, "homework", 1, false),
-                new Goal(3, "study", 2, false),
-                new Goal(4, "laundry", 3, false),
-                new Goal(5, "haircut", 4, false)
+                new Goal(1, "shopping", GoalContext.HOME, 0, false),
+                new Goal(2, "homework", GoalContext.HOME, 1, false),
+                new Goal(3, "study", GoalContext.WORK, 2, false),
+                new Goal(4, "laundry", GoalContext.SCHOOL, 3, false),
+                new Goal(5, "haircut", GoalContext.ERRAND, 4, false)
         ));
 
         LocalDate future = LocalDate.now().plusDays(2);
@@ -165,10 +166,7 @@ public class MainActivityTest {
         scenario.moveToState(Lifecycle.State.STARTED);
         scenario.close();
 
-
         var scenario2 = ActivityScenario.launch(MainActivity.class);
-        scenario2.moveToState(Lifecycle.State.STARTED);
-
         scenario2.onActivity(activity -> {
             var modelOwner = activity;
             var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
@@ -191,7 +189,6 @@ public class MainActivityTest {
                 assertEquals(recurringGoalList, goals);
             });
         });
-
-      
+        scenario2.moveToState(Lifecycle.State.STARTED);
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.data.RecurringGoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.goal.SimpleGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
@@ -81,7 +82,7 @@ public class MainViewModelTest {
             boolean isCompleted = Math.random() > 0.5;
             List<Goal> addTo = isCompleted ? completedList : ongoingList;
 
-            Goal g = new Goal(i, text, addTo.size(), isCompleted);
+            Goal g = new Goal(i, text, GoalContext.HOME, addTo.size(), isCompleted);
 
             addTo.add(g);
             model.todayAppend(g);
@@ -95,7 +96,7 @@ public class MainViewModelTest {
     public void ListMovetest1() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal simple = new Goal(1, "Hello", ongoingList.size(), false);
+        Goal simple = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), false);
         completedList.add(simple.withIsCompleted(true));
         model.todayAppend(simple);
         model.todayCompleteGoal(simple);
@@ -108,8 +109,8 @@ public class MainViewModelTest {
     public void ListMovetest2() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal simple = new Goal(1, "Hello", ongoingList.size(), false);
-        Goal done = new Goal(2, "Wow", completedList.size(), true);
+        Goal simple = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), false);
+        Goal done = new Goal(2, "Wow", GoalContext.HOME, completedList.size(), true);
         completedList.add(simple.withIsCompleted(true));
         completedList.add(done);
         model.todayAppend(done);
@@ -124,17 +125,17 @@ public class MainViewModelTest {
     public void ListMovetest3() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal incomplete1 = new Goal(1, "Hello", ongoingList.size(), false);
+        Goal incomplete1 = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete1);
-        Goal complete1 = new Goal(2, "Wow", completedList.size(), true);
+        Goal complete1 = new Goal(2, "Wow", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete1);
-        Goal incomplete2 = new Goal(3, "My", ongoingList.size(), false);
+        Goal incomplete2 = new Goal(3, "My", GoalContext.HOME, ongoingList.size(), false);
         completedList.add(0, incomplete2.withIsCompleted(true));
-        Goal complete2 = new Goal(4, "Name", completedList.size(), true);
+        Goal complete2 = new Goal(4, "Name", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete2);
-        Goal incomplete3 = new Goal(5, "Is", ongoingList.size(), false);
+        Goal incomplete3 = new Goal(5, "Is", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete3);
-        Goal complete3 = new Goal(6, "Not", completedList.size(), true);
+        Goal complete3 = new Goal(6, "Not", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete3);
         model.todayAppend(incomplete1);
         model.todayAppend(incomplete2);
@@ -152,7 +153,7 @@ public class MainViewModelTest {
     public void uncompleteGoal1() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal simple = new Goal(1, "Hello", ongoingList.size(), true);
+        Goal simple = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), true);
         ongoingList.add(simple.withIsCompleted(false));
         model.todayAppend(simple);
         model.todayUncompleteGoal(simple);
@@ -165,8 +166,8 @@ public class MainViewModelTest {
     public void uncompleteGoal2() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal simple = new Goal(1, "Hello", ongoingList.size(), true);
-        Goal done = new Goal(2, "Wow", completedList.size(), true);
+        Goal simple = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), true);
+        Goal done = new Goal(2, "Wow", GoalContext.HOME, completedList.size(), true);
         ongoingList.add(simple.withIsCompleted(false));
         completedList.add(done);
         model.todayAppend(done);
@@ -180,17 +181,17 @@ public class MainViewModelTest {
     public void uncompleteGoal3() {
         List<Goal> ongoingList = new ArrayList<>();
         List<Goal> completedList = new ArrayList<>();
-        Goal incomplete1 = new Goal(1, "Hello", ongoingList.size(), false);
+        Goal incomplete1 = new Goal(1, "Hello", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete1);
-        Goal complete1 = new Goal(2, "Wow", completedList.size(), true);
+        Goal complete1 = new Goal(2, "Wow", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete1);
-        Goal incomplete2 = new Goal(3, "My", ongoingList.size(), false);
+        Goal incomplete2 = new Goal(3, "My", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete2);
-        Goal complete2 = new Goal(4, "Name", completedList.size(), true);
+        Goal complete2 = new Goal(4, "Name", GoalContext.HOME, completedList.size(), true);
         ongoingList.add(0, complete2.withIsCompleted(false));
-        Goal incomplete3 = new Goal(5, "Is", ongoingList.size(), false);
+        Goal incomplete3 = new Goal(5, "Is", GoalContext.HOME, ongoingList.size(), false);
         ongoingList.add(incomplete3);
-        Goal complete3 = new Goal(6, "Not", completedList.size(), true);
+        Goal complete3 = new Goal(6, "Not", GoalContext.HOME, completedList.size(), true);
         completedList.add(complete3);
         model.todayAppend(incomplete1);
         model.todayAppend(incomplete2);
@@ -222,8 +223,8 @@ public class MainViewModelTest {
     @Test
     public void clearList() {
         ArrayList<Goal> listExpected = new ArrayList<>();
-        Goal test1 = new Goal(1, "", 1, true);
-        Goal test2 = new Goal(2, "", 2, true);
+        Goal test1 = new Goal(1, "", GoalContext.HOME, 1, true);
+        Goal test2 = new Goal(2, "", GoalContext.HOME, 2, true);
         for(int i = 0; i < 100; i++) {
             model.todayAppend(test1);
             model.todayAppend(test2);
@@ -240,9 +241,9 @@ public class MainViewModelTest {
     public void beforeAppReset() {
         ArrayList<Goal> ongoingList = new ArrayList<>();
         ArrayList<Goal> completedList = new ArrayList<>();
-        Goal test1 = new Goal(1, "", 1, true);
-        Goal test2 = new Goal(2, "", 2, true);
-        Goal test3 = new Goal(1, "", 1, false);
+        Goal test1 = new Goal(1, "", GoalContext.HOME, 1, true);
+        Goal test2 = new Goal(2, "", GoalContext.HOME, 2, true);
+        Goal test3 = new Goal(1, "", GoalContext.HOME, 1, false);
         ongoingList.add(test3);
 
         for(int i = 0; i < 100; i++) {
@@ -263,31 +264,31 @@ public class MainViewModelTest {
     @Test
     public void goalSeparation() {
         List<Goal> today = List.of(
-                new Goal(0, "1", 0, false),
-                new Goal(1, "2", 1, false)
+                new Goal(0, "1", GoalContext.HOME, 0, false),
+                new Goal(1, "2", GoalContext.HOME, 1, false)
         );
         List<Goal> todayc = List.of(
-                new Goal(0, "1c", 0, true),
-                new Goal(1, "2c", 1, true)
+                new Goal(0, "1c", GoalContext.HOME, 0, true),
+                new Goal(1, "2c", GoalContext.HOME, 1, true)
         );
         List<Goal> tmrw = List.of(
-                new Goal(0, "3", 0, false),
-                new Goal(1, "4", 1, false)
+                new Goal(0, "3", GoalContext.HOME, 0, false),
+                new Goal(1, "4", GoalContext.HOME, 1, false)
         );
         List<Goal> tmrwc = List.of(
-                new Goal(0, "3c", 0, true),
-                new Goal(1, "4c", 1, true)
+                new Goal(0, "3c", GoalContext.HOME, 0, true),
+                new Goal(1, "4c", GoalContext.HOME, 1, true)
         );
         List<Goal> pending = List.of(
-                new Goal(0, "5", 0, false),
-                new Goal(1, "6", 1, false)
+                new Goal(0, "5", GoalContext.HOME, 0, false),
+                new Goal(1, "6", GoalContext.HOME, 1, false)
         );
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence w = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
         Recurrence m = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.MONTHLY);
         List<RecurringGoal> recurring = List.of(
-                new RecurringGoal(0, new Goal(null, "5", 0, false), w),
-                new RecurringGoal(1, new Goal(null, "6", 1, false), m)
+                new RecurringGoal(0, new Goal(null, "5", GoalContext.HOME, 0, false), w),
+                new RecurringGoal(1, new Goal(null, "6", GoalContext.HOME, 1, false), m)
         );
 
         for (Goal goal : today) model.todayAppend(goal);
@@ -298,10 +299,10 @@ public class MainViewModelTest {
         for (RecurringGoal goal : recurring) model.recurringAppend(goal);
 
         today = List.of(
-                new Goal(0, "1", 0, false),
-                new Goal(1, "2", 1, false),
-                new Goal(2, "5", 2, false),
-                new Goal(3, "6", 3, false)
+                new Goal(0, "1", GoalContext.HOME, 0, false),
+                new Goal(1, "2", GoalContext.HOME, 1, false),
+                new Goal(2, "5", GoalContext.HOME, 2, false),
+                new Goal(3, "6", GoalContext.HOME, 3, false)
         );
 
         assertEquals(today, model.getTodayOngoingGoals().getValue());
@@ -314,7 +315,7 @@ public class MainViewModelTest {
 
     @Test
     public void oneTime() {
-        Goal g = new Goal(0, "1", 0, false);
+        Goal g = new Goal(0, "1", GoalContext.HOME, 0, false);
         model.todayAppend(g);
         model.todayCompleteGoal(g);
         model.nextDay();
@@ -327,7 +328,7 @@ public class MainViewModelTest {
     public void daily() {
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence daily = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.DAILY);
-        Goal g = new Goal(0, "1", 0, false);
+        Goal g = new Goal(0, "1", GoalContext.HOME, 0, false);
         RecurringGoal rg = new RecurringGoal(null, g, daily);
         model.recurringAppend(rg);
         model.todayCompleteGoal(g);
@@ -367,7 +368,7 @@ public class MainViewModelTest {
     public void infrequently() {
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence weekly = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
-        Goal g = new Goal(0, "1", 0, false);
+        Goal g = new Goal(0, "1", GoalContext.HOME, 0, false);
         RecurringGoal rg = new RecurringGoal(null, g, weekly);
         model.recurringAppend(rg);
         assertEquals(List.of(g), model.getTodayOngoingGoals().getValue());
@@ -401,7 +402,7 @@ public class MainViewModelTest {
     public void collision() {
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence daily = factory.createRecurrence(model.getDate().getValue(), RecurrenceFactory.RecurrenceEnum.DAILY);
-        Goal g = new Goal(0, "1", 0, false);
+        Goal g = new Goal(0, "1", GoalContext.HOME, 0, false);
         RecurringGoal rg = new RecurringGoal(null, g, daily);
         model.recurringAppend(rg);
         model.todayCompleteGoal(g);

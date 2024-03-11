@@ -1,12 +1,14 @@
 package edu.ucsd.cse110.successorator;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import edu.ucsd.cse110.successorator.data.db.goals.RoomGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
@@ -75,8 +77,10 @@ public class MainViewModel extends ViewModel {
 
         currentView.setValue(ViewEnum.TODAY);
 
+
         this.timeManager = timeManager;
 
+      
         tmrwOngoingGoalRepository.findAll().observe(rolloverGoals::setValue);
 
         recurringGoalRepository.findAll().observe(goalGenerators::setValue);
@@ -186,7 +190,6 @@ public class MainViewModel extends ViewModel {
     public void todayCompleteGoal(Goal goal) {
         // Set the goal as completed
         Goal completedGoal = goal.withIsCompleted(true);
-//        Goal completedGoal = temp.withSortOrder(0);
 
         // Remove old goal, add new Completed Goal
         if (goal.id() != null) {
@@ -198,8 +201,7 @@ public class MainViewModel extends ViewModel {
     public void todayUncompleteGoal(Goal goal) {
         // Set the goal as completed
         Goal completedGoal = goal.withIsCompleted(false);
-//        Goal completedGoal = temp.withSortOrder(0);
-
+//
         // Remove old goal, add new Completed Goal
         if (goal.id() != null) {
             todayCompletedGoalRepository.remove(goal.id());
