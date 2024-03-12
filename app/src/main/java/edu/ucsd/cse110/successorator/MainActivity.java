@@ -15,9 +15,12 @@ import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
+import edu.ucsd.cse110.successorator.ui.goals.dialog.CreateGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.pendinggoals.CreatePendingGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.recurringgoals.RecurringGoalsFragment;
 import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.today.dialog.FilterGoalsDialogFragment;
+import edu.ucsd.cse110.successorator.ui.pendinggoals.PendingGoalsFragment;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -76,14 +79,14 @@ public class MainActivity extends AppCompatActivity
                 case PENDING: {
                     getSupportFragmentManager().beginTransaction()
                             .replace(binding.goalsFragmentContainer.getId(),
-                                    new GoalsFragment())
+                                    new PendingGoalsFragment())
                             .commit();
 
                     activityModel.setDateDisplayTextLogic(dateText ->  "Pending");
 
                     // Set the click listener for the createGoalButton
                     binding.createGoalButton.setOnClickListener(v -> {
-                        CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
+                        CreatePendingGoalDialogFragment dialogFragment = CreatePendingGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
                     binding.filterMenuButton.setOnClickListener(v -> {
