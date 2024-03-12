@@ -424,7 +424,7 @@ public class MainViewModelTest {
 
     @Test
     public void pendingTest1() {
-        Goal p = new Goal(0, "5", GoalContext.HOME, 0, false);
+        Goal p = new Goal(3, "5", GoalContext.HOME, 0, false);
         ArrayList<Goal> today = new ArrayList<>(Arrays.asList(
                 new Goal(0, "1", GoalContext.HOME, 0, false),
                 new Goal(1, "2", GoalContext.HOME, 1, false)
