@@ -252,6 +252,43 @@ public class MainViewModel extends ViewModel {
         pendingGoalRepository.append(goal);
     }
 
+    public void pendingCompleteGoal(Goal goal) {
+        // Set the goal as completed
+        Goal completedGoal = goal.withIsCompleted(true);
+
+        // Remove old goal, add new Completed Goal
+        if (goal.id() != null) {
+            pendingGoalRepository.remove(goal.id());
+            todayCompletedGoalRepository.prepend(completedGoal);
+        }
+    }
+
+    public void pendingToToday(Goal goal) {
+
+        // Remove old goal, add new Goal
+        if (goal.id() != null) {
+            pendingGoalRepository.remove(goal.id());
+            todayOngoingGoalRepository.append(goal);
+        }
+    }
+
+    public void pendingToTmrw(Goal goal) {
+
+        // Remove old goal, add new Goal
+        if (goal.id() != null) {
+            pendingGoalRepository.remove(goal.id());
+            tmrwOngoingGoalRepository.append(goal);
+        }
+    }
+
+    public void pendingDeleteGoal(Goal goal) {
+
+        // Remove old goal, add new Goal
+        if (goal.id() != null) {
+            pendingGoalRepository.remove(goal.id());
+        }
+    }
+
     public void nextDay() {
         timeManager.nextDay();
     }
