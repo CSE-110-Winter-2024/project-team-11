@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.ui.recurringgoals;
+package edu.ucsd.cse110.successorator.ui.pendinggoals;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +15,6 @@ import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.util.GoalsAdapter;
 import edu.ucsd.cse110.successorator.util.PendingGoalsAdapter;
-import edu.ucsd.cse110.successorator.util.RecurringGoalsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
