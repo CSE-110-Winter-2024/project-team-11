@@ -131,7 +131,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<List<Goal>> getTodayOngoingGoals() {
-        return todayOngoingGoalRepository.findAll();
+        return todayOngoingGoalRepository.findAllContextSorted();
     }
 
     public Subject<List<Goal>> getTodayCompletedGoals() {
@@ -139,7 +139,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<List<Goal>> getTmrwOngoingGoals() {
-        return tmrwOngoingGoalRepository.findAll();
+        return tmrwOngoingGoalRepository.findAllContextSorted();
     }
 
     public Subject<List<Goal>> getTmrwCompletedGoals() {
@@ -147,7 +147,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<List<Goal>> getPendingGoals() {
-        return pendingGoalRepository.findAll();
+        return pendingGoalRepository.findAllContextSorted();
     }
 
     public Subject<List<RecurringGoal>> getRecurringGoals() {
