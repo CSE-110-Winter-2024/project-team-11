@@ -17,6 +17,7 @@ import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
 import edu.ucsd.cse110.successorator.ui.recurringgoals.RecurringGoalsFragment;
 import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.today.dialog.FilterGoalsDialogFragment;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -47,10 +48,12 @@ public class MainActivity extends AppCompatActivity
                         CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
-
+                    binding.filterMenuButton.setOnClickListener(v -> {
+                        FilterGoalsDialogFragment dialogFragment = FilterGoalsDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "FilterGoalsDialogFragment");
+                    });
                     break;
                 }
-                // TODO
                 case TMRW: {
                     getSupportFragmentManager().beginTransaction()
                             .replace(binding.goalsFragmentContainer.getId(),
@@ -64,7 +67,10 @@ public class MainActivity extends AppCompatActivity
                         CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
-
+                    binding.filterMenuButton.setOnClickListener(v -> {
+                        FilterGoalsDialogFragment dialogFragment = FilterGoalsDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "FilterGoalsDialogFragment");
+                    });
                     break;
                 }
                 case PENDING: {
@@ -80,7 +86,10 @@ public class MainActivity extends AppCompatActivity
                         CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
-
+                    binding.filterMenuButton.setOnClickListener(v -> {
+                        FilterGoalsDialogFragment dialogFragment = FilterGoalsDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "FilterGoalsDialogFragment");
+                    });
                     break;
                 }
                 case RECURRING: {
@@ -97,7 +106,10 @@ public class MainActivity extends AppCompatActivity
                         CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
-
+                    binding.filterMenuButton.setOnClickListener(v -> {
+                        FilterGoalsDialogFragment dialogFragment = FilterGoalsDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "FilterGoalsDialogFragment");
+                    });
                     break;
                 }
             }

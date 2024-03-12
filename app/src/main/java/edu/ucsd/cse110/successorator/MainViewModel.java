@@ -1,11 +1,14 @@
 package edu.ucsd.cse110.successorator;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+import android.util.Log;
+
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.data.db.goals.RoomGoalRepository;
@@ -40,6 +43,8 @@ public class MainViewModel extends ViewModel {
 
     private final TimeManager timeManager;
     private final MutableSubject<LocalDate> displayTime = new SimpleSubject<>();
+
+    public List<String> selectedFilters = new ArrayList<>();
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
                     MainViewModel.class,
@@ -183,6 +188,7 @@ public class MainViewModel extends ViewModel {
             todayCompletedGoalRepository.append(goal);
         } else {
             todayOngoingGoalRepository.append(goal);
+
         }
     }
 
@@ -252,6 +258,34 @@ public class MainViewModel extends ViewModel {
         pendingGoalRepository.append(goal);
     }
 
+    public void applyFilters() {
+
+        List<Goal> filteredTodayOngoingGoals = todayOngoingGoalRepository.filterGoalsByContext(selectedFilters);
+        // Print the filtered goals
+        Log.i("?????", filteredTodayOngoingGoals.toString());
+                for (Goal goal : filteredTodayOngoingGoals) {
+                    Log.i("Filtered Goal", goal.toString()); // Assuming Goal has a toString() method to print its details
+                }
+        todayOngoingGoalRepository.update(filteredTodayOngoingGoals);
+
+        // Filter ongoing goals for tomorrow
+        List<Goal> filteredTmrwOngoingGoals = tmrwOngoingGoalRepository.filterGoalsByContext(selectedFilters);
+        tmrwOngoingGoalRepository.update(filteredTmrwOngoingGoals);
+    }
+
+    public void addFilter(String filter) {
+        if (!selectedFilters.contains(filter)) {
+            selectedFilters.add(filter);
+
+        }
+    }
+
+    public void removeFilter(String filter) {
+        if (selectedFilters.contains(filter)) {
+            selectedFilters.remove(filter);
+
+        }
+    }
     public void nextDay() {
         timeManager.nextDay();
     }

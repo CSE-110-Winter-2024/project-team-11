@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.successorator.lib.data;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,30 @@ public class GoalInMemoryDataSource {
             = new HashMap<>();
     private final MutableSubject<List<Goal>> allGoalsSubject
             = new SimpleSubject<>();
+
+    // Existing member variables...
+    private List<Goal> originalGoals = new ArrayList<>();
+
+    // Existing methods...
+
+    public void setOriginalGoals(List<Goal> goals) {
+        originalGoals = new ArrayList<>(goals);
+    }
+
+    public List<Goal> getOriginalGoals() {
+        return originalGoals;
+    }
+
+    public void resetToOriginalGoals() {
+        goals.clear();
+        goalSubjects.clear();
+
+        for (Goal originalGoal : originalGoals) {
+            putGoal(originalGoal);
+        }
+
+        allGoalsSubject.setValue(getGoals());
+    }
 
     public GoalInMemoryDataSource() {
         allGoalsSubject.setValue(getGoals());
@@ -93,6 +118,7 @@ public class GoalInMemoryDataSource {
         if (goalSubjects.containsKey(fixedGoal.id())) {
             goalSubjects.get(fixedGoal.id()).setValue(fixedGoal);
         }
+        updateOriginalGoals(); // Update original goals after adding new goal
         allGoalsSubject.setValue(getGoals());
     }
 
@@ -110,9 +136,25 @@ public class GoalInMemoryDataSource {
                 goalSubjects.get(goal.id()).setValue(goal);
             }
         });
+        updateOriginalGoals(); // Update original goals after adding new goals
         allGoalsSubject.setValue(getGoals());
     }
 
+    // Existing methods...
+
+    private void updateOriginalGoals() {
+        originalGoals = new ArrayList<>(goals.values());
+    }
+
+    public void updateGoals(List<Goal> filteredGoals) {
+        // Clear existing goals and replace them with the filtered goals
+        goals.clear();
+        for (Goal goal : filteredGoals) {
+            goals.put(goal.id(), goal);
+        }
+        updateOriginalGoals(); // Update original goals after updating goals
+        allGoalsSubject.setValue(getGoals());
+    }
     public void removeGoal(int id) {
         var goal = goals.get(id);
         var sortOrder = goal.sortOrder();
@@ -205,10 +247,22 @@ public class GoalInMemoryDataSource {
         }
     }
 
+
+
     public void clear() {
         List<Goal> list = getGoals();
         for (Goal goal : list) {
             removeGoal(goal.id());
         }
+    }
+
+    public List<Goal> filterGoalsByContext(List<String> contexts) {
+        List<Goal> filteredGoals = new ArrayList<>();
+        for (Goal goal : getGoals()) {
+            if (contexts.contains(goal.getContext())) {
+                filteredGoals.add(goal);
+            }
+        }
+        return filteredGoals;
     }
 }

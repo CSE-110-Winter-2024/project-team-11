@@ -1,7 +1,7 @@
 package edu.ucsd.cse110.successorator.lib.domain.goal;
 
 import java.util.List;
-
+import java.util.ArrayList;
 import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 
@@ -73,4 +73,14 @@ public class SimpleGoalRepository implements GoalRepository {
     public void clear() {
         dataSource.clear();
     }
+
+    @Override
+    public void update(List<Goal> filteredGoals) {
+        dataSource.updateGoals(filteredGoals);
+    }
+
+    public List<Goal> filterGoalsByContext(List<String> contexts) {
+        return dataSource.filterGoalsByContext(contexts);
+    }
+
 }

@@ -22,4 +22,8 @@ public interface GoalRepository {
     void prepend(Goal goal);
 
     void clear();
+
+    void update(List<Goal> filteredGoals);
+
+    List<Goal> filterGoalsByContext(List<String> contexts);
 }

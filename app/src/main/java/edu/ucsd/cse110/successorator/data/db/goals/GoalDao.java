@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -74,4 +75,10 @@ public interface GoalDao {
 
     @Query("DELETE FROM goals")
     void clear();
+
+    @Query("SELECT * FROM goals WHERE context IN (:contexts)")
+    List<GoalEntity> findGoalsByContexts(List<String> contexts);
+
+    @Update
+    void update(List<GoalEntity> goals);
 }

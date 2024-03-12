@@ -86,4 +86,20 @@ public class RoomGoalRepository implements GoalRepository {
     public void clear() {
         goalDao.clear();
     }
+
+    @Override
+    public void update(List<Goal> filteredGoals) {
+        // Convert filtered goals to entities and update the database
+        List<GoalEntity> entities = filteredGoals.stream()
+                .map(GoalEntity::fromGoal)
+                .collect(Collectors.toList());
+        goalDao.update(entities);
+    }
+
+    public List<Goal> filterGoalsByContext(List<String> contexts) {
+        List<GoalEntity> entities = goalDao.findGoalsByContexts(contexts);
+        return entities.stream()
+                .map(GoalEntity::toGoal)
+                .collect(Collectors.toList());
+    }
 }
