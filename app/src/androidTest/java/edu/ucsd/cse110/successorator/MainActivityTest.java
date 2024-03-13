@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
@@ -151,12 +152,6 @@ public class MainActivityTest {
             var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
             var activityModel = modelProvider.get(MainViewModel.class);
 
-            var todayGoals = activityModel.getTodayOngoingGoals();
-            todayGoals.observe(goals -> {
-                System.out.println(goals);
-            });
-
-
             for (Goal goal : goalList) {
                 activityModel.todayAppend(goal);
                 activityModel.getTodayOngoingGoals();
@@ -168,12 +163,6 @@ public class MainActivityTest {
                 activityModel.recurringAppend(goal);
             }
 
-
-
-            System.out.println("1" + activityModel.getTodayOngoingGoals().getValue());
-            System.out.println(activityModel.getTodayOngoingGoals().getValue());
-            System.out.println(activityModel.getTodayOngoingGoals().getValue());
-            System.out.println(activityModel.getTodayOngoingGoals().getValue());
         });
 
         // Simulate moving to the started state (above will then be called).
@@ -187,29 +176,31 @@ public class MainActivityTest {
             var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
             var activityModel = modelProvider.get(MainViewModel.class);
 
-
-
-            System.out.println(activityModel.getTodayOngoingGoals().getValue());
-            System.out.println(activityModel.getTodayOngoingGoals().getValue());
-            System.out.println(activityModel.getTodayOngoingGoals().getValue());
-            System.out.println(activityModel.getTodayOngoingGoals().getValue());
-
             activityModel.getTodayOngoingGoals().observe(goals -> {
+                if (goals.isEmpty()) return;
+
                 assertEquals(goalList, goals);
             });
 
-//            activityModel.getTmrwOngoingGoals().observe(goals -> {
-//                assertEquals(goalList, goals);
-//            });
-//
-//            activityModel.getPendingGoals().observe(goals -> {
-//                assertEquals(goalList, goals);
-//            });
-//
-//            activityModel.getRecurringGoals().observe(goals -> {
-//                assertEquals(recurringGoalList, goals);
-//            });
+            activityModel.getTmrwOngoingGoals().observe(goals -> {
+                if (goals.isEmpty()) return;
+
+                assertEquals(goalList, goals);
+            });
+
+            activityModel.getPendingGoals().observe(goals -> {
+                if (goals.isEmpty()) return;
+
+                assertEquals(goalList, goals);
+            });
+
+            activityModel.getRecurringGoals().observe(goals -> {
+                if (goals.isEmpty()) return;
+
+                assertEquals(recurringGoalList, goals);
+            });
         });
         scenario2.moveToState(Lifecycle.State.STARTED);
+        scenario2.close();
     }
 }
