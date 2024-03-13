@@ -43,12 +43,12 @@ public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
         convertView.setOnLongClickListener(v -> {
             RecurringGoal goal = getItem(position);
             if (goal != null) {
-                // To be implemented
                 AlertDialog.Builder build = new AlertDialog.Builder(getContext());
                 build.setTitle("Delete Goal");
                 build.setMessage("Are you sure you want to delete this goal?");
                 build.setPositiveButton("Yes", (dialog, which) -> {
-
+                    remove(goal);
+                    notifyDataSetChanged();
                 });
                 build.setNegativeButton("No", (dialog, which) -> {
                     dialog.dismiss();
