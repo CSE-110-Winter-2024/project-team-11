@@ -9,8 +9,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,8 +17,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicReference;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -61,23 +60,39 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
         LocalDate date = activityModel.getDate().getValue();
 
         RecurrenceFactory recurrenceFactory = new RecurrenceFactory();
-        Recurrence daily = recurrenceFactory.createRecurrence(date, DAILY);
-        Recurrence weekly = recurrenceFactory.createRecurrence(date, WEEKLY);
-        Recurrence monthly = recurrenceFactory.createRecurrence(date, MONTHLY);
-        Recurrence yearly = recurrenceFactory.createRecurrence(date, YEARLY);
-        view.weeklyRadioButton.setText(weekly.recurrenceText());
-        view.monthlyRadioButton.setText(monthly.recurrenceText());
-        view.yearlyRadioButton.setText(yearly.recurrenceText());
+        AtomicReference<Recurrence> daily = new AtomicReference<>(recurrenceFactory.createRecurrence(date, DAILY));
+        AtomicReference<Recurrence> weekly = new AtomicReference<>(recurrenceFactory.createRecurrence(date, WEEKLY));
+        AtomicReference<Recurrence> monthly = new AtomicReference<>(recurrenceFactory.createRecurrence(date, MONTHLY));
+        AtomicReference<Recurrence> yearly = new AtomicReference<>(recurrenceFactory.createRecurrence(date, YEARLY));
+        view.weeklyRadioButton.setText(weekly.get().recurrenceText());
+        view.monthlyRadioButton.setText(monthly.get().recurrenceText());
+        view.yearlyRadioButton.setText(yearly.get().recurrenceText());
         view.CalendarButton.setText(DATE_TIME_FORMATTER.format(date));
 
         setupContextSelection();
 
         view.CalendarButton.setOnClickListener(v -> {
-            CreateCalendarFragment Calendar = CreateCalendarFragment.newInstance();
+            CreateCalendarFragment CalendarFrag = CreateCalendarFragment.newInstance();
+            CalendarFrag.setOnDateSelectedListener(selectedDate -> {
+                LocalDate selectedDateLocal = LocalDate.of(selectedDate.get(Calendar.YEAR),
+                        selectedDate.get(Calendar.MONTH) + 1,
+                        selectedDate.get(Calendar.DAY_OF_MONTH));
+                view.CalendarButton.setText(DATE_TIME_FORMATTER.format(selectedDateLocal));
+
+                daily.set(recurrenceFactory.createRecurrence(selectedDateLocal, DAILY));
+                weekly.set(recurrenceFactory.createRecurrence(selectedDateLocal, WEEKLY));
+                monthly.set(recurrenceFactory.createRecurrence(selectedDateLocal, MONTHLY));
+                yearly.set(recurrenceFactory.createRecurrence(selectedDateLocal, YEARLY));
+                view.weeklyRadioButton.setText(weekly.get().recurrenceText());
+                view.monthlyRadioButton.setText(monthly.get().recurrenceText());
+                view.yearlyRadioButton.setText(yearly.get().recurrenceText());
+            });
+            CalendarFrag.show(getChildFragmentManager(), "calendar_dialog");
+
         });
 
         view.saveButton.setOnClickListener(v -> {
-            saveGoal(daily, weekly, monthly, yearly);
+            saveGoal(daily.get(), weekly.get(), monthly.get(), yearly.get());
             dismiss();
         });
 
