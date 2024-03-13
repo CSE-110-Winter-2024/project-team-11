@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.successorator;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,12 @@ public class MainActivity extends AppCompatActivity
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         var activityModel = modelProvider.get(MainViewModel.class);
+
+        activityModel.getFilter().observe(filter -> {
+            int[] colors = {Color.YELLOW, Color.BLUE, Color.MAGENTA, Color.GREEN};
+            int color = filter == null ? Color.GRAY : colors[filter.ordinal()];
+            binding.getRoot().findViewById(R.id.filterMenuButton).setBackgroundColor(color);
+        });
 
         activityModel.getCurrentView().observe(viewEnum -> {
             switch(viewEnum) {

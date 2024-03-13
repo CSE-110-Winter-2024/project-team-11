@@ -159,6 +159,7 @@ public class MainActivityTest {
 
             for (Goal goal : goalList) {
                 activityModel.todayAppend(goal);
+                activityModel.getTodayOngoingGoals();
                 activityModel.tmrwAppend(goal);
                 activityModel.pendingAppend(goal);
             }
@@ -185,6 +186,8 @@ public class MainActivityTest {
             var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
             var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
             var activityModel = modelProvider.get(MainViewModel.class);
+
+
 
             System.out.println(activityModel.getTodayOngoingGoals().getValue());
             System.out.println(activityModel.getTodayOngoingGoals().getValue());
