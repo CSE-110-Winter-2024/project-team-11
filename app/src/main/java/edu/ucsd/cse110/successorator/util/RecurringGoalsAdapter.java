@@ -1,8 +1,10 @@
 package edu.ucsd.cse110.successorator.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,17 @@ public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
             RecurringGoal goal = getItem(position);
             if (goal != null) {
                 // To be implemented
+                AlertDialog.Builder build = new AlertDialog.Builder(getContext());
+                build.setTitle("Delete Goal");
+                build.setMessage("Are you sure you want to delete this goal?");
+                build.setPositiveButton("Yes", (dialog, which) -> {
+
+                });
+                build.setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+                AlertDialog dialog = build.create();
+                dialog.show();
             }
             return false;
         });
