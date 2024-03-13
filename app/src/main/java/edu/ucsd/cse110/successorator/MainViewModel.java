@@ -148,10 +148,9 @@ public class MainViewModel extends ViewModel {
         return filter;
     }
 
-    private interface GoalGetter { Subject<List<Goal>> getGoals(); }
-    private Subject<List<Goal>> getFilteredGoals(GoalGetter getter) {
+    private Subject<List<Goal>> getFilteredGoals(Subject<List<Goal>> unfiltered) {
         MutableSubject<List<Goal>> subject = new SimpleSubject<>();
-        getter.getGoals().observe(goals -> {
+        unfiltered.observe(goals -> {
             if (goals == null) goals = new ArrayList<>();
 
             subject.setValue(goals.stream()
@@ -160,7 +159,7 @@ public class MainViewModel extends ViewModel {
             );
         });
         getFilter().observe(filter -> {
-            List<Goal> goals = getter.getGoals().getValue();
+            List<Goal> goals = unfiltered.getValue();
             if (goals == null) goals = new ArrayList<>();
 
             subject.setValue(goals.stream()
@@ -172,29 +171,29 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<List<Goal>> getTodayOngoingGoals() {
-        return getFilteredGoals(todayOngoingGoalRepository::findAllContextSorted);
+//        return todayOngoingGoalRepository.findAllContextSorted();
+        return getFilteredGoals(todayOngoingGoalRepository.findAllContextSorted());
     }
 
     public Subject<List<Goal>> getTodayCompletedGoals() {
-        return getFilteredGoals(todayCompletedGoalRepository::findAll);
+        return getFilteredGoals(todayCompletedGoalRepository.findAll());
     }
 
     public Subject<List<Goal>> getTmrwOngoingGoals() {
-        return getFilteredGoals(tmrwOngoingGoalRepository::findAllContextSorted);
+        return getFilteredGoals(tmrwOngoingGoalRepository.findAllContextSorted());
     }
 
     public Subject<List<Goal>> getTmrwCompletedGoals() {
-        return getFilteredGoals(tmrwCompletedGoalRepository::findAll);
+        return getFilteredGoals(tmrwCompletedGoalRepository.findAll());
     }
 
     public Subject<List<Goal>> getPendingGoals() {
-        return getFilteredGoals(pendingGoalRepository::findAllContextSorted);
+        return getFilteredGoals(pendingGoalRepository.findAllContextSorted());
     }
 
-    private interface RecurringGoalGetter { Subject<List<RecurringGoal>> getGoals(); }
-    private Subject<List<RecurringGoal>> getFilteredRecurringGoals(RecurringGoalGetter getter) {
+    private Subject<List<RecurringGoal>> getFilteredRecurringGoals(Subject<List<RecurringGoal>> unfiltered) {
         MutableSubject<List<RecurringGoal>> subject = new SimpleSubject<>();
-        getter.getGoals().observe(goals -> {
+        unfiltered.observe(goals -> {
             if (goals == null) goals = new ArrayList<>();
 
             subject.setValue(goals.stream()
@@ -203,7 +202,7 @@ public class MainViewModel extends ViewModel {
             );
         });
         getFilter().observe(filter -> {
-            List<RecurringGoal> goals = getter.getGoals().getValue();
+            List<RecurringGoal> goals = unfiltered.getValue();
             if (goals == null) goals = new ArrayList<>();
 
             subject.setValue(goals.stream()
@@ -215,7 +214,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<List<RecurringGoal>> getRecurringGoals() {
-        return getFilteredRecurringGoals(recurringGoalRepository::findAll);
+        return getFilteredRecurringGoals(recurringGoalRepository.findAll());
     }
 
     public Subject<ViewEnum> getCurrentView() {
