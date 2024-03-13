@@ -559,4 +559,29 @@ public class MainViewModelTest {
 
         assertEquals(pending, model.getPendingGoals().getValue());
     }
+  
+    // test for adding, completing, & uncompleting tomorrow goals
+    @Test
+    public void tomorrowGoalsTest() {
+        List<Goal> expectedTomorrow = new ArrayList<>();
+        expectedTomorrow.add(new Goal(0, "testing", GoalContext.HOME, 0, false));
+        model.tmrwAppend(expectedTomorrow.get(0));
+
+        assertEquals(expectedTomorrow, model.getTmrwOngoingGoals().getValue());
+        assertEquals(new ArrayList<>(), model.getTmrwCompletedGoals().getValue());
+
+        model.tmrwCompleteGoal(expectedTomorrow.get(0));
+        Goal updatedGoal = expectedTomorrow.get(0).withIsCompleted(true);
+        expectedTomorrow.set(0, updatedGoal);
+
+        assertEquals(new ArrayList<>(), model.getTmrwOngoingGoals().getValue());
+        assertEquals(expectedTomorrow, model.getTmrwCompletedGoals().getValue());
+
+        model.tmrwUncompleteGoal(expectedTomorrow.get(0));
+        updatedGoal = expectedTomorrow.get(0).withIsCompleted(false);
+        expectedTomorrow.set(0, updatedGoal);
+
+        assertEquals(expectedTomorrow, model.getTmrwOngoingGoals().getValue());
+        assertEquals(new ArrayList<>(), model.getTmrwCompletedGoals().getValue());
+    }
 }
