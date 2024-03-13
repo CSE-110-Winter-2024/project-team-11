@@ -70,8 +70,6 @@ public class CreateCalendarFragment extends DialogFragment {
                     dateSelectedListener.onDateSelected(selectedDate);
                 }
 
-                Toast.makeText(getContext(), "Selected Date: " + selectedDate.getTime().toString(), Toast.LENGTH_SHORT).show();
-
                 dismiss();
             }
         });
