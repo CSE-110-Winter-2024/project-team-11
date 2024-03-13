@@ -1,9 +1,13 @@
-package edu.ucsd.cse110.successorator.ui.recurringgoals;
+package edu.ucsd.cse110.successorator.ui.pendinggoals;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -13,9 +17,10 @@ import java.util.ArrayList;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
+import edu.ucsd.cse110.successorator.data.db.goals.GoalEntity;
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.util.GoalsAdapter;
 import edu.ucsd.cse110.successorator.util.PendingGoalsAdapter;
-import edu.ucsd.cse110.successorator.util.RecurringGoalsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +64,45 @@ public class PendingGoalsFragment extends Fragment {
         pendingGoalsAdapter = new PendingGoalsAdapter(requireContext(), new ArrayList<>());
 
         ongoingListView.setAdapter(pendingGoalsAdapter);
+        // Set Menu on Long Hold
+        registerForContextMenu(ongoingListView);
 
         return view;
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.pending_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        // Get the goal
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Goal goal = (Goal) pendingGoalsAdapter.getItem(info.position);
+
+        // Handle each option appropriately
+        int itemId = item.getItemId();
+        if (itemId == R.id.move_today) {
+            activityModel.pendingToToday(goal);
+            return true;
+        } else if (itemId == R.id.move_tmrw) {
+            activityModel.pendingToTmrw(goal);
+            return true;
+        } else if (itemId == R.id.finish) {
+            activityModel.pendingCompleteGoal(goal);
+            return true;
+        } else if (itemId == R.id.delete) {
+            activityModel.pendingDeleteGoal(goal);
+            return true;
+        } else {
+            return super.onContextItemSelected(item);
+        }
+    }
+
+
+
 }

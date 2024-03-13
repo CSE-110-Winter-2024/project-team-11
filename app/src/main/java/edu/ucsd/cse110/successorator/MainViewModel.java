@@ -131,7 +131,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<List<Goal>> getTodayOngoingGoals() {
-        return todayOngoingGoalRepository.findAll();
+        return todayOngoingGoalRepository.findAllContextSorted();
     }
 
     public Subject<List<Goal>> getTodayCompletedGoals() {
@@ -139,7 +139,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<List<Goal>> getTmrwOngoingGoals() {
-        return tmrwOngoingGoalRepository.findAll();
+        return tmrwOngoingGoalRepository.findAllContextSorted();
     }
 
     public Subject<List<Goal>> getTmrwCompletedGoals() {
@@ -147,7 +147,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public Subject<List<Goal>> getPendingGoals() {
-        return pendingGoalRepository.findAll();
+        return pendingGoalRepository.findAllContextSorted();
     }
 
     public Subject<List<RecurringGoal>> getRecurringGoals() {
@@ -240,16 +240,53 @@ public class MainViewModel extends ViewModel {
 
     public void recurringAppend(RecurringGoal goal) {
         recurringGoalRepository.add(goal);
-        if (goal.getRecurrence().occursOnDay(getDate().getValue())) {
+        if (goal.getRecurrence().occursOnDay(timeManager.getDate().getValue())) {
             todayAppend(goal.getGoal());
         }
-        if (goal.getRecurrence().occursOnDay(getDate().getValue().plusDays(1))) {
+        if (goal.getRecurrence().occursOnDay(timeManager.getDate().getValue().plusDays(1))) {
             tmrwAppend(goal.getGoal());
         }
     }
 
     public void pendingAppend(Goal goal) {
         pendingGoalRepository.append(goal);
+    }
+
+    public void pendingCompleteGoal(Goal goal) {
+        // Set the goal as completed
+        Goal completedGoal = goal.withIsCompleted(true);
+
+        // Remove old goal, add new Completed Goal
+        if (goal.id() != null) {
+            pendingGoalRepository.remove(goal.id());
+            todayCompletedGoalRepository.prepend(completedGoal);
+        }
+    }
+
+    public void pendingToToday(Goal goal) {
+
+        // Remove old goal, add new Goal
+        if (goal.id() != null) {
+            pendingGoalRepository.remove(goal.id());
+            todayOngoingGoalRepository.append(goal);
+        }
+    }
+
+    public void pendingToTmrw(Goal goal) {
+
+        // Remove old goal, add new Goal
+        if (goal.id() != null) {
+            pendingGoalRepository.remove(goal.id());
+            tmrwOngoingGoalRepository.append(goal);
+        }
+    }
+
+    public void pendingDeleteGoal(Goal goal) {
+
+        // Remove old goal, add new Goal
+        if (goal.id() != null) {
+            pendingGoalRepository.remove(goal.id());
+        }
     }
 
     public void nextDay() {
