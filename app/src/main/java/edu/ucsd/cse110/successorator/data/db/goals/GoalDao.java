@@ -75,10 +75,4 @@ public interface GoalDao {
 
     @Query("DELETE FROM goals")
     void clear();
-
-    @Query("SELECT * FROM goals WHERE context IN (:contexts)")
-    List<GoalEntity> findGoalsByContexts(List<String> contexts);
-
-    @Update
-    void update(List<GoalEntity> goals);
 }

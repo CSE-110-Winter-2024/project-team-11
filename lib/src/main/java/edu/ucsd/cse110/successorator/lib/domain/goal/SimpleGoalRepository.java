@@ -73,14 +73,4 @@ public class SimpleGoalRepository implements GoalRepository {
     public void clear() {
         dataSource.clear();
     }
-
-    @Override
-    public void update(List<Goal> filteredGoals) {
-        dataSource.updateGoals(filteredGoals);
-    }
-
-    public List<Goal> filterGoalsByContext(List<String> contexts) {
-        return dataSource.filterGoalsByContext(contexts);
-    }
-
 }

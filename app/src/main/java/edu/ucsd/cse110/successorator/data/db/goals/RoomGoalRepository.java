@@ -5,6 +5,9 @@ import androidx.lifecycle.Transformations;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
+import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
+import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.util.LiveDataSubjectAdapter;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalRepository;
@@ -85,21 +88,5 @@ public class RoomGoalRepository implements GoalRepository {
     @Override
     public void clear() {
         goalDao.clear();
-    }
-
-    @Override
-    public void update(List<Goal> filteredGoals) {
-        // Convert filtered goals to entities and update the database
-        List<GoalEntity> entities = filteredGoals.stream()
-                .map(GoalEntity::fromGoal)
-                .collect(Collectors.toList());
-        goalDao.update(entities);
-    }
-
-    public List<Goal> filterGoalsByContext(List<String> contexts) {
-        List<GoalEntity> entities = goalDao.findGoalsByContexts(contexts);
-        return entities.stream()
-                .map(GoalEntity::toGoal)
-                .collect(Collectors.toList());
     }
 }

@@ -60,27 +60,27 @@ public class FilterGoalsDialogFragment extends DialogFragment {
         view.errandButton.setOnClickListener(v -> toggleFilter("ERRAND", view.errandButton));
 
         // Set selected filters with black border
-        for (String filter : activityModel.selectedFilters) {
-            TextView textView = null;
-            switch (filter) {
-                case "home":
-                    textView = view.homeButton;
-                    break;
-                case "work":
-                    textView = view.workButton;
-                    break;
-                case "school":
-                    textView = view.schoolButton;
-                    break;
-                case "errand":
-                    textView = view.errandButton;
-                    break;
-            }
-            if (textView != null) {
-                textView.setSelected(true);
-                textView.setBackgroundResource(getBackgroundResource(textView));
-            }
-        }
+//        for (String filter : activityModel.selectedFilters) {
+//            TextView textView = null;
+//            switch (filter) {
+//                case "home":
+//                    textView = view.homeButton;
+//                    break;
+//                case "work":
+//                    textView = view.workButton;
+//                    break;
+//                case "school":
+//                    textView = view.schoolButton;
+//                    break;
+//                case "errand":
+//                    textView = view.errandButton;
+//                    break;
+//            }
+//            if (textView != null) {
+//                textView.setSelected(true);
+//                textView.setBackgroundResource(getBackgroundResource(textView));
+//            }
+//        }
 
         // Add event listener to cancelButton
         view.cancelButton.setOnClickListener(v -> onCancelButtonClick());
@@ -104,22 +104,20 @@ public class FilterGoalsDialogFragment extends DialogFragment {
         dismiss();
 
         // Iterate through the filter list and log them out
-        for (String filter : activityModel.selectedFilters) {
-            Log.d("Filter", filter);
-        }
-
-        activityModel.applyFilters();
+//        for (String filter : activityModel.selectedFilters) {
+//            Log.d("Filter", filter);
+//        }
     }
 
     // Method to toggle filter
     private void toggleFilter(String filter, TextView textView) {
-        if (activityModel.selectedFilters.contains(filter)) {
-            activityModel.removeFilter(filter);
-            textView.setSelected(false);
-        } else {
-            activityModel.addFilter(filter);
-            textView.setSelected(true);
-        }
+//        if (activityModel.selectedFilters.contains(filter)) {
+//            activityModel.removeFilter(filter);
+//            textView.setSelected(false);
+//        } else {
+//            activityModel.addFilter(filter);
+//            textView.setSelected(true);
+//        }
         textView.setBackgroundResource(getBackgroundResource(textView));
     }
 
