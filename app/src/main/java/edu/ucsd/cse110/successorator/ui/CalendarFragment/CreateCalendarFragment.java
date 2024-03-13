@@ -59,6 +59,8 @@ public class CreateCalendarFragment extends DialogFragment {
 
         CalendarView calendarView = rootView.findViewById(R.id.CalendarView);
 
+        calendarView.setMinDate(System.currentTimeMillis()-1000);
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
