@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -29,6 +30,7 @@ import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
+import edu.ucsd.cse110.successorator.ui.CalendarFragment.CreateCalendarFragment;
 
 public class CreateTodayGoalDialogFragment extends DialogFragment {
 
@@ -66,8 +68,13 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
         view.weeklyRadioButton.setText(weekly.recurrenceText());
         view.monthlyRadioButton.setText(monthly.recurrenceText());
         view.yearlyRadioButton.setText(yearly.recurrenceText());
+        view.CalendarButton.setText(DATE_TIME_FORMATTER.format(date));
 
         setupContextSelection();
+
+        view.CalendarButton.setOnClickListener(v -> {
+            CreateCalendarFragment Calendar = CreateCalendarFragment.newInstance();
+        });
 
         view.saveButton.setOnClickListener(v -> {
             saveGoal(daily, weekly, monthly, yearly);
@@ -104,6 +111,9 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
             toggleTextViewBackground(errandTextView);
         });
     }
+    public static DateTimeFormatter DATE_TIME_FORMATTER
+            = DateTimeFormatter.ofPattern(
+            "EE M/d");
 
     private void setSelectedContext(GoalContext context) {
         this.selectedContext = context;
