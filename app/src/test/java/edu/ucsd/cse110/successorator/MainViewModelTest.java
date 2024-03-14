@@ -288,8 +288,9 @@ public class MainViewModelTest {
                 new Goal(1, "6", GoalContext.HOME, 1, false)
         );
         RecurrenceFactory factory = new RecurrenceFactory();
-        Recurrence w = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
-        Recurrence m = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.MONTHLY);
+        LocalDate future = LocalDate.now().plusDays(2);
+        Recurrence w = factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.WEEKLY);
+        Recurrence m = factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.MONTHLY);
         List<RecurringGoal> recurring = List.of(
                 new RecurringGoal(0, new Goal(null, "5", GoalContext.HOME, 0, false), w),
                 new RecurringGoal(1, new Goal(null, "6", GoalContext.HOME, 1, false), m)
@@ -301,13 +302,6 @@ public class MainViewModelTest {
         for (Goal goal : tmrwc) model.tmrwAppend(goal);
         for (Goal goal : pending) model.pendingAppend(goal);
         for (RecurringGoal goal : recurring) model.recurringAppend(goal);
-
-        today = List.of(
-                new Goal(0, "1", GoalContext.HOME, 0, false),
-                new Goal(1, "2", GoalContext.HOME, 1, false),
-                new Goal(2, "5", GoalContext.HOME, 2, false),
-                new Goal(3, "6", GoalContext.HOME, 3, false)
-        );
 
         assertEquals(today, model.getTodayOngoingGoals().getValue());
         assertEquals(todayc, model.getTodayCompletedGoals().getValue());
