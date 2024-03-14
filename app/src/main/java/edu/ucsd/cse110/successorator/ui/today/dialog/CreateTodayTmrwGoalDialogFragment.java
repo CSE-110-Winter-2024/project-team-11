@@ -143,8 +143,8 @@ public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
 
     private void saveGoal(Recurrence daily, Recurrence weekly, Recurrence monthly, Recurrence yearly) {
         var goalText = view.enterGoalText.getText().toString();
-        if (TextUtils.isEmpty(goalText)) {
-            // Handle empty goal text
+        if (TextUtils.isEmpty(goalText) || selectedContext == null) {
+            // Handle empty goal text or null context
             return;
         }
         var goal = new Goal(null, goalText, selectedContext, -1, false);
