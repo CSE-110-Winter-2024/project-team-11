@@ -1,9 +1,6 @@
 package edu.ucsd.cse110.successorator;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
-import android.util.Log;
-
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
@@ -12,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import edu.ucsd.cse110.successorator.data.db.goals.RoomGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalRepository;
@@ -173,6 +169,10 @@ public class MainViewModel extends ViewModel {
     public Subject<List<Goal>> getTodayOngoingGoals() {
 //        return todayOngoingGoalRepository.findAllContextSorted();
         return getFilteredGoals(todayOngoingGoalRepository.findAllContextSorted());
+    }
+
+    public boolean isOngoingToday(Goal goal) {
+        return todayOngoingGoalRepository.contains(goal);
     }
 
     public Subject<List<Goal>> getTodayCompletedGoals() {

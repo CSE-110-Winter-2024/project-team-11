@@ -12,6 +12,7 @@ public class SimpleGoalRepository implements GoalRepository {
         this.dataSource = dataSource;
     }
 
+    @Override
     public boolean contains(Goal goal) {
         List<Goal> goalList = findAll().getValue();
         if (goalList == null) return false;

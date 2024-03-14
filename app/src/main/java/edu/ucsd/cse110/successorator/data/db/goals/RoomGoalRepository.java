@@ -20,6 +20,7 @@ public class RoomGoalRepository implements GoalRepository {
         this.goalDao = goalDao;
     }
 
+    @Override
     public boolean contains(Goal goal) {
         return goalDao.find(goal.text()) != null;
     }
