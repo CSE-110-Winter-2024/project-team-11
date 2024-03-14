@@ -486,21 +486,23 @@ public class MainViewModelTest {
         assertEquals(expected, model.getRecurringGoals().getValue());
     }
 
+    @Test
     public void recurringTest4() {
         LocalDate now = LocalDate.now();
         LocalDate now1 = LocalDate.of(2024, 4, 22);
         RecurrenceFactory factory = new RecurrenceFactory();
         Recurrence weekly = factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.WEEKLY);
         RecurringGoal goal = new RecurringGoal(0,
-                new Goal(null, "Club Meeting", GoalContext.HOME, 0, false),
+                new Goal(0, "Club Meeting", GoalContext.HOME, 0, false),
                 weekly);
         Recurrence monthly = factory.createRecurrence(now1, RecurrenceFactory.RecurrenceEnum.MONTHLY);
         RecurringGoal goal1 = new RecurringGoal(0,
-                new Goal(null, "Doctors Appointment", GoalContext.HOME, 0, false),
+                new Goal(1, "Doctors Appointment", GoalContext.HOME, 0, false),
                 monthly);
 
         model.recurringAppend(goal1);
         model.recurringAppend(goal);
+        model.recurringDeleteGoal(goal);
 
         List<RecurringGoal> expected = List.of(goal);
         assertEquals(expected, model.getRecurringGoals().getValue());
