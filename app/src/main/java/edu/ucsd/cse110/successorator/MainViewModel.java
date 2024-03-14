@@ -289,7 +289,7 @@ public class MainViewModel extends ViewModel {
         }
     }
 
-    public void recurringDeleteGoal(Goal goal) {
+    public void recurringDeleteGoal(RecurringGoal goal) {
 
         // Remove old goal, add new Goal
         if (goal.id() != null) {
@@ -305,5 +305,7 @@ public class MainViewModel extends ViewModel {
         todayCompletedGoalRepository.clear();
         tmrwCompletedGoalRepository.clear();
     }
+
+
 
 }

@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -25,11 +26,12 @@ import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 
 public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
 {
-    MainViewModel activityModel;
     // Constructor for the goals adapter
-    public RecurringGoalsAdapter(Context context, List<RecurringGoal> goals)
+    Consumer<RecurringGoal> deleteFromDB;
+    public RecurringGoalsAdapter(Context context, List<RecurringGoal> goals, Consumer<RecurringGoal> removeFromDB)
     {
         super(context, 0, new ArrayList<>(goals));
+        this.deleteFromDB = removeFromDB;
     }
 
     @NonNull
@@ -50,7 +52,7 @@ public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
                 build.setMessage("Are you sure you want to delete this goal?");
                 build.setPositiveButton("Yes", (dialog, which) -> {
                     remove(goal);
-                    activityModel.recurringDeleteGoal(goal.getGoal());
+                    deleteFromDB.accept(goal);
                     notifyDataSetChanged();
                     dialog.dismiss();
                 });
