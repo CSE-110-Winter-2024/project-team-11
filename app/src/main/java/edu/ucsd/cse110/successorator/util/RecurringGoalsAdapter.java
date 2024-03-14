@@ -18,12 +18,14 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 
 public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
 {
+    MainViewModel activityModel;
     // Constructor for the goals adapter
     public RecurringGoalsAdapter(Context context, List<RecurringGoal> goals)
     {
@@ -48,6 +50,7 @@ public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
                 build.setMessage("Are you sure you want to delete this goal?");
                 build.setPositiveButton("Yes", (dialog, which) -> {
                     remove(goal);
+                    activityModel.getRecurringGoalRepository().remove(goal.id());
                     notifyDataSetChanged();
                 });
                 build.setNegativeButton("No", (dialog, which) -> {

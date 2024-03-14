@@ -297,4 +297,9 @@ public class MainViewModel extends ViewModel {
         todayCompletedGoalRepository.clear();
         tmrwCompletedGoalRepository.clear();
     }
+
+    public RecurringGoalRepository getRecurringGoalRepository() {
+        return recurringGoalRepository;
+    }
+
 }
