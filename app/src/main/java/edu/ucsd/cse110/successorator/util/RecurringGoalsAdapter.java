@@ -52,6 +52,7 @@ public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
                     remove(goal);
                     activityModel.recurringDeleteGoal(goal.getGoal());
                     notifyDataSetChanged();
+                    dialog.dismiss();
                 });
                 build.setNegativeButton("No", (dialog, which) -> {
                     dialog.dismiss();
