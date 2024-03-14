@@ -99,8 +99,6 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
             textViewGoalText.setText(goal.text());
             // Set background drawable of the textViewContextText for completed goals
             textViewContextText.setBackgroundResource(R.drawable.rectangle_background_completed);
-            // Set text of the textViewContextText
-            textViewContextText.setText("Completed"); // Optionally set text here if needed
         } else {
             // Set data to views
             if (goal != null) {
@@ -108,36 +106,29 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
 
                 // Set the context text and background drawable based on the goal context
                 Drawable contextBackground = null;
-                String contextType = "";
                
                 switch (goal.getContext()) {
                     case HOME:
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_home);
-                        contextType = "Home";
                         break;
                     case WORK:
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_work);
-                        contextType = "Work";
                         break;
                     case SCHOOL:
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_school);
-                        contextType = "School";
                         break;
                     case ERRAND:
                         contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_errand);
-                        contextType = "Errand";
                         break;
 
                 }
 
                 // Set background drawable of the textViewContextText
                 textViewContextText.setBackground(contextBackground);
-
-                // Set text of the textViewContextText
-                textViewContextText.setText(contextType);
             }
 
         }
+        textViewContextText.setText(goal.getContext().getText());
 
         return convertView;
     }
