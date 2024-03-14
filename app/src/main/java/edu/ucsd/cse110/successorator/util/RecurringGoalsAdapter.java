@@ -50,7 +50,7 @@ public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
                 build.setMessage("Are you sure you want to delete this goal?");
                 build.setPositiveButton("Yes", (dialog, which) -> {
                     remove(goal);
-                    activityModel.getRecurringGoalRepository().remove(goal.id());
+                    activityModel.recurringDeleteGoal(goal.getGoal());
                     notifyDataSetChanged();
                 });
                 build.setNegativeButton("No", (dialog, which) -> {

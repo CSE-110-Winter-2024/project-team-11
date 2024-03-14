@@ -289,6 +289,14 @@ public class MainViewModel extends ViewModel {
         }
     }
 
+    public void recurringDeleteGoal(Goal goal) {
+
+        // Remove old goal, add new Goal
+        if (goal.id() != null) {
+            recurringGoalRepository.remove(goal.id());
+        }
+    }
+
     public void nextDay() {
         timeManager.nextDay();
     }
@@ -296,10 +304,6 @@ public class MainViewModel extends ViewModel {
     public void clearCompleted() {
         todayCompletedGoalRepository.clear();
         tmrwCompletedGoalRepository.clear();
-    }
-
-    public RecurringGoalRepository getRecurringGoalRepository() {
-        return recurringGoalRepository;
     }
 
 }
