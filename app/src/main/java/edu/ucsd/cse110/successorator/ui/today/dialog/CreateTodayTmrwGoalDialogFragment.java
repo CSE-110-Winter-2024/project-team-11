@@ -9,8 +9,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +17,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -30,16 +27,16 @@ import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 
-public class CreateTodayGoalDialogFragment extends DialogFragment {
+public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
 
     private FragmentCreateTodayGoalBinding view;
     private MainViewModel activityModel;
     private GoalContext selectedContext = null;
 
-    CreateTodayGoalDialogFragment() {}
+    CreateTodayTmrwGoalDialogFragment() {}
 
-    public static CreateTodayGoalDialogFragment newInstance() {
-        return new CreateTodayGoalDialogFragment();
+    public static CreateTodayTmrwGoalDialogFragment newInstance() {
+        return new CreateTodayTmrwGoalDialogFragment();
     }
 
     @Override
@@ -146,9 +143,13 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
             return;
         }
         var goal = new Goal(null, goalText, selectedContext, -1, false);
-
         if (view.oneTimeRadioButton.isChecked()) {
-            activityModel.todayAppend(goal);
+            if(activityModel.getCurrentView().getValue() == MainViewModel.ViewEnum.TODAY) {
+                activityModel.todayAppend(goal);
+            }
+            else if(activityModel.getCurrentView().getValue() == MainViewModel.ViewEnum.TMRW) {
+                activityModel.tmrwAppend(goal);
+            }
         } else if (view.dailyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, daily);
             activityModel.recurringAppend(recurringGoal);

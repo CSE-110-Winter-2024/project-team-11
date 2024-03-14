@@ -2,25 +2,19 @@ package edu.ucsd.cse110.successorator;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
-import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
-import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
-import edu.ucsd.cse110.successorator.lib.util.Subject;
 import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
-import edu.ucsd.cse110.successorator.ui.goals.dialog.CreateGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.pendinggoals.CreatePendingGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.recurringgoals.RecurringGoalsFragment;
 import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.today.dialog.FilterGoalsDialogFragment;
+import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayTmrwGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.pendinggoals.PendingGoalsFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -55,7 +49,7 @@ public class MainActivity extends AppCompatActivity
 
                     // Set the click listener for the createGoalButton
                     binding.createGoalButton.setOnClickListener(v -> {
-                        CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
+                        CreateTodayTmrwGoalDialogFragment dialogFragment = CreateTodayTmrwGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
                     binding.filterMenuButton.setOnClickListener(v -> {
@@ -74,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 
                     // Set the click listener for the createGoalButton
                     binding.createGoalButton.setOnClickListener(v -> {
-                        CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
+                        CreateTodayTmrwGoalDialogFragment dialogFragment = CreateTodayTmrwGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
                     binding.filterMenuButton.setOnClickListener(v -> {
@@ -113,7 +107,7 @@ public class MainActivity extends AppCompatActivity
                     // Set the click listener for the createGoalButton
                     binding.createGoalButton.setOnClickListener(v -> {
                         // To be changed
-                        CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
+                        CreateTodayTmrwGoalDialogFragment dialogFragment = CreateTodayTmrwGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
                     binding.filterMenuButton.setOnClickListener(v -> {

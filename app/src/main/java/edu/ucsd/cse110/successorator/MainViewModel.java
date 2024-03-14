@@ -304,10 +304,10 @@ public class MainViewModel extends ViewModel {
 
     public void recurringAppend(RecurringGoal goal) {
         recurringGoalRepository.add(goal);
-        if (goal.getRecurrence().occursOnDay(getDate().getValue())) {
+        if (goal.getRecurrence().occursOnDay(timeManager.getDate().getValue())) {
             todayAppend(goal.getGoal());
         }
-        if (goal.getRecurrence().occursOnDay(getDate().getValue().plusDays(1))) {
+        if (goal.getRecurrence().occursOnDay(timeManager.getDate().getValue().plusDays(1))) {
             tmrwAppend(goal.getGoal());
         }
     }
