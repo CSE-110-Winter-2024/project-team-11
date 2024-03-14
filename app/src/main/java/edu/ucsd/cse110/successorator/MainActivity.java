@@ -18,6 +18,7 @@ import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
 import edu.ucsd.cse110.successorator.ui.goals.dialog.CreateGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.pendinggoals.CreatePendingGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.recurringgoals.RecurringGoalsFragment;
+import edu.ucsd.cse110.successorator.ui.today.dialog.CreateRecurringGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.pendinggoals.PendingGoalsFragment;
 
@@ -53,7 +54,6 @@ public class MainActivity extends AppCompatActivity
 
                     break;
                 }
-                // TODO
                 case TMRW: {
                     getSupportFragmentManager().beginTransaction()
                             .replace(binding.goalsFragmentContainer.getId(),
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
                     // Set the click listener for the createGoalButton
                     binding.createGoalButton.setOnClickListener(v -> {
                         // To be changed
-                        CreateTodayGoalDialogFragment dialogFragment = CreateTodayGoalDialogFragment.newInstance();
+                        CreateRecurringGoalDialogFragment dialogFragment = CreateRecurringGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
 
