@@ -439,6 +439,74 @@ public class MainViewModelTest {
     }
 
     @Test
+    public void recurringTest2() {
+        LocalDate now = LocalDate.now();
+        LocalDate now1 = LocalDate.of(2024, 4, 22);
+        RecurrenceFactory factory = new RecurrenceFactory();
+        Recurrence weekly = factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.WEEKLY);
+        RecurringGoal goal = new RecurringGoal(0,
+                new Goal(null, "Club Meeting", GoalContext.HOME, 0, false),
+                weekly);
+        Recurrence monthly = factory.createRecurrence(now1, RecurrenceFactory.RecurrenceEnum.MONTHLY);
+        RecurringGoal goal1 = new RecurringGoal(0,
+                new Goal(null, "Doctors Appointment", GoalContext.HOME, 0, false),
+                monthly);
+
+        model.recurringAppend(goal1);
+        model.recurringAppend(goal);
+
+        List<RecurringGoal> expected = List.of(goal);
+        assertEquals(expected, model.getRecurringGoals().getValue());
+    }
+
+    @Test
+    public void recurringTest3() {
+        LocalDate now = LocalDate.now();
+        LocalDate now1 = LocalDate.of(2024, 4, 22);
+        RecurrenceFactory factory = new RecurrenceFactory();
+        Recurrence daily = factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.DAILY);
+        RecurringGoal goal = new RecurringGoal(0,
+                new Goal(null, "Walk my cat", GoalContext.HOME, 0, false),
+                daily);
+        Recurrence monthly = factory.createRecurrence(now1, RecurrenceFactory.RecurrenceEnum.MONTHLY);
+        RecurringGoal goal1 = new RecurringGoal(0,
+                new Goal(null, "Doctors Appointment", GoalContext.HOME, 0, false),
+                monthly);
+
+        Recurrence yearly = factory.createRecurrence(now1, RecurrenceFactory.RecurrenceEnum.YEARLY);
+        RecurringGoal goal2 = new RecurringGoal(0,
+                new Goal(null, "High School Reunion", GoalContext.HOME, 0, false),
+                yearly);
+
+        model.recurringAppend(goal2);
+        model.recurringAppend(goal1);
+        model.recurringAppend(goal);
+
+        List<RecurringGoal> expected = List.of(goal);
+        assertEquals(expected, model.getRecurringGoals().getValue());
+    }
+
+    public void recurringTest4() {
+        LocalDate now = LocalDate.now();
+        LocalDate now1 = LocalDate.of(2024, 4, 22);
+        RecurrenceFactory factory = new RecurrenceFactory();
+        Recurrence weekly = factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.WEEKLY);
+        RecurringGoal goal = new RecurringGoal(0,
+                new Goal(null, "Club Meeting", GoalContext.HOME, 0, false),
+                weekly);
+        Recurrence monthly = factory.createRecurrence(now1, RecurrenceFactory.RecurrenceEnum.MONTHLY);
+        RecurringGoal goal1 = new RecurringGoal(0,
+                new Goal(null, "Doctors Appointment", GoalContext.HOME, 0, false),
+                monthly);
+
+        model.recurringAppend(goal1);
+        model.recurringAppend(goal);
+
+        List<RecurringGoal> expected = List.of(goal);
+        assertEquals(expected, model.getRecurringGoals().getValue());
+    }
+
+    @Test
     public void pendingTest1() {
         Goal p = new Goal(3, "5", GoalContext.HOME, 0, false);
         ArrayList<Goal> today = new ArrayList<>(Arrays.asList(
