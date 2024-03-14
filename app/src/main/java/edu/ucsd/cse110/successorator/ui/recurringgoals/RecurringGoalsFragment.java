@@ -56,7 +56,7 @@ public class RecurringGoalsFragment extends Fragment {
 
         ListView ongoingListView = view.findViewById(R.id.ongoing_goals_list);
         // Initialize adapters with empty lists
-        recurringGoalsAdapter = new RecurringGoalsAdapter(requireContext(), new ArrayList<>());
+        recurringGoalsAdapter = new RecurringGoalsAdapter(requireContext(), new ArrayList<>(), activityModel::recurringDeleteGoal);
 
         ongoingListView.setAdapter(recurringGoalsAdapter);
 

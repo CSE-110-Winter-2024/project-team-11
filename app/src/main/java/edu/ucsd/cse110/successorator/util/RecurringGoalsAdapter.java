@@ -1,8 +1,10 @@
 package edu.ucsd.cse110.successorator.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,9 @@ import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
+import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
@@ -23,9 +27,11 @@ import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
 {
     // Constructor for the goals adapter
-    public RecurringGoalsAdapter(Context context, List<RecurringGoal> goals)
+    Consumer<RecurringGoal> deleteFromDB;
+    public RecurringGoalsAdapter(Context context, List<RecurringGoal> goals, Consumer<RecurringGoal> removeFromDB)
     {
         super(context, 0, new ArrayList<>(goals));
+        this.deleteFromDB = removeFromDB;
     }
 
     @NonNull
@@ -41,7 +47,20 @@ public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
         convertView.setOnLongClickListener(v -> {
             RecurringGoal goal = getItem(position);
             if (goal != null) {
-                // To be implemented
+                AlertDialog.Builder build = new AlertDialog.Builder(getContext());
+                build.setTitle("Delete Goal");
+                build.setMessage("Are you sure you want to delete this goal?");
+                build.setPositiveButton("Yes", (dialog, which) -> {
+                    remove(goal);
+                    deleteFromDB.accept(goal);
+                    notifyDataSetChanged();
+                    dialog.dismiss();
+                });
+                build.setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+                AlertDialog dialog = build.create();
+                dialog.show();
             }
             return false;
         });
