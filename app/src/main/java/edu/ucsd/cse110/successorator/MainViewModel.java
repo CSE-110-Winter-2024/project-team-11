@@ -365,6 +365,10 @@ public class MainViewModel extends ViewModel {
         timeManager.nextDay();
     }
 
+    public void updateDate() {
+        timeManager.getDate();
+    }
+
     public void clearCompleted() {
         todayCompletedGoalRepository.clear();
         tmrwCompletedGoalRepository.clear();

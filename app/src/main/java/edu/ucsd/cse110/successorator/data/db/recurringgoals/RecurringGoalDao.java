@@ -21,18 +21,14 @@ public interface RecurringGoalDao {
     @Query("SELECT * FROM recurringGoals WHERE id = :id")
     RecurringGoalEntity find(int id);
 
-    @Query("SELECT * FROM recurringGoals ORDER BY sort_order")
+    @Query("SELECT * FROM recurringGoals ORDER BY year, day_of_year")
     List<RecurringGoalEntity> findAll();
 
     @Query("SELECT * FROM recurringGoals WHERE id = :id")
     LiveData<RecurringGoalEntity> findAsLiveData(int id);
 
-    @Query("SELECT * FROM recurringGoals ORDER BY sort_order")
+    @Query("SELECT * FROM recurringGoals ORDER BY year, day_of_year")
     LiveData<List<RecurringGoalEntity>> findAllAsLiveData();
-
-    // Helper method to get all recurringGoals with the same completion status
-    @Query("SELECT * FROM recurringGoals ORDER BY year, day_of_year ASC")
-    List<RecurringGoalEntity> getAllRecurringGoals();
 
     @Query("DELETE FROM recurringGoals WHERE id = :id")
     void delete(int id);
