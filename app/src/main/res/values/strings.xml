@@ -15,4 +15,6 @@
     <string name="tmrw_string">Tomorrow</string>
     <string name="pending_string">Pending</string>
     <string name="recurring_string">Recurring</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

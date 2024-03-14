@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- button1_background.xml -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#FFFF00"/> <!-- Yellow color -->
-    <corners android:radius="8dp"/> <!-- Adjust radius for rectangle corners -->
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected state -->
+    <item android:state_selected="true">
+        <shape>
+            <!-- Solid yellow color for the button -->
+            <solid android:color="#FFFF00"/>
+            <!-- Black border with 2dp width -->
+            <stroke
+                android:width="4dp"
+                android:color="#000000"/>
+            <!-- Adjust radius for rectangle corners -->
+            <corners android:radius="8dp"/>
+        </shape>
+    </item>
+    <!-- Default state -->
+    <item>
+        <shape>
+            <!-- Solid yellow color for the button -->
+            <solid android:color="#FFFF00"/>
+            <!-- Adjust radius for rectangle corners -->
+            <corners android:radius="8dp"/>
+        </shape>
+    </item>
+</selector>

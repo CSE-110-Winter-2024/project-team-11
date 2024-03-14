@@ -1,15 +1,20 @@
 package edu.ucsd.cse110.successorator;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+import android.util.Log;
+
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.data.db.goals.RoomGoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalRepository;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoalRepository;
@@ -40,6 +45,9 @@ public class MainViewModel extends ViewModel {
 
     private final TimeManager timeManager;
     private final MutableSubject<LocalDate> displayTime = new SimpleSubject<>();
+
+    private final MutableSubject<GoalContext> filter;
+
     public static final ViewModelInitializer<MainViewModel> initializer =
             new ViewModelInitializer<>(
                     MainViewModel.class,
@@ -79,6 +87,8 @@ public class MainViewModel extends ViewModel {
 
 
         this.timeManager = timeManager;
+
+        this.filter = new SimpleSubject<>();
 
       
         tmrwOngoingGoalRepository.findAll().observe(rolloverGoals::setValue);
@@ -130,28 +140,81 @@ public class MainViewModel extends ViewModel {
 
     }
 
+    public void setFilter(GoalContext filter) {
+        this.filter.setValue(filter);
+    }
+
+    public Subject<GoalContext> getFilter() {
+        return filter;
+    }
+
+    private Subject<List<Goal>> getFilteredGoals(Subject<List<Goal>> unfiltered) {
+        MutableSubject<List<Goal>> subject = new SimpleSubject<>();
+        unfiltered.observe(goals -> {
+            if (goals == null) goals = new ArrayList<>();
+
+            subject.setValue(goals.stream()
+                    .filter(goal -> goal.getContext() == filter.getValue() || filter.getValue() == null)
+                    .collect(Collectors.toList())
+            );
+        });
+        getFilter().observe(filter -> {
+            List<Goal> goals = unfiltered.getValue();
+            if (goals == null) goals = new ArrayList<>();
+
+            subject.setValue(goals.stream()
+                    .filter(goal -> goal.getContext() == filter || filter == null)
+                    .collect(Collectors.toList())
+            );
+        });
+        return subject;
+    }
+
     public Subject<List<Goal>> getTodayOngoingGoals() {
-        return todayOngoingGoalRepository.findAllContextSorted();
+//        return todayOngoingGoalRepository.findAllContextSorted();
+        return getFilteredGoals(todayOngoingGoalRepository.findAllContextSorted());
     }
 
     public Subject<List<Goal>> getTodayCompletedGoals() {
-        return todayCompletedGoalRepository.findAll();
+        return getFilteredGoals(todayCompletedGoalRepository.findAll());
     }
 
     public Subject<List<Goal>> getTmrwOngoingGoals() {
-        return tmrwOngoingGoalRepository.findAllContextSorted();
+        return getFilteredGoals(tmrwOngoingGoalRepository.findAllContextSorted());
     }
 
     public Subject<List<Goal>> getTmrwCompletedGoals() {
-        return tmrwCompletedGoalRepository.findAll();
+        return getFilteredGoals(tmrwCompletedGoalRepository.findAll());
     }
 
     public Subject<List<Goal>> getPendingGoals() {
-        return pendingGoalRepository.findAllContextSorted();
+        return getFilteredGoals(pendingGoalRepository.findAllContextSorted());
+    }
+
+    private Subject<List<RecurringGoal>> getFilteredRecurringGoals(Subject<List<RecurringGoal>> unfiltered) {
+        MutableSubject<List<RecurringGoal>> subject = new SimpleSubject<>();
+        unfiltered.observe(goals -> {
+            if (goals == null) goals = new ArrayList<>();
+
+            subject.setValue(goals.stream()
+                    .filter(goal -> goal.getGoal().getContext() == filter.getValue() || filter.getValue() == null)
+                    .collect(Collectors.toList())
+            );
+        });
+        getFilter().observe(filter -> {
+            List<RecurringGoal> goals = unfiltered.getValue();
+            if (goals == null) goals = new ArrayList<>();
+
+            subject.setValue(goals.stream()
+                    .filter(goal -> goal.getGoal().getContext() == filter || filter == null)
+                    .collect(Collectors.toList())
+            );
+        });
+        return subject;
     }
 
     public Subject<List<RecurringGoal>> getRecurringGoals() {
-        return recurringGoalRepository.findAll();
+        return getFilteredRecurringGoals(recurringGoalRepository.findAll());
     }
 
     public Subject<ViewEnum> getCurrentView() {
@@ -183,6 +246,7 @@ public class MainViewModel extends ViewModel {
             todayCompletedGoalRepository.append(goal);
         } else {
             todayOngoingGoalRepository.append(goal);
+
         }
     }
 
@@ -240,10 +304,10 @@ public class MainViewModel extends ViewModel {
 
     public void recurringAppend(RecurringGoal goal) {
         recurringGoalRepository.add(goal);
-        if (goal.getRecurrence().occursOnDay(getDate().getValue())) {
+        if (goal.getRecurrence().occursOnDay(timeManager.getDate().getValue())) {
             todayAppend(goal.getGoal());
         }
-        if (goal.getRecurrence().occursOnDay(getDate().getValue().plusDays(1))) {
+        if (goal.getRecurrence().occursOnDay(timeManager.getDate().getValue().plusDays(1))) {
             tmrwAppend(goal.getGoal());
         }
     }

@@ -31,16 +31,16 @@ import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 import edu.ucsd.cse110.successorator.ui.CalendarFragment.CreateCalendarFragment;
 
-public class CreateTodayGoalDialogFragment extends DialogFragment {
+public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
 
     private FragmentCreateTodayGoalBinding view;
     private MainViewModel activityModel;
     private GoalContext selectedContext = null;
 
-    CreateTodayGoalDialogFragment() {}
+    CreateTodayTmrwGoalDialogFragment() {}
 
-    public static CreateTodayGoalDialogFragment newInstance() {
-        return new CreateTodayGoalDialogFragment();
+    public static CreateTodayTmrwGoalDialogFragment newInstance() {
+        return new CreateTodayTmrwGoalDialogFragment();
     }
 
     @Override
@@ -171,9 +171,13 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
             return;
         }
         var goal = new Goal(null, goalText, selectedContext, -1, false);
-
         if (view.oneTimeRadioButton.isChecked()) {
-            activityModel.todayAppend(goal);
+            if(activityModel.getCurrentView().getValue() == MainViewModel.ViewEnum.TODAY) {
+                activityModel.todayAppend(goal);
+            }
+            else if(activityModel.getCurrentView().getValue() == MainViewModel.ViewEnum.TMRW) {
+                activityModel.tmrwAppend(goal);
+            }
         } else if (view.dailyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, daily);
             activityModel.recurringAppend(recurringGoal);

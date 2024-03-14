@@ -1,11 +1,13 @@
 package edu.ucsd.cse110.successorator.lib.data;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
@@ -26,7 +28,26 @@ public class RecurringGoalInMemoryDataSource {
     private final MutableSubject<List<RecurringGoal>> allGoalsSubject
             = new SimpleSubject<>();
 
+    private List<RecurringGoal> originalGoals = new ArrayList<>();
+
+    // Existing methods...
+
     public RecurringGoalInMemoryDataSource() {
+        allGoalsSubject.setValue(getGoals());
+    }
+
+    public List<RecurringGoal> getOriginalGoals() {
+        return originalGoals;
+    }
+
+    public void resetToOriginalGoals() {
+        goals.clear();
+        goalSubjects.clear();
+
+        for (RecurringGoal originalGoal : originalGoals) {
+            putGoal(originalGoal);
+        }
+
         allGoalsSubject.setValue(getGoals());
     }
 
@@ -76,6 +97,20 @@ public class RecurringGoalInMemoryDataSource {
                 goalSubjects.get(goal.id()).setValue(goal);
             }
         });
+        allGoalsSubject.setValue(getGoals());
+    }
+
+    private void updateOriginalGoals() {
+        originalGoals = new ArrayList<>(goals.values());
+    }
+
+    public void updateGoals(List<RecurringGoal> filteredGoals) {
+        // Clear existing goals and replace them with the filtered goals
+        goals.clear();
+        for (RecurringGoal goal : filteredGoals) {
+            goals.put(goal.id(), goal);
+        }
+        updateOriginalGoals(); // Update original goals after updating goals
         allGoalsSubject.setValue(getGoals());
     }
 

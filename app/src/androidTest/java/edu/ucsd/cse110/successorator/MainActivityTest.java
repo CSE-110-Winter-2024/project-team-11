@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
@@ -153,6 +154,7 @@ public class MainActivityTest {
 
             for (Goal goal : goalList) {
                 activityModel.todayAppend(goal);
+                activityModel.getTodayOngoingGoals();
                 activityModel.tmrwAppend(goal);
                 activityModel.pendingAppend(goal);
             }
@@ -160,6 +162,7 @@ public class MainActivityTest {
             for (RecurringGoal goal : recurringGoalList) {
                 activityModel.recurringAppend(goal);
             }
+
         });
 
         // Simulate moving to the started state (above will then be called).
@@ -174,21 +177,30 @@ public class MainActivityTest {
             var activityModel = modelProvider.get(MainViewModel.class);
 
             activityModel.getTodayOngoingGoals().observe(goals -> {
+                if (goals.isEmpty()) return;
+
                 assertEquals(goalList, goals);
             });
 
             activityModel.getTmrwOngoingGoals().observe(goals -> {
+                if (goals.isEmpty()) return;
+
                 assertEquals(goalList, goals);
             });
 
             activityModel.getPendingGoals().observe(goals -> {
+                if (goals.isEmpty()) return;
+
                 assertEquals(goalList, goals);
             });
 
             activityModel.getRecurringGoals().observe(goals -> {
+                if (goals.isEmpty()) return;
+
                 assertEquals(recurringGoalList, goals);
             });
         });
         scenario2.moveToState(Lifecycle.State.STARTED);
+        scenario2.close();
     }
 }

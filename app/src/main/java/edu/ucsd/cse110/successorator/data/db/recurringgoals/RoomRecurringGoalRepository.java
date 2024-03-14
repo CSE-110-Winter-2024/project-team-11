@@ -57,4 +57,12 @@ public class RoomRecurringGoalRepository implements RecurringGoalRepository {
     public void clear() {
         recurringGoalDao.clear();
     }
+
+    @Override
+    public void update(List<RecurringGoal> recurringGoals) {
+        List<RecurringGoalEntity> entities = recurringGoals.stream()
+                .map(RecurringGoalEntity::fromRecurringGoal)
+                .collect(Collectors.toList());
+        recurringGoalDao.update(entities);
+    }
 }

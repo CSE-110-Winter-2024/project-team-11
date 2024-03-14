@@ -1,7 +1,7 @@
 package edu.ucsd.cse110.successorator.lib.domain.goal;
 
 import java.util.List;
-
+import java.util.ArrayList;
 import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 
