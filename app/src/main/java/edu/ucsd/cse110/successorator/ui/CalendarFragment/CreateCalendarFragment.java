@@ -21,7 +21,7 @@ import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentCalendarBinding;
 import edu.ucsd.cse110.successorator.databinding.FragmentCreateTodayGoalBinding;
-import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayTmrwGoalDialogFragment;
 import edu.ucsd.cse110.successorator.util.PendingGoalsAdapter;
 
 public class CreateCalendarFragment extends DialogFragment {
