@@ -173,9 +173,7 @@ public class CreateRecurringGoalDialogFragment extends DialogFragment {
         }
         var goal = new Goal(null, goalText, selectedContext, -1, false);
 
-        if (view.oneTimeRadioButton.isChecked()) {
-            activityModel.todayAppend(goal);
-        } else if (view.dailyRadioButton.isChecked()) {
+        if (view.dailyRadioButton.isChecked()) {
             var recurringGoal = new RecurringGoal(null, goal, daily);
             activityModel.recurringAppend(recurringGoal);
         } else if (view.weeklyRadioButton.isChecked()) {

@@ -69,6 +69,8 @@ public class CreateTodayGoalDialogFragment extends DialogFragment {
 
         setupContextSelection();
 
+
+
         view.saveButton.setOnClickListener(v -> {
             saveGoal(daily, weekly, monthly, yearly);
             dismiss();
