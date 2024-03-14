@@ -9,7 +9,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.data.RecurringGoalInMemoryDataSource;
@@ -285,8 +288,9 @@ public class MainViewModelTest {
                 new Goal(1, "6", GoalContext.HOME, 1, false)
         );
         RecurrenceFactory factory = new RecurrenceFactory();
-        Recurrence w = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.WEEKLY);
-        Recurrence m = factory.createRecurrence(LocalDate.now(), RecurrenceFactory.RecurrenceEnum.MONTHLY);
+        LocalDate future = LocalDate.now().plusDays(2);
+        Recurrence w = factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.WEEKLY);
+        Recurrence m = factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.MONTHLY);
         List<RecurringGoal> recurring = List.of(
                 new RecurringGoal(0, new Goal(null, "5", GoalContext.HOME, 0, false), w),
                 new RecurringGoal(1, new Goal(null, "6", GoalContext.HOME, 1, false), m)
@@ -298,13 +302,6 @@ public class MainViewModelTest {
         for (Goal goal : tmrwc) model.tmrwAppend(goal);
         for (Goal goal : pending) model.pendingAppend(goal);
         for (RecurringGoal goal : recurring) model.recurringAppend(goal);
-
-        today = List.of(
-                new Goal(0, "1", GoalContext.HOME, 0, false),
-                new Goal(1, "2", GoalContext.HOME, 1, false),
-                new Goal(2, "5", GoalContext.HOME, 2, false),
-                new Goal(3, "6", GoalContext.HOME, 3, false)
-        );
 
         assertEquals(today, model.getTodayOngoingGoals().getValue());
         assertEquals(todayc, model.getTodayCompletedGoals().getValue());
@@ -423,141 +420,66 @@ public class MainViewModelTest {
     }
 
     @Test
-    public void pendingTest1() {
-        Goal p = new Goal(2, "5", GoalContext.HOME, 0, false);
-        ArrayList<Goal> today = new ArrayList<>(Arrays.asList(
-                new Goal(0, "1", GoalContext.HOME, 0, false),
-                new Goal(1, "2", GoalContext.HOME, 1, false)
-        ));
-        List<Goal> todayc = List.of(
-                new Goal(0, "1c", GoalContext.HOME, 0, true),
-                new Goal(1, "2c", GoalContext.HOME, 1, true)
+    public void filterTest() {
+        List<Goal> goalList = List.of(
+                new Goal(0, "0", GoalContext.HOME, 0, false),
+                new Goal(1, "1", GoalContext.SCHOOL, 1, false),
+                new Goal(2, "2", GoalContext.SCHOOL, 2, false),
+                new Goal(3, "3", GoalContext.SCHOOL, 3, false),
+                new Goal(4, "4", GoalContext.ERRAND, 4, false)
         );
-        List<Goal> tmrw = List.of(
-                new Goal(0, "3", GoalContext.HOME, 0, false),
-                new Goal(1, "4", GoalContext.HOME, 1, false)
+      
+        RecurrenceFactory factory = new RecurrenceFactory();
+        LocalDate future = LocalDate.now().plusDays(2);
+        List<Recurrence> recurrenceList = List.of(
+                factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.DAILY),
+                factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.WEEKLY),
+                factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.DAILY),
+                factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.YEARLY),
+                factory.createRecurrence(future, RecurrenceFactory.RecurrenceEnum.MONTHLY)
         );
-        List<Goal> tmrwc = List.of(
-                new Goal(0, "3c", GoalContext.HOME, 0, true),
-                new Goal(1, "4c", GoalContext.HOME, 1, true)
-        );
-        List<Goal> pending = List.of(
-                new Goal(1, "6", GoalContext.HOME, 1, false)
-        );
+        List<RecurringGoal> recurringGoalList = new ArrayList<>();
+        for (int i = 0; i < goalList.size(); i++) {
+            recurringGoalList.add(new RecurringGoal(i, goalList.get(i), recurrenceList.get(i)));
+        }
+  
+        Map<GoalContext, List<Integer>> imap = new HashMap<>(){{
+            put(GoalContext.HOME, List.of(0));
+            put(GoalContext.WORK, List.of());
+            put(GoalContext.SCHOOL, List.of(1, 2, 3));
+            put(GoalContext.ERRAND, List.of(4));
+        }};
 
-        for (Goal goal : today) model.todayAppend(goal);
-        for (Goal goal : todayc) model.todayAppend(goal);
-        for (Goal goal : tmrw) model.tmrwAppend(goal);
-        for (Goal goal : tmrwc) model.tmrwAppend(goal);
+        for (Goal goal : goalList) {
+            model.todayAppend(goal);
+            model.todayAppend(goal.withIsCompleted(true));
+            model.tmrwAppend(goal);
+            model.tmrwAppend(goal.withIsCompleted(true));
+            model.pendingAppend(goal);
+        }
+      
+        for (RecurringGoal goal : recurringGoalList) {
+            model.recurringAppend(goal);
+        }
+  
+        for (GoalContext context : GoalContext.values()) {
+            model.setFilter(context);
+            List<Goal> expected = new ArrayList<>();
+            List<Goal> expectedc = new ArrayList<>();
+            List<RecurringGoal> expectedr = new ArrayList<>();
+            for (int i : imap.get(context)) {
+                expected.add(goalList.get(i));
+                expectedc.add(goalList.get(i).withIsCompleted(true));
+                expectedr.add(recurringGoalList.get(i));
+            }
 
-        model.pendingAppend(p);
-        model.pendingAppend(pending.get(0));
-
-        model.pendingToToday(p);
-        today.add(p.withSortOrder(2));
-
-        assertEquals(today, model.getTodayOngoingGoals().getValue());
-        assertEquals(todayc, model.getTodayCompletedGoals().getValue());
-        assertEquals(tmrw, model.getTmrwOngoingGoals().getValue());
-        assertEquals(tmrwc, model.getTmrwCompletedGoals().getValue());
-        assertEquals(pending, model.getPendingGoals().getValue());
-    }
-
-    @Test
-    public void pendingTest2() {
-        Goal p = new Goal(2, "5", GoalContext.HOME, 0, false);
-        ArrayList<Goal> today = new ArrayList<>(Arrays.asList(
-                new Goal(0, "1", GoalContext.HOME, 0, false),
-                new Goal(1, "2", GoalContext.HOME, 1, false)
-        ));
-        List<Goal> todayc = List.of(
-                new Goal(0, "1c", GoalContext.HOME, 0, true),
-                new Goal(1, "2c", GoalContext.HOME, 1, true)
-        );
-        ArrayList<Goal> tmrw = new ArrayList<>(List.of(
-                new Goal(0, "3", GoalContext.HOME, 0, false),
-                new Goal(1, "4", GoalContext.HOME, 1, false)
-        ));
-        List<Goal> tmrwc = List.of(
-                new Goal(0, "3c", GoalContext.HOME, 0, true),
-                new Goal(1, "4c", GoalContext.HOME, 1, true)
-        );
-        List<Goal> pending = List.of(
-                new Goal(1, "6", GoalContext.HOME, 1, false)
-        );
-
-        for (Goal goal : today) model.todayAppend(goal);
-        for (Goal goal : todayc) model.todayAppend(goal);
-        for (Goal goal : tmrw) model.tmrwAppend(goal);
-        for (Goal goal : tmrwc) model.tmrwAppend(goal);
-
-        model.pendingAppend(p);
-        model.pendingAppend(pending.get(0));
-
-        model.pendingToTmrw(p);
-        tmrw.add(p.withSortOrder(2));
-
-        assertEquals(today, model.getTodayOngoingGoals().getValue());
-        assertEquals(todayc, model.getTodayCompletedGoals().getValue());
-        assertEquals(tmrw, model.getTmrwOngoingGoals().getValue());
-        assertEquals(tmrwc, model.getTmrwCompletedGoals().getValue());
-        assertEquals(pending, model.getPendingGoals().getValue());
-    }
-
-    @Test
-    public void pendingTest3() {
-        Goal p = new Goal(2, "5", GoalContext.HOME, 0, false);
-        ArrayList<Goal> today = new ArrayList<>(Arrays.asList(
-                new Goal(0, "1", GoalContext.HOME, 0, false),
-                new Goal(1, "2", GoalContext.HOME, 1, false)
-        ));
-        ArrayList<Goal> todayc = new ArrayList<>(List.of(
-                new Goal(0, "1c", GoalContext.HOME, 0, true),
-                new Goal(1, "2c", GoalContext.HOME, 1, true)
-        ));
-        List<Goal> tmrw = List.of(
-                new Goal(0, "3", GoalContext.HOME, 0, false),
-                new Goal(1, "4", GoalContext.HOME, 1, false)
-        );
-        List<Goal> tmrwc = List.of(
-                new Goal(0, "3c", GoalContext.HOME, 0, true),
-                new Goal(1, "4c", GoalContext.HOME, 1, true)
-        );
-        List<Goal> pending = List.of(
-                new Goal(1, "6", GoalContext.HOME, 1, false)
-        );
-
-        for (Goal goal : today) model.todayAppend(goal);
-        for (Goal goal : todayc) model.todayAppend(goal);
-        for (Goal goal : tmrw) model.tmrwAppend(goal);
-        for (Goal goal : tmrwc) model.tmrwAppend(goal);
-
-        model.pendingAppend(p);
-        model.pendingAppend(pending.get(0));
-
-        model.pendingCompleteGoal(p);
-        todayc.add(0, p.withSortOrder(2).withIsCompleted(true));
-
-        assertEquals(today, model.getTodayOngoingGoals().getValue());
-        assertEquals(todayc, model.getTodayCompletedGoals().getValue());
-        assertEquals(tmrw, model.getTmrwOngoingGoals().getValue());
-        assertEquals(tmrwc, model.getTmrwCompletedGoals().getValue());
-        assertEquals(pending, model.getPendingGoals().getValue());
-    }
-
-    @Test
-    public void pendingTest4() {
-        Goal p = new Goal(2, "5", GoalContext.HOME, 0, false);
-        List<Goal> pending = List.of(
-                new Goal(1, "6", GoalContext.HOME, 1, false)
-        );
-
-        model.pendingAppend(p);
-        model.pendingAppend(pending.get(0));
-
-        model.pendingDeleteGoal(p);
-
-        assertEquals(pending, model.getPendingGoals().getValue());
+            assertEquals(expected, model.getTodayOngoingGoals().getValue());
+            assertEquals(expectedc, model.getTodayCompletedGoals().getValue());
+            assertEquals(expected, model.getTmrwOngoingGoals().getValue());
+            assertEquals(expectedc, model.getTmrwCompletedGoals().getValue());
+            assertEquals(expected, model.getPendingGoals().getValue());
+            assertEquals(expectedr, model.getRecurringGoals().getValue());
+        }
     }
   
     // test for adding, completing, & uncompleting tomorrow goals

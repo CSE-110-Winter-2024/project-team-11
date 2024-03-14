@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.successorator;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,6 +12,8 @@ import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
 import edu.ucsd.cse110.successorator.ui.pendinggoals.CreatePendingGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.recurringgoals.RecurringGoalsFragment;
+import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayTmrwGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.today.dialog.FilterGoalsDialogFragment;
 import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayTmrwGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.pendinggoals.PendingGoalsFragment;
 
@@ -28,6 +31,12 @@ public class MainActivity extends AppCompatActivity
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         var activityModel = modelProvider.get(MainViewModel.class);
 
+        activityModel.getFilter().observe(filter -> {
+            int[] colors = {Color.YELLOW, Color.BLUE, Color.MAGENTA, Color.GREEN};
+            int color = filter == null ? Color.GRAY : colors[filter.ordinal()];
+            binding.getRoot().findViewById(R.id.filterMenuButton).setBackgroundColor(color);
+        });
+
         activityModel.getCurrentView().observe(viewEnum -> {
             switch(viewEnum) {
                 case TODAY: {
@@ -43,10 +52,12 @@ public class MainActivity extends AppCompatActivity
                         CreateTodayTmrwGoalDialogFragment dialogFragment = CreateTodayTmrwGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
-
+                    binding.filterMenuButton.setOnClickListener(v -> {
+                        FilterGoalsDialogFragment dialogFragment = FilterGoalsDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "FilterGoalsDialogFragment");
+                    });
                     break;
                 }
-                // TODO
                 case TMRW: {
                     getSupportFragmentManager().beginTransaction()
                             .replace(binding.goalsFragmentContainer.getId(),
@@ -60,7 +71,10 @@ public class MainActivity extends AppCompatActivity
                         CreateTodayTmrwGoalDialogFragment dialogFragment = CreateTodayTmrwGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
-
+                    binding.filterMenuButton.setOnClickListener(v -> {
+                        FilterGoalsDialogFragment dialogFragment = FilterGoalsDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "FilterGoalsDialogFragment");
+                    });
                     break;
                 }
                 case PENDING: {
@@ -76,7 +90,10 @@ public class MainActivity extends AppCompatActivity
                         CreatePendingGoalDialogFragment dialogFragment = CreatePendingGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
-
+                    binding.filterMenuButton.setOnClickListener(v -> {
+                        FilterGoalsDialogFragment dialogFragment = FilterGoalsDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "FilterGoalsDialogFragment");
+                    });
                     break;
                 }
                 case RECURRING: {
@@ -93,7 +110,10 @@ public class MainActivity extends AppCompatActivity
                         CreateTodayTmrwGoalDialogFragment dialogFragment = CreateTodayTmrwGoalDialogFragment.newInstance();
                         dialogFragment.show(getSupportFragmentManager(), "CreateTodayGoalDialogFragment");
                     });
-
+                    binding.filterMenuButton.setOnClickListener(v -> {
+                        FilterGoalsDialogFragment dialogFragment = FilterGoalsDialogFragment.newInstance();
+                        dialogFragment.show(getSupportFragmentManager(), "FilterGoalsDialogFragment");
+                    });
                     break;
                 }
             }

@@ -2,6 +2,7 @@ package edu.ucsd.cse110.successorator.lib.domain.recurringgoal;
 
 import java.util.List;
 
+import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 
 public interface RecurringGoalRepository {
@@ -16,4 +17,6 @@ public interface RecurringGoalRepository {
     void remove(int id);
 
     void clear();
+
+    void update(List<RecurringGoal> filteredGoals);
 }

@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.successorator.lib.data;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
@@ -30,6 +32,10 @@ public class GoalInMemoryDataSource {
             = new SimpleSubject<>();
 
     public GoalInMemoryDataSource() {
+        updateSubject();
+    }
+
+    public void updateSubject() {
         allGoalsSubject.setValue(getGoals());
     }
 
@@ -55,6 +61,7 @@ public class GoalInMemoryDataSource {
         if (containsOngoing()) {
             goalList.sort(Comparator.comparing(Goal::getContext));
         }
+
         return goalList;
     }
 
@@ -93,7 +100,7 @@ public class GoalInMemoryDataSource {
         if (goalSubjects.containsKey(fixedGoal.id())) {
             goalSubjects.get(fixedGoal.id()).setValue(fixedGoal);
         }
-        allGoalsSubject.setValue(getGoals());
+        updateSubject();
     }
 
     public void putGoals(List<Goal> goals) {
@@ -110,7 +117,7 @@ public class GoalInMemoryDataSource {
                 goalSubjects.get(goal.id()).setValue(goal);
             }
         });
-        allGoalsSubject.setValue(getGoals());
+        updateSubject();
     }
 
     public void removeGoal(int id) {
@@ -123,7 +130,7 @@ public class GoalInMemoryDataSource {
         if (goalSubjects.containsKey(id)) {
             goalSubjects.get(id).setValue(null);
         }
-        allGoalsSubject.setValue(getGoals());
+        updateSubject();
     }
 
     public void shiftSortOrders(int from, int to, int by) {
@@ -204,6 +211,8 @@ public class GoalInMemoryDataSource {
             putGoal(goal.withSortOrder(0));
         }
     }
+
+
 
     public void clear() {
         List<Goal> list = getGoals();
