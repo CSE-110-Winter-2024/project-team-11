@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.manipulation.Ordering;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -420,6 +421,21 @@ public class MainViewModelTest {
         assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
         assertEquals(List.of(g.withId(2)), model.getTmrwOngoingGoals().getValue());
         assertEquals(List.of(), model.getTodayCompletedGoals().getValue());
+    }
+
+    @Test
+    public void recurringTest1() {
+        LocalDate now = LocalDate.now();
+        RecurrenceFactory factory = new RecurrenceFactory();
+        Recurrence weekly = factory.createRecurrence(now, RecurrenceFactory.RecurrenceEnum.WEEKLY);
+        RecurringGoal goal = new RecurringGoal(0,
+                new Goal(null, "Club Meeting", GoalContext.HOME, 0, false),
+                weekly);
+
+        model.recurringAppend(goal);
+
+        List<RecurringGoal> expected = List.of(goal);
+        assertEquals(expected, model.getRecurringGoals().getValue());
     }
 
     @Test
