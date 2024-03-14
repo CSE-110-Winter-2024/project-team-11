@@ -122,7 +122,7 @@
             android:id="@+id/weeklyRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false"
+            android:checked="true"
             android:text="RadioButton"
             android:textSize="16sp"
             tools:layout_editor_absoluteX="-1dp"
