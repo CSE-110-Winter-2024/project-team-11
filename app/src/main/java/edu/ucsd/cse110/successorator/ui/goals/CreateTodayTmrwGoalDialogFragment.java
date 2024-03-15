@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
+import edu.ucsd.cse110.successorator.ui.pendinggoals.CreatePendingGoalDialogFragment;
 
 public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
 
@@ -40,7 +42,10 @@ public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
     CreateTodayTmrwGoalDialogFragment() {}
 
     public static CreateTodayTmrwGoalDialogFragment newInstance() {
-        return new CreateTodayTmrwGoalDialogFragment();
+        var fragment = new CreateTodayTmrwGoalDialogFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -132,23 +137,20 @@ public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
             else if(activityModel.getCurrentView().getValue() == MainViewModel.ViewEnum.TMRW) {
                 activityModel.tmrwAppend(goal);
             }
-        } else if (view.dailyRadioButton.isChecked()) {
-            var recurringGoal = new RecurringGoal(null, goal, daily);
-            activityModel.recurringAppend(recurringGoal);
-        } else if (view.weeklyRadioButton.isChecked()) {
-            var recurringGoal = new RecurringGoal(null, goal, weekly);
-            activityModel.recurringAppend(recurringGoal);
         }
-        else if(view.monthlyRadioButton.isChecked()) {
-            var recurringGoal = new RecurringGoal(null, goal, monthly);
-            activityModel.recurringAppend(recurringGoal);
-        }
-        else if(view.yearlyRadioButton.isChecked()) {
-            var recurringGoal = new RecurringGoal(null, goal, yearly);
-            activityModel.recurringAppend(recurringGoal);
-        }
-        else {
-            throw new IllegalStateException("No radio button selected");
+
+        Recurrence[] recurrences = {daily, weekly, monthly, yearly};
+        Map<Recurrence, RadioButton> recurrenceButtons = new HashMap<>() {{
+            put(daily, view.dailyRadioButton);
+            put(weekly, view.weeklyRadioButton);
+            put(monthly, view.monthlyRadioButton);
+            put(yearly, view.yearlyRadioButton);
+        }};
+        for (Recurrence recurrence : recurrences) {
+            if (recurrenceButtons.get(recurrence).isChecked()) {
+                var recurringGoal = new RecurringGoal(null, goal, recurrence);
+                activityModel.recurringAppend(recurringGoal);
+            }
         }
     }
 }

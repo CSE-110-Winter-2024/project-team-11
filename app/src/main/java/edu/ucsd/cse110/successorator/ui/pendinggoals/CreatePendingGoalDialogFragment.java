@@ -33,9 +33,7 @@ public class CreatePendingGoalDialogFragment extends DialogFragment {
 
     private final Map<GoalContext, TextView> buttons = new HashMap<>();
 
-    CreatePendingGoalDialogFragment() {
-
-    }
+    CreatePendingGoalDialogFragment() {}
 
     public static CreatePendingGoalDialogFragment newInstance() {
         var fragment = new CreatePendingGoalDialogFragment();
@@ -43,16 +41,16 @@ public class CreatePendingGoalDialogFragment extends DialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         var modelOwner = requireActivity();
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
-
     }
+
     private void setSelectedContext(GoalContext goalContext) {
         this.selectedContext = goalContext;
         updateButtonBackground();
