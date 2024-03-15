@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DailyTest {
     @Test
@@ -57,7 +58,8 @@ public class DailyTest {
 
     @Test
     public void recurrenceText() {
-        String expected = "daily";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d");
+        String expected = "daily starting " + LocalDate.now().format(formatter);
         assertEquals(expected, new Daily(LocalDate.now()).recurrenceText());
     }
 }

@@ -2,7 +2,9 @@ package edu.ucsd.cse110.successorator.lib.domain.recurrence;
 
 import androidx.annotation.NonNull;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Daily implements Recurrence {
     LocalDate startDate;
@@ -28,6 +30,8 @@ public class Daily implements Recurrence {
 
     @Override
     public String recurrenceText() {
-        return "daily";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d");
+        return "daily starting " + startDate.format(formatter);
     }
+
 }
