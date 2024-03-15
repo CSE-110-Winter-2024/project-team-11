@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.successorator.ui.goals;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,14 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
-import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
-import edu.ucsd.cse110.successorator.util.GoalsAdapter;
+import edu.ucsd.cse110.successorator.adapter.array.GoalsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,6 +94,15 @@ public class GoalsFragment extends Fragment {
         else if(type == MainViewModel.ViewEnum.TMRW) {
             ongoingGoalsAdapter.setOnGoalCompleteListener(goal -> {
                 // Set complete goal listener
+                if (activityModel.isOngoingToday(goal)) {
+                    new AlertDialog.Builder(requireContext())
+                            .setTitle("Illegal Action")
+                            .setMessage("This goal is still active for Today.  If you've finished this goal for Today, mark it finished in that view.")
+                            .create()
+                            .show();
+                    return;
+                }
+
                 activityModel.tmrwCompleteGoal(goal);
             });
 

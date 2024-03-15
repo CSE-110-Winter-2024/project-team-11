@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.util;
+package edu.ucsd.cse110.successorator.adapter.subject;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 

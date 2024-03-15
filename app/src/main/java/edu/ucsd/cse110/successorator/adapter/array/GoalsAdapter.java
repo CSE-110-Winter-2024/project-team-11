@@ -1,10 +1,9 @@
-package edu.ucsd.cse110.successorator.util;
+package edu.ucsd.cse110.successorator.adapter.array;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import java.util.List;
 
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 
 public class GoalsAdapter extends ArrayAdapter<Goal>
 {
@@ -72,12 +72,10 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
             Goal goal = getItem(position);
             if (goal != null) {
                 if (goal.isCompleted()) {
-                    goal = goal.withIsCompleted(true); // Mark the goal as uncompleted
                     if (onGoalUnCompleteListener != null) {
                         onGoalUnCompleteListener.onGoalUnComplete(goal);
                     }
                 } else {
-                    goal = goal.withIsCompleted(true); // Mark the goal as completed
                     if (onGoalCompleteListener != null) {
                         onGoalCompleteListener.onGoalComplete(goal);
                     }
@@ -92,52 +90,20 @@ public class GoalsAdapter extends ArrayAdapter<Goal>
         TextView textViewGoalText = convertView.findViewById(R.id.goal_text);
         TextView textViewContextText = convertView.findViewById(R.id.context_text);
 
-        // Check if the text is for the completed goals
-
+        // Context label
+        Drawable contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.context_label);
         if(isCompleted) {
             textViewGoalText.setPaintFlags(textViewGoalText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            textViewGoalText.setText(goal.text());
-            // Set background drawable of the textViewContextText for completed goals
-            textViewContextText.setBackgroundResource(R.drawable.rectangle_background_completed);
-            // Set text of the textViewContextText
-            textViewContextText.setText("Completed"); // Optionally set text here if needed
+            contextBackground.setTint(GoalContext.completedColor());
         } else {
-            // Set data to views
-            if (goal != null) {
-                textViewGoalText.setText(goal.text()); // Set the text from the Goal object
-
-                // Set the context text and background drawable based on the goal context
-                Drawable contextBackground = null;
-                String contextType = "";
-               
-                switch (goal.getContext()) {
-                    case HOME:
-                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_home);
-                        contextType = "Home";
-                        break;
-                    case WORK:
-                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_work);
-                        contextType = "Work";
-                        break;
-                    case SCHOOL:
-                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_school);
-                        contextType = "School";
-                        break;
-                    case ERRAND:
-                        contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_errand);
-                        contextType = "Errand";
-                        break;
-
-                }
-
-                // Set background drawable of the textViewContextText
-                textViewContextText.setBackground(contextBackground);
-
-                // Set text of the textViewContextText
-                textViewContextText.setText(contextType);
-            }
-
+            // Set correct context color
+            contextBackground.setTint(goal.getContext().color());
         }
+        textViewContextText.setBackground(contextBackground);
+
+        // Set correct context text
+        textViewGoalText.setText(goal.text());
+        textViewContextText.setText(goal.getContext().text());
 
         return convertView;
     }

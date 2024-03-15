@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.lib.domain;
+package edu.ucsd.cse110.successorator.lib.domain.time;
 
 //import java.util.LocalDateTime;
 import java.time.*;

@@ -22,13 +22,14 @@
         <TextView
             android:id="@+id/cancel_button"
             android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_height="49dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/rectangle_background_completed"
+            android:background="@drawable/context_label"
+            android:backgroundTint="@color/completed"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textSize="16sp" />
 
         <TextView
@@ -37,10 +38,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/rectangle_background_home"
+            android:background="@drawable/context_label"
+            android:backgroundTint="@color/home"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Home"
+            android:text="@string/home"
             android:textSize="16sp" />
 
         <TextView
@@ -49,10 +51,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/rectangle_background_work"
+            android:background="@drawable/context_label"
+            android:backgroundTint="@color/work"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Work"
+            android:text="@string/work"
             android:textSize="16sp" />
 
         <TextView
@@ -61,10 +64,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/rectangle_background_school"
+            android:background="@drawable/context_label"
+            android:backgroundTint="@color/school"
             android:gravity="center"
             android:padding="8dp"
-            android:text="School"
+            android:text="@string/school"
             android:textSize="16sp" />
 
         <TextView
@@ -73,10 +77,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/rectangle_background_errand"
+            android:background="@drawable/context_label"
+            android:backgroundTint="@color/errand"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Errand"
+            android:text="@string/errand"
             android:textSize="16sp" />
 
 

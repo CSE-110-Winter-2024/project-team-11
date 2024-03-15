@@ -28,21 +28,6 @@ public class Weekly implements Recurrence {
                 && date.getDayOfWeek() == startDate.getDayOfWeek();
     }
 
-    @Override
-    public boolean occursDuringInterval(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isBefore(this.startDate) || endDate.isBefore(startDate)) {
-            return false;
-        }
-
-        // Check whether or not any day in the interval matches the recurrence relation
-        for (LocalDate date = startDate.plusDays(1); !date.isAfter(endDate); date = date.plusDays(1)) {
-            if (occursOnDay(date)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static String dayOfWeekAbbreviation(DayOfWeek dayOfWeek) {
         return dayOfWeek.name().charAt(0) + ""
                 + dayOfWeek.name().toLowerCase().charAt(1);

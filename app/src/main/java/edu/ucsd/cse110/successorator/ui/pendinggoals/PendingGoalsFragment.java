@@ -17,10 +17,8 @@ import java.util.ArrayList;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
-import edu.ucsd.cse110.successorator.data.db.goals.GoalEntity;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
-import edu.ucsd.cse110.successorator.util.GoalsAdapter;
-import edu.ucsd.cse110.successorator.util.PendingGoalsAdapter;
+import edu.ucsd.cse110.successorator.adapter.array.PendingGoalsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,16 +85,16 @@ public class PendingGoalsFragment extends Fragment {
         // Handle each option appropriately
         int itemId = item.getItemId();
         if (itemId == R.id.move_today) {
-//            activityModel.pendingToToday(goal);
+            activityModel.pendingToToday(goal);
             return true;
         } else if (itemId == R.id.move_tmrw) {
-//            activityModel.pendingToTmrw(goal);
+            activityModel.pendingToTmrw(goal);
             return true;
         } else if (itemId == R.id.finish) {
-//            activityModel.pendingCompleteGoal(goal);
+            activityModel.pendingCompleteGoal(goal);
             return true;
         } else if (itemId == R.id.delete) {
-//            activityModel.pendingDeleteGoal(goal);
+            activityModel.pendingDeleteGoal(goal);
             return true;
         } else {
             return super.onContextItemSelected(item);

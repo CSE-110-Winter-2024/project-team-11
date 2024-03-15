@@ -1,10 +1,8 @@
-package edu.ucsd.cse110.successorator.util;
+package edu.ucsd.cse110.successorator.adapter.array;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
-import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 
 public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
@@ -78,40 +74,17 @@ public class RecurringGoalsAdapter extends ArrayAdapter<RecurringGoal>
         }
 
         TextView textViewContextText = convertView.findViewById(R.id.context_text);
-        // Set data to views
-        if (goal != null) {
-            textViewGoalText.setText(goal.text()); // Set the text from the Goal object
+        // Set correct context color
+        Drawable contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.context_label);
+        contextBackground.setTint(goal.getGoal().getContext().color());
 
-            // Set the context text and background drawable based on the goal context
-            Drawable contextBackground = null;
-            String contextType = "";
+        // Set background drawable of the textViewContextText
+        textViewContextText.setBackground(contextBackground);
 
-            switch (goal.getGoal().getContext()) {
-                case HOME:
-                    contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_home);
-                    contextType = "Home";
-                    break;
-                case WORK:
-                    contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_work);
-                    contextType = "Work";
-                    break;
-                case SCHOOL:
-                    contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_school);
-                    contextType = "School";
-                    break;
-                case ERRAND:
-                    contextBackground = ContextCompat.getDrawable(getContext(), R.drawable.rectangle_background_errand);
-                    contextType = "Errand";
-                    break;
+        // Set correct context text
+        textViewGoalText.setText(goal.text());
+        textViewContextText.setText(goal.getGoal().getContext().text());
 
-            }
-
-            // Set background drawable of the textViewContextText
-            textViewContextText.setBackground(contextBackground);
-
-            // Set text of the textViewContextText
-            textViewContextText.setText(contextType);
-        }
 
         return convertView;
     }

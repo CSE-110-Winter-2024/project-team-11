@@ -3,8 +3,8 @@ package edu.ucsd.cse110.successorator.data.db.time;
 //import java.util.LocalDateTime;
 import java.time.*;
 
-import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
-import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.SimpleTimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.TimeManager;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 
 public class RoomTimeManager implements TimeManager {

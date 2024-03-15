@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.ui.today.dialog;
+package edu.ucsd.cse110.successorator.ui.goals;
 
 import static edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory.RecurrenceEnum.DAILY;
 import static edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory.RecurrenceEnum.MONTHLY;
@@ -9,8 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -29,6 +29,7 @@ import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
+import edu.ucsd.cse110.successorator.ui.pendinggoals.CreatePendingGoalDialogFragment;
 
 public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
 
@@ -36,10 +37,15 @@ public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
     private MainViewModel activityModel;
     private GoalContext selectedContext = null;
 
+    private final Map<GoalContext, TextView> buttons = new HashMap<>();
+
     CreateTodayTmrwGoalDialogFragment() {}
 
     public static CreateTodayTmrwGoalDialogFragment newInstance() {
-        return new CreateTodayTmrwGoalDialogFragment();
+        var fragment = new CreateTodayTmrwGoalDialogFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -84,67 +90,43 @@ public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
     }
 
     private void setupContextSelection() {
-        TextView homeTextView = view.button1;
-        TextView workTextView = view.button2;
-        TextView schoolTextView = view.button3;
-        TextView errandTextView = view.button4;
+        buttons.put(GoalContext.HOME, view.button1);
+        buttons.put(GoalContext.WORK, view.button2);
+        buttons.put(GoalContext.SCHOOL, view.button3);
+        buttons.put(GoalContext.ERRAND, view.button4);
 
-        homeTextView.setOnClickListener(v -> {
-            setSelectedContext(GoalContext.HOME);
-            toggleTextViewBackground(homeTextView);
-        });
-        workTextView.setOnClickListener(v -> {
-            setSelectedContext(GoalContext.WORK);
-            toggleTextViewBackground(workTextView);
-        });
-        schoolTextView.setOnClickListener(v -> {
-            setSelectedContext(GoalContext.SCHOOL);
-            toggleTextViewBackground(schoolTextView);
-        });
-        errandTextView.setOnClickListener(v -> {
-            setSelectedContext(GoalContext.ERRAND);
-            toggleTextViewBackground(errandTextView);
-        });
+        for (GoalContext context : GoalContext.values()) {
+            TextView button = buttons.get(context);
+            button.setOnClickListener(v -> {
+                setSelectedContext(context);
+            });
+        }
+
+        updateButtonBackground();
     }
 
     private void setSelectedContext(GoalContext context) {
         this.selectedContext = context;
+        updateButtonBackground();
     }
 
-    private void toggleTextViewBackground(TextView textView) {
-        view.button1.setSelected(false);
-        view.button1.setBackgroundResource(R.drawable.button_background_home);
-        view.button2.setSelected(false);
-        view.button2.setBackgroundResource(R.drawable.button_background_work);
-        view.button3.setSelected(false);
-        view.button3.setBackgroundResource(R.drawable.button_background_school);
-        view.button4.setSelected(false);
-        view.button4.setBackgroundResource(R.drawable.button_background_errand);
+    private void updateButtonBackground() {
+        for (GoalContext context : GoalContext.values()) {
+            TextView button = buttons.get(context);
+            button.setBackgroundResource(R.drawable.context_button);
+            button.getBackground().setTint(context.color());
 
-        textView.setSelected(true);
-        textView.setBackgroundResource(getBackgroundResource(textView));
-    }
+            boolean isSelected = context == selectedContext;
+            button.getBackground().setAlpha(isSelected ? 255 : 50);
 
-    private int getBackgroundResource(TextView textView) {
-        int resourceId;
-        if (textView.getId() == R.id.button1) {
-            resourceId = R.drawable.button_background_home;
-        } else if (textView.getId() == R.id.button2) {
-            resourceId = R.drawable.button_background_work;
-        } else if (textView.getId() == R.id.button3) {
-            resourceId = R.drawable.button_background_school;
-        } else if (textView.getId() == R.id.button4) {
-            resourceId = R.drawable.button_background_errand;
-        } else {
-            resourceId = R.drawable.button_background_home; // Default case
+            button.setSelected(isSelected);
         }
-        return resourceId;
     }
 
     private void saveGoal(Recurrence daily, Recurrence weekly, Recurrence monthly, Recurrence yearly) {
         var goalText = view.enterGoalText.getText().toString();
-        if (TextUtils.isEmpty(goalText)) {
-            // Handle empty goal text
+        if (TextUtils.isEmpty(goalText) || selectedContext == null) {
+            // Handle empty goal text or null context
             return;
         }
         var goal = new Goal(null, goalText, selectedContext, -1, false);
@@ -155,23 +137,20 @@ public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
             else if(activityModel.getCurrentView().getValue() == MainViewModel.ViewEnum.TMRW) {
                 activityModel.tmrwAppend(goal);
             }
-        } else if (view.dailyRadioButton.isChecked()) {
-            var recurringGoal = new RecurringGoal(null, goal, daily);
-            activityModel.recurringAppend(recurringGoal);
-        } else if (view.weeklyRadioButton.isChecked()) {
-            var recurringGoal = new RecurringGoal(null, goal, weekly);
-            activityModel.recurringAppend(recurringGoal);
         }
-        else if(view.monthlyRadioButton.isChecked()) {
-            var recurringGoal = new RecurringGoal(null, goal, monthly);
-            activityModel.recurringAppend(recurringGoal);
-        }
-        else if(view.yearlyRadioButton.isChecked()) {
-            var recurringGoal = new RecurringGoal(null, goal, yearly);
-            activityModel.recurringAppend(recurringGoal);
-        }
-        else {
-            throw new IllegalStateException("No radio button selected");
+
+        Recurrence[] recurrences = {daily, weekly, monthly, yearly};
+        Map<Recurrence, RadioButton> recurrenceButtons = new HashMap<>() {{
+            put(daily, view.dailyRadioButton);
+            put(weekly, view.weeklyRadioButton);
+            put(monthly, view.monthlyRadioButton);
+            put(yearly, view.yearlyRadioButton);
+        }};
+        for (Recurrence recurrence : recurrences) {
+            if (recurrenceButtons.get(recurrence).isChecked()) {
+                var recurringGoal = new RecurringGoal(null, goal, recurrence);
+                activityModel.recurringAppend(recurringGoal);
+            }
         }
     }
 }

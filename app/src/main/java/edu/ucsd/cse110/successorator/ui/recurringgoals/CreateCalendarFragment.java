@@ -1,28 +1,23 @@
-package edu.ucsd.cse110.successorator.ui.CalendarFragment;
+package edu.ucsd.cse110.successorator.ui.recurringgoals;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentCalendarBinding;
-import edu.ucsd.cse110.successorator.databinding.FragmentCreateTodayGoalBinding;
-import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayTmrwGoalDialogFragment;
-import edu.ucsd.cse110.successorator.util.PendingGoalsAdapter;
 
 public class CreateCalendarFragment extends DialogFragment {
 
@@ -66,14 +61,28 @@ public class CreateCalendarFragment extends DialogFragment {
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
                 Calendar selectedDate = Calendar.getInstance();
                 selectedDate.set(year, month, dayOfMonth);
-                if (dateSelectedListener != null) {
-                    dateSelectedListener.onDateSelected(selectedDate);
-                }
+                showConfirmDialog(selectedDate);
 
-                dismiss();
             }
         });
         return rootView;
+    }
+
+    private void showConfirmDialog(Calendar selectedDate){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Confirm Date Selection");
+        builder.setPositiveButton("Confirm", (dialog, which) -> {
+            if (dateSelectedListener != null) {
+                dateSelectedListener.onDateSelected(selectedDate);
+            }
+            dismiss();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {

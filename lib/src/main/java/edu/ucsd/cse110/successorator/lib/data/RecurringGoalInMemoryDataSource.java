@@ -28,26 +28,7 @@ public class RecurringGoalInMemoryDataSource {
     private final MutableSubject<List<RecurringGoal>> allGoalsSubject
             = new SimpleSubject<>();
 
-    private List<RecurringGoal> originalGoals = new ArrayList<>();
-
-    // Existing methods...
-
     public RecurringGoalInMemoryDataSource() {
-        allGoalsSubject.setValue(getGoals());
-    }
-
-    public List<RecurringGoal> getOriginalGoals() {
-        return originalGoals;
-    }
-
-    public void resetToOriginalGoals() {
-        goals.clear();
-        goalSubjects.clear();
-
-        for (RecurringGoal originalGoal : originalGoals) {
-            putGoal(originalGoal);
-        }
-
         allGoalsSubject.setValue(getGoals());
     }
 
@@ -100,17 +81,12 @@ public class RecurringGoalInMemoryDataSource {
         allGoalsSubject.setValue(getGoals());
     }
 
-    private void updateOriginalGoals() {
-        originalGoals = new ArrayList<>(goals.values());
-    }
-
     public void updateGoals(List<RecurringGoal> filteredGoals) {
         // Clear existing goals and replace them with the filtered goals
         goals.clear();
         for (RecurringGoal goal : filteredGoals) {
             goals.put(goal.id(), goal);
         }
-        updateOriginalGoals(); // Update original goals after updating goals
         allGoalsSubject.setValue(getGoals());
     }
 

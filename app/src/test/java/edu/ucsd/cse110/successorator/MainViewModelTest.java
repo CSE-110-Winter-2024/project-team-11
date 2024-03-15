@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.manipulation.Ordering;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,15 +12,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.data.RecurringGoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.goal.SimpleGoalRepository;
-import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
-import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.SimpleTimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.TimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
@@ -596,15 +594,11 @@ public class MainViewModelTest {
         for (Goal goal : tmrw) model.tmrwAppend(goal);
         for (Goal goal : tmrwc) model.tmrwAppend(goal);
 
-        System.out.println(model.getTodayOngoingGoals().getValue());
-
         model.pendingAppend(p);
         model.pendingAppend(pending.get(0));
 
         model.pendingToToday(p);
         today.add(p.withSortOrder(2));
-
-        System.out.println(model.getTodayOngoingGoals().getValue());
 
         assertEquals(today, model.getTodayOngoingGoals().getValue());
         assertEquals(todayc, model.getTodayCompletedGoals().getValue());
