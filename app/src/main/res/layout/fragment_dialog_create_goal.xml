@@ -21,7 +21,7 @@
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:background="@drawable/button_background_home"
+            android:background="@drawable/context_button"
             android:gravity="center"
             android:text="H"
             android:textSize="24sp" />
@@ -39,7 +39,7 @@
             android:layout_width="25dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/button_background_work"
+            android:background="@drawable/context_button"
             android:gravity="center"
             android:text="W"
             android:textSize="24sp" />
@@ -57,7 +57,7 @@
             android:layout_width="25dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/button_background_school"
+            android:background="@drawable/context_button"
             android:gravity="center"
             android:text="S"
             android:textSize="24sp" />
@@ -76,7 +76,7 @@
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:background="@drawable/button_background_errand"
+            android:background="@drawable/context_button"
             android:gravity="center"
             android:text="E"
             android:textSize="24sp" />

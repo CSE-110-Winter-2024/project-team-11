@@ -17,4 +17,9 @@
     <string name="recurring_string">Recurring</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">Cancel</string>
+    <string name="home">Home</string>
+    <string name="work">Work</string>
+    <string name="school">School</string>
+    <string name="errand">Errand</string>
 </resources>

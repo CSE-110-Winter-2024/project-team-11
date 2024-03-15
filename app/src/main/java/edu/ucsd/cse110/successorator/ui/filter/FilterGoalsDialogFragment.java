@@ -65,21 +65,4 @@ public class FilterGoalsDialogFragment extends DialogFragment {
         activityModel.setFilter(filter);
         dismiss();
     }
-
-    // Method to get background resource
-    private int getBackgroundResource(TextView textView) {
-        int resourceId;
-        if (textView.getId() == R.id.home_button) {
-            resourceId = R.drawable.rectangle_background_home;
-        } else if (textView.getId() == R.id.work_button) {
-            resourceId = R.drawable.rectangle_background_work;
-        } else if (textView.getId() == R.id.school_button) {
-            resourceId = R.drawable.rectangle_background_school;
-        } else if (textView.getId() == R.id.errand_button) {
-            resourceId = R.drawable.rectangle_background_errand;
-        } else {
-            resourceId = R.drawable.rectangle_background_completed;
-        }
-        return resourceId;
-    }
 }

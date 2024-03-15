@@ -17,6 +17,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -32,6 +34,8 @@ public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
     private FragmentCreateTodayGoalBinding view;
     private MainViewModel activityModel;
     private GoalContext selectedContext = null;
+
+    private final Map<GoalContext, TextView> buttons = new HashMap<>();
 
     CreateTodayTmrwGoalDialogFragment() {}
 
@@ -81,61 +85,37 @@ public class CreateTodayTmrwGoalDialogFragment extends DialogFragment {
     }
 
     private void setupContextSelection() {
-        TextView homeTextView = view.button1;
-        TextView workTextView = view.button2;
-        TextView schoolTextView = view.button3;
-        TextView errandTextView = view.button4;
+        buttons.put(GoalContext.HOME, view.button1);
+        buttons.put(GoalContext.WORK, view.button2);
+        buttons.put(GoalContext.SCHOOL, view.button3);
+        buttons.put(GoalContext.ERRAND, view.button4);
 
-        homeTextView.setOnClickListener(v -> {
-            setSelectedContext(GoalContext.HOME);
-            toggleTextViewBackground(homeTextView);
-        });
-        workTextView.setOnClickListener(v -> {
-            setSelectedContext(GoalContext.WORK);
-            toggleTextViewBackground(workTextView);
-        });
-        schoolTextView.setOnClickListener(v -> {
-            setSelectedContext(GoalContext.SCHOOL);
-            toggleTextViewBackground(schoolTextView);
-        });
-        errandTextView.setOnClickListener(v -> {
-            setSelectedContext(GoalContext.ERRAND);
-            toggleTextViewBackground(errandTextView);
-        });
+        for (GoalContext context : GoalContext.values()) {
+            TextView button = buttons.get(context);
+            button.setOnClickListener(v -> {
+                setSelectedContext(context);
+            });
+        }
+
+        updateButtonBackground();
     }
 
     private void setSelectedContext(GoalContext context) {
         this.selectedContext = context;
+        updateButtonBackground();
     }
 
-    private void toggleTextViewBackground(TextView textView) {
-        view.button1.setSelected(false);
-        view.button1.setBackgroundResource(R.drawable.button_background_home);
-        view.button2.setSelected(false);
-        view.button2.setBackgroundResource(R.drawable.button_background_work);
-        view.button3.setSelected(false);
-        view.button3.setBackgroundResource(R.drawable.button_background_school);
-        view.button4.setSelected(false);
-        view.button4.setBackgroundResource(R.drawable.button_background_errand);
+    private void updateButtonBackground() {
+        for (GoalContext context : GoalContext.values()) {
+            TextView button = buttons.get(context);
+            button.setBackgroundResource(R.drawable.context_button);
+            button.getBackground().setTint(context.color());
 
-        textView.setSelected(true);
-        textView.setBackgroundResource(getBackgroundResource(textView));
-    }
+            boolean isSelected = context == selectedContext;
+            button.getBackground().setAlpha(isSelected ? 255 : 50);
 
-    private int getBackgroundResource(TextView textView) {
-        int resourceId;
-        if (textView.getId() == R.id.button1) {
-            resourceId = R.drawable.button_background_home;
-        } else if (textView.getId() == R.id.button2) {
-            resourceId = R.drawable.button_background_work;
-        } else if (textView.getId() == R.id.button3) {
-            resourceId = R.drawable.button_background_school;
-        } else if (textView.getId() == R.id.button4) {
-            resourceId = R.drawable.button_background_errand;
-        } else {
-            resourceId = R.drawable.button_background_home; // Default case
+            button.setSelected(isSelected);
         }
-        return resourceId;
     }
 
     private void saveGoal(Recurrence daily, Recurrence weekly, Recurrence monthly, Recurrence yearly) {
