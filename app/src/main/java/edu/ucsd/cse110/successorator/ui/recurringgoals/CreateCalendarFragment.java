@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.successorator.ui.recurringgoals;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
@@ -59,14 +61,28 @@ public class CreateCalendarFragment extends DialogFragment {
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
                 Calendar selectedDate = Calendar.getInstance();
                 selectedDate.set(year, month, dayOfMonth);
-                if (dateSelectedListener != null) {
-                    dateSelectedListener.onDateSelected(selectedDate);
-                }
+                showConfirmDialog(selectedDate);
 
-                dismiss();
             }
         });
         return rootView;
+    }
+
+    private void showConfirmDialog(Calendar selectedDate){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Confirm Date Selection");
+        builder.setPositiveButton("Confirm", (dialog, which) -> {
+            if (dateSelectedListener != null) {
+                dateSelectedListener.onDateSelected(selectedDate);
+            }
+            dismiss();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
