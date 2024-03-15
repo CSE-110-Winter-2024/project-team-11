@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.util;
+package edu.ucsd.cse110.successorator.adapter.subject;
 import androidx.lifecycle.MutableLiveData;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 

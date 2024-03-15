@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.ui.today.dialog;
+package edu.ucsd.cse110.successorator.ui.recurringgoals;
 
 import static edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory.RecurrenceEnum.DAILY;
 import static edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory.RecurrenceEnum.MONTHLY;
@@ -24,13 +24,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentCreateRecurringGoalBinding;
-import edu.ucsd.cse110.successorator.databinding.FragmentCreateTodayGoalBinding;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
-import edu.ucsd.cse110.successorator.ui.CalendarFragment.CreateCalendarFragment;
 
 public class CreateRecurringGoalDialogFragment extends DialogFragment {
 

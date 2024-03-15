@@ -2,17 +2,11 @@ package edu.ucsd.cse110.successorator.lib.domain.recurrence;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
-import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
-import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
 
 public class YearlyTest {
     @Test

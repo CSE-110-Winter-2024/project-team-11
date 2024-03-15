@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.ui.today.dialog;
+package edu.ucsd.cse110.successorator.ui.filter;
 
 import android.app.AlertDialog;
 import android.os.Bundle;

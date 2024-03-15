@@ -1,10 +1,8 @@
-package edu.ucsd.cse110.successorator.util;
+package edu.ucsd.cse110.successorator.adapter.array;
 
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

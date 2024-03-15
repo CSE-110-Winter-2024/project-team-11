@@ -12,9 +12,9 @@ import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 import edu.ucsd.cse110.successorator.ui.goals.GoalsFragment;
 import edu.ucsd.cse110.successorator.ui.pendinggoals.CreatePendingGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.recurringgoals.RecurringGoalsFragment;
-import edu.ucsd.cse110.successorator.ui.today.dialog.FilterGoalsDialogFragment;
-import edu.ucsd.cse110.successorator.ui.today.dialog.CreateTodayTmrwGoalDialogFragment;
-import edu.ucsd.cse110.successorator.ui.today.dialog.CreateRecurringGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.filter.FilterGoalsDialogFragment;
+import edu.ucsd.cse110.successorator.ui.goals.CreateTodayTmrwGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.recurringgoals.CreateRecurringGoalDialogFragment;
 
 import edu.ucsd.cse110.successorator.ui.pendinggoals.PendingGoalsFragment;
 

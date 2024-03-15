@@ -17,7 +17,7 @@ import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoalRepos
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
-import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.TimeManager;
 import edu.ucsd.cse110.successorator.ui.date.DateFragment;
 
 public class MainViewModel extends ViewModel {

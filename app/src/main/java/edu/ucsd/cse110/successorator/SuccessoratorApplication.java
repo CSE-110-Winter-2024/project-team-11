@@ -11,7 +11,7 @@ import edu.ucsd.cse110.successorator.data.db.recurringgoals.RoomRecurringGoalRep
 import edu.ucsd.cse110.successorator.data.db.time.RoomTimeManager;
 import edu.ucsd.cse110.successorator.data.db.time.TimeDatabase;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalRepository;
-import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.TimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoalRepository;
 
 public class SuccessoratorApplication extends Application {

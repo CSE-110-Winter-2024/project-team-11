@@ -6,6 +6,9 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import edu.ucsd.cse110.successorator.lib.domain.time.SimpleTimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.TimeManager;
+
 public class TimeManagerTest {
     TimeManager timeManager;
 

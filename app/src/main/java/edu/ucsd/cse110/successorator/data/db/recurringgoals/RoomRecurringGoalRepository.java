@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import edu.ucsd.cse110.successorator.util.LiveDataSubjectAdapter;
+import edu.ucsd.cse110.successorator.adapter.subject.LiveDataSubjectAdapter;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoalRepository;
 import edu.ucsd.cse110.successorator.lib.util.Subject;

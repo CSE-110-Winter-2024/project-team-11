@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.manipulation.Ordering;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,15 +12,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.data.GoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.data.RecurringGoalInMemoryDataSource;
 import edu.ucsd.cse110.successorator.lib.domain.goal.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.goal.GoalContext;
 import edu.ucsd.cse110.successorator.lib.domain.goal.SimpleGoalRepository;
-import edu.ucsd.cse110.successorator.lib.domain.SimpleTimeManager;
-import edu.ucsd.cse110.successorator.lib.domain.TimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.SimpleTimeManager;
+import edu.ucsd.cse110.successorator.lib.domain.time.TimeManager;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.Recurrence;
 import edu.ucsd.cse110.successorator.lib.domain.recurrence.RecurrenceFactory;
 import edu.ucsd.cse110.successorator.lib.domain.recurringgoal.RecurringGoal;
