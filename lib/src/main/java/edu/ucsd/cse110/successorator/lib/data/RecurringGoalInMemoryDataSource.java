@@ -36,21 +36,6 @@ public class RecurringGoalInMemoryDataSource {
         allGoalsSubject.setValue(getGoals());
     }
 
-    public List<RecurringGoal> getOriginalGoals() {
-        return originalGoals;
-    }
-
-    public void resetToOriginalGoals() {
-        goals.clear();
-        goalSubjects.clear();
-
-        for (RecurringGoal originalGoal : originalGoals) {
-            putGoal(originalGoal);
-        }
-
-        allGoalsSubject.setValue(getGoals());
-    }
-
     public List<RecurringGoal> getGoals() {
         return List.copyOf(goals.values()).stream()
                 .sorted(Comparator.comparing(a -> a.getRecurrence().getStartDate()))

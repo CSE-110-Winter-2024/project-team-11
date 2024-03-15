@@ -62,21 +62,6 @@ public class Monthly implements Recurrence {
         return normalMatch || overflowMatch;
     }
 
-    @Override
-    public boolean occursDuringInterval(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isBefore(this.startDate) || endDate.isBefore(startDate)) {
-            return false;
-        }
-
-        // Check whether or not any day in the interval matches the recurrence relation
-        for (LocalDate date = startDate.plusDays(1); !date.isAfter(endDate); date = date.plusDays(1)) {
-            if (occursOnDay(date)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static final Map<Integer, String> ORDINAL_SUFFIX = new HashMap<>() {{
         put(1, "st");
         put(2, "nd");

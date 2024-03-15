@@ -17,7 +17,19 @@ public interface Recurrence {
      * @param endDate The end of the interval (should always be now according to TimeManager)
      * @return Whether it should occur in this interval
      */
-    public boolean occursDuringInterval(LocalDate startDate, LocalDate endDate);
+    default boolean occursDuringInterval(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(getStartDate()) || endDate.isBefore(startDate)) {
+            return false;
+        }
+
+        // Check whether or not any day in the interval matches the recurrence relation
+        for (LocalDate date = startDate.plusDays(1); !date.isAfter(endDate); date = date.plusDays(1)) {
+            if (occursOnDay(date)) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     public String recurrenceText();
 }
