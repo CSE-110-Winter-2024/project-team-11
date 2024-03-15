@@ -127,7 +127,7 @@ public class CreateRecurringGoalDialogFragment extends DialogFragment {
     }
     public static DateTimeFormatter DATE_TIME_FORMATTER
             = DateTimeFormatter.ofPattern(
-            "EE M/d");
+            "MMMM d, yyyy");
 
     private void setSelectedContext(GoalContext context) {
         this.selectedContext = context;
