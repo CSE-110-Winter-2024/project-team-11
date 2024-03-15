@@ -30,8 +30,7 @@ public class Daily implements Recurrence {
 
     @Override
     public String recurrenceText() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d");
-        return "daily starting " + startDate.format(formatter);
+        return "daily";
     }
 
 }

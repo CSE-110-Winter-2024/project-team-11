@@ -58,8 +58,7 @@ public class DailyTest {
 
     @Test
     public void recurrenceText() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d");
-        String expected = "daily starting " + LocalDate.now().format(formatter);
+        String expected = "daily";
         assertEquals(expected, new Daily(LocalDate.now()).recurrenceText());
     }
 }

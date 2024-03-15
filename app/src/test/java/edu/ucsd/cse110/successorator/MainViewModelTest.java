@@ -594,15 +594,11 @@ public class MainViewModelTest {
         for (Goal goal : tmrw) model.tmrwAppend(goal);
         for (Goal goal : tmrwc) model.tmrwAppend(goal);
 
-        System.out.println(model.getTodayOngoingGoals().getValue());
-
         model.pendingAppend(p);
         model.pendingAppend(pending.get(0));
 
         model.pendingToToday(p);
         today.add(p.withSortOrder(2));
-
-        System.out.println(model.getTodayOngoingGoals().getValue());
 
         assertEquals(today, model.getTodayOngoingGoals().getValue());
         assertEquals(todayc, model.getTodayCompletedGoals().getValue());
